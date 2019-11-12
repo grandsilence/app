@@ -430,9 +430,7 @@
   "settings_permissions": "Rollen & Permissies",
   "settings_project": "Project Instellingen",
   "settings_saved": "Settings opgeslagen",
-  "settings_update_database": "Update database",
-  "settings_update_database_confirm": "Dit zal uw database bijwerken om te werken met de nieuwste versie van Directus. Maak altijd een backup voordat deze bewerking wordt uitgevoerd.",
-  "settings_update_database_subtext": "Script uitvoeren",
+  "settings_webhooks": "Webhooks",
   "setup_2fa": "Setup 2FA",
   "show_directus_collections": "Toon Directus systeem collecties",
   "sign_in": "Log in",
@@ -471,6 +469,7 @@
   "version_and_updates": "Versie en Updates",
   "view_type": "Bekijk als...",
   "visible_all_users": "Zichtbaar voor alle gebruikers",
+  "webhook_count": "No Webhooks | One Webhook | {count} Webhooks",
   "weeks": {
     "monday": "Maandag",
     "tuesday": "Dinsdag",
