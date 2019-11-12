@@ -430,9 +430,7 @@
   "settings_permissions": "Rôles et autorisations",
   "settings_project": "Paramètres du projet",
   "settings_saved": "Paramètres enregistrés",
-  "settings_update_database": "Mise à jour de base de données",
-  "settings_update_database_confirm": "Votre schéma de base de données va être mis à jour afin de travailler avec la dernière version en cours de Directus. Créez toujours une sauvegarde de votre base de données avant de réaliser cette opération.",
-  "settings_update_database_subtext": "Lancer le script",
+  "settings_webhooks": "Webhooks",
   "setup_2fa": "Setup 2FA",
   "show_directus_collections": "Afficher les collections systèmes de Directus",
   "sign_in": "Se connecter",
@@ -471,6 +469,7 @@
   "version_and_updates": "Version et mises à jour",
   "view_type": "Voir comme…",
   "visible_all_users": "Visible à tous les utilisateurs",
+  "webhook_count": "No Webhooks | One Webhook | {count} Webhooks",
   "weeks": {
     "monday": "Lundi",
     "tuesday": "Mardi",
