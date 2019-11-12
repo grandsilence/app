@@ -430,9 +430,7 @@
   "settings_permissions": "Ролі і Дозволи",
   "settings_project": "Налаштування проекту",
   "settings_saved": "Налаштування збережено",
-  "settings_update_database": "Оновити базу даних",
-  "settings_update_database_confirm": "Це оновить схему вашої бази данних для роботи з останньою версією Directus. Завжди стоврюйте резервну копію перед запуском цієї операції.",
-  "settings_update_database_subtext": "Запуск сценарію",
+  "settings_webhooks": "Webhooks",
   "setup_2fa": "Setup 2FA",
   "show_directus_collections": "Показати системні колеції Directus",
   "sign_in": "Вхід",
@@ -471,6 +469,7 @@
   "version_and_updates": "Версія та оновлення",
   "view_type": "Переглянути як...",
   "visible_all_users": "Видимі для всіх користувачів",
+  "webhook_count": "No Webhooks | One Webhook | {count} Webhooks",
   "weeks": {
     "monday": "Понеділок",
     "tuesday": "Вівторок",
