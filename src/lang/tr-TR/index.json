@@ -430,9 +430,7 @@
   "settings_permissions": "Roller & İzinler",
   "settings_project": "Proje Ayarları",
   "settings_saved": "Ayarlar Kaydedildi",
-  "settings_update_database": "Veritabanını Güncelle",
-  "settings_update_database_confirm": "Bu işlem veritabanı şemasını son Directus versiyonu ile çalışacak şekilde günceller. Bu operasyonu yapmadan önce veritabanınızın yedeğini alın!",
-  "settings_update_database_subtext": "Betik Çalıştır",
+  "settings_webhooks": "Webhooks",
   "setup_2fa": "Setup 2FA",
   "show_directus_collections": "Directus Sistem Koleksiyonlarını Göster",
   "sign_in": "Oturum Aç",
@@ -471,6 +469,7 @@
   "version_and_updates": "Versiyon ve Güncellemeler",
   "view_type": "Şu Şekilde Görüntüle...",
   "visible_all_users": "Tüm kullanıcılar tarafından görüntülenebilir",
+  "webhook_count": "No Webhooks | One Webhook | {count} Webhooks",
   "weeks": {
     "monday": "Pazartesi",
     "tuesday": "Salı",
