@@ -430,9 +430,7 @@
   "settings_permissions": "Rollen & Berechtigungen",
   "settings_project": "Projekt-Einstellungen",
   "settings_saved": "Einstellungen gespeichert",
-  "settings_update_database": "Datenbank aktualisieren",
-  "settings_update_database_confirm": "Dies wird ihr Datenbankschema auf die letzte Version aktualisieren. Bevor diese Operation gestartet wird sollte ein Backup erstellt werden.",
-  "settings_update_database_subtext": "Skript ausführen",
+  "settings_webhooks": "Webhooks",
   "setup_2fa": "Setup 2FA",
   "show_directus_collections": "Interne System-Sammlungen anzeigen",
   "sign_in": "Login",
@@ -471,6 +469,7 @@
   "version_and_updates": "Version und Aktualisierungen",
   "view_type": "Ansehen als...",
   "visible_all_users": "Für alle Benutzer sichtbar",
+  "webhook_count": "No Webhooks | One Webhook | {count} Webhooks",
   "weeks": {
     "monday": "Montag",
     "tuesday": "Dienstag",
