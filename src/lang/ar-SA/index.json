@@ -430,9 +430,7 @@
   "settings_permissions": "الأدوار والأذونات",
   "settings_project": "إعدادات المشروع",
   "settings_saved": "تم تخزين الإعدادات",
-  "settings_update_database": "تحديث قاعدة البيانات",
-  "settings_update_database_confirm": "سيؤدي ذلك إلى تحديث مخطط قاعدة البيانات للعمل مع أحدث إصدار من Directus. قم دائمًا بإنشاء نسخة احتياطية لقاعدة البيانات قبل تشغيل هذه العملية.",
-  "settings_update_database_subtext": "تشغيل النص البرمجي",
+  "settings_webhooks": "Webhooks",
   "setup_2fa": "Setup 2FA",
   "show_directus_collections": "اعرض مجموعات نظام Directus",
   "sign_in": "تسجيل الدخول",
@@ -471,6 +469,7 @@
   "version_and_updates": "إصدار وتحديثات",
   "view_type": "معاية كـ...",
   "visible_all_users": "مرئية لجميع المستخدمين",
+  "webhook_count": "No Webhooks | One Webhook | {count} Webhooks",
   "weeks": {
     "monday": "الإثنين",
     "tuesday": "الثلاثاء",
