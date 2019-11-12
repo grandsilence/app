@@ -430,9 +430,7 @@
   "settings_permissions": "Role a oprávnění",
   "settings_project": "Nastavení projektu",
   "settings_saved": "Nastavení uložena",
-  "settings_update_database": "Aktualizovat databázi",
-  "settings_update_database_confirm": "Tím se aktualizuje databázové schéma tak, aby fungovalo s nejnovější verzí rozhraní Directus. Před spuštěním této operace vždy vytvořte zálohu databáze.",
-  "settings_update_database_subtext": "Spustit skript",
+  "settings_webhooks": "Webhooks",
   "setup_2fa": "Setup 2FA",
   "show_directus_collections": "Zobrazit kategorie systému Directus",
   "sign_in": "Přihlásit se",
@@ -471,6 +469,7 @@
   "version_and_updates": "Verze a aktualizace",
   "view_type": "Zobrazit jako...",
   "visible_all_users": "Zobrazit pro všechny uživatele",
+  "webhook_count": "No Webhooks | One Webhook | {count} Webhooks",
   "weeks": {
     "monday": "Pondelok",
     "tuesday": "Utorok",
