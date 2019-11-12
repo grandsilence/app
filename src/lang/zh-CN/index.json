@@ -430,9 +430,7 @@
   "settings_permissions": "角色与权限",
   "settings_project": "项目设置",
   "settings_saved": "设置保存成功",
-  "settings_update_database": "升级数据库",
-  "settings_update_database_confirm": "此操作将会使数据库的系统字段更新为Directus的最新版本。请务必在运行此操作之前进行数据库备份。",
-  "settings_update_database_subtext": "运行脚本",
+  "settings_webhooks": "Webhooks",
   "setup_2fa": "设置 2FA",
   "show_directus_collections": "显示Directus系统集合",
   "sign_in": "登录",
@@ -471,6 +469,7 @@
   "version_and_updates": "版本与升级",
   "view_type": "查看为...",
   "visible_all_users": "所有用户可见",
+  "webhook_count": "No Webhooks | One Webhook | {count} Webhooks",
   "weeks": {
     "monday": "星期一",
     "tuesday": "星期二",
