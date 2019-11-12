@@ -430,9 +430,7 @@
   "settings_permissions": "Roller og tilganger",
   "settings_project": "Prosjektinnstillinger",
   "settings_saved": "Innstillinger lagret",
-  "settings_update_database": "Oppdater databasen",
-  "settings_update_database_confirm": "This will update your database schema to work with the latest version of Directus. Always create a database backup before running this operation.",
-  "settings_update_database_subtext": "Kjør script",
+  "settings_webhooks": "Webhooks",
   "setup_2fa": "Setup 2FA",
   "show_directus_collections": "Vis Directus systemkolleksjoner",
   "sign_in": "Logg inn",
@@ -471,6 +469,7 @@
   "version_and_updates": "Versjon og oppdateringer",
   "view_type": "Vis som...",
   "visible_all_users": "Synlig for alle brukere",
+  "webhook_count": "No Webhooks | One Webhook | {count} Webhooks",
   "weeks": {
     "monday": "Mandag",
     "tuesday": "Tirsdag",
