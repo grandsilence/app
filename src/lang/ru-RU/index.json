@@ -430,9 +430,7 @@
   "settings_permissions": "Роли и права доступа",
   "settings_project": "Настройки Проекта",
   "settings_saved": "Настройки сохранены",
-  "settings_update_database": "Обновить базу данных",
-  "settings_update_database_confirm": "Это обновит системные поля в вашей базе данных до последней версии Directus. Пожалуйста, сделайте резервную копию перед запуском этой операции.",
-  "settings_update_database_subtext": "Выполнить скрипт",
+  "settings_webhooks": "Webhooks",
   "setup_2fa": "Setup 2FA",
   "show_directus_collections": "Показать системные коллекций Directus'а",
   "sign_in": "Войти",
@@ -471,6 +469,7 @@
   "version_and_updates": "Версия и Обновления",
   "view_type": "Посмотреть как...",
   "visible_all_users": "Видно всем пользователям",
+  "webhook_count": "No Webhooks | One Webhook | {count} Webhooks",
   "weeks": {
     "monday": "Понедельник",
     "tuesday": "Вторник",
