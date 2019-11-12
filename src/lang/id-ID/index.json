@@ -430,9 +430,7 @@
   "settings_permissions": "Peran dan Izin",
   "settings_project": "Pengaturan Proyek",
   "settings_saved": "Pengaturan Tersimpan",
-  "settings_update_database": "Perbarui Database",
-  "settings_update_database_confirm": "Hal ini akan memperbarui skema database Anda agar bekerja dengan versi termutakhir Directus. Selalu buat cadangan database sebelum melakukan tindakan ini.",
-  "settings_update_database_subtext": "Jalankan Skrip",
+  "settings_webhooks": "Webhooks",
   "setup_2fa": "Setup 2FA",
   "show_directus_collections": "Tampilkan Pengumpulan Sistem Directus",
   "sign_in": "Masuk",
@@ -471,6 +469,7 @@
   "version_and_updates": "Versi dan Pembaruan",
   "view_type": "Lihat Sebagai...",
   "visible_all_users": "Terlihat oleh semua pengguna",
+  "webhook_count": "No Webhooks | One Webhook | {count} Webhooks",
   "weeks": {
     "monday": "Senin",
     "tuesday": "Selasa",
