@@ -430,9 +430,7 @@
   "settings_permissions": "Funções & Permissões",
   "settings_project": "Configurações do projeto",
   "settings_saved": "Configurações Salvas",
-  "settings_update_database": "Alterar banco de dados",
-  "settings_update_database_confirm": "Isso alterará os campos do sistema no seu banco de dados para a última versão do Directus. Por favor faça um backup antes de executar essa operação.",
-  "settings_update_database_subtext": "Rodar Script",
+  "settings_webhooks": "Webhooks",
   "setup_2fa": "Setup 2FA",
   "show_directus_collections": "Mostrar coleções do sistema Directus",
   "sign_in": "Entrar",
@@ -471,6 +469,7 @@
   "version_and_updates": "Versão e alterações",
   "view_type": "Ver como...",
   "visible_all_users": "Visível para todos os usuários",
+  "webhook_count": "No Webhooks | One Webhook | {count} Webhooks",
   "weeks": {
     "monday": "Segunda-feira",
     "tuesday": "Terça-feira",
