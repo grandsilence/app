@@ -430,9 +430,7 @@
   "settings_permissions": "Role i uprawnienia",
   "settings_project": "Ustawienia projektu",
   "settings_saved": "Ustawienia zapisane",
-  "settings_update_database": "Aktualizuj bazę danych",
-  "settings_update_database_confirm": "Wykonanie tej akcji spowoduje zaktualizowanie pół systemowych w Twojej bazie danych do najnowszej wersji Directusa. Zanim będziesz kontynuował upewnij się, że wykonałeś kopię zapasową danych.",
-  "settings_update_database_subtext": "Uruchom skrypt",
+  "settings_webhooks": "Webhooks",
   "setup_2fa": "Setup 2FA",
   "show_directus_collections": "Pokaż systemowe kolekcje Directusa",
   "sign_in": "Zarejestruj się",
@@ -471,6 +469,7 @@
   "version_and_updates": "Wersje i aktualizacje",
   "view_type": "Pokaż jako...",
   "visible_all_users": "Widoczne dla wszystkich użytkowników",
+  "webhook_count": "No Webhooks | One Webhook | {count} Webhooks",
   "weeks": {
     "monday": "Poniedziałek",
     "tuesday": "Wtorek",
