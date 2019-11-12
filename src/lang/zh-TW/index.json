@@ -430,9 +430,7 @@
   "settings_permissions": "角色和權限",
   "settings_project": "專案設定",
   "settings_saved": "已儲存設定",
-  "settings_update_database": "更新資料庫",
-  "settings_update_database_confirm": "This will update your database schema to work with the latest version of Directus. Always create a database backup before running this operation.",
-  "settings_update_database_subtext": "執行腳本",
+  "settings_webhooks": "Webhooks",
   "setup_2fa": "Setup 2FA",
   "show_directus_collections": "Show Directus System Collections",
   "sign_in": "登入",
@@ -471,6 +469,7 @@
   "version_and_updates": "版本更新",
   "view_type": "檢視",
   "visible_all_users": "所有使用者皆可檢視",
+  "webhook_count": "No Webhooks | One Webhook | {count} Webhooks",
   "weeks": {
     "monday": "星期一",
     "tuesday": "星期二",
