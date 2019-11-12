@@ -430,9 +430,7 @@
   "settings_permissions": "Peranan-peranan & Kebenaran",
   "settings_project": "Tetapan Projek",
   "settings_saved": "Settings Saved Tetapan Disimpan",
-  "settings_update_database": "Kemaskini Pangkalan Data",
-  "settings_update_database_confirm": "Ini akan mengemas kini medan sistem dalam pangkalan data anda kepada versi terbaru Directus. Sila pastikan untuk membuat sandaran sebelum anda menjalankan operasi ini.",
-  "settings_update_database_subtext": "Jalankan Skrip",
+  "settings_webhooks": "Webhooks",
   "setup_2fa": "Setup 2FA",
   "show_directus_collections": "Tunjukkan Koleksi Sistem Directus",
   "sign_in": "Masuk",
@@ -471,6 +469,7 @@
   "version_and_updates": "Versi dan Kemaskini",
   "view_type": "Lihat Sebagai...",
   "visible_all_users": "Dilihat untuk semua pengguna",
+  "webhook_count": "No Webhooks | One Webhook | {count} Webhooks",
   "weeks": {
     "monday": "Monday",
     "tuesday": "Tuesday",
