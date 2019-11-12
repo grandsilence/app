@@ -430,9 +430,7 @@
   "settings_permissions": "Ruoli e permessi",
   "settings_project": "Impostazioni del progetto",
   "settings_saved": "Impostazioni Salvate",
-  "settings_update_database": "Aggiorna Database",
-  "settings_update_database_confirm": "Questo aggiornerà il tuo schema database per lavorare con l'ultima versione di Directus. Crea sempre un backup database prima di eseguire quest'operazione.",
-  "settings_update_database_subtext": "Esegui Script",
+  "settings_webhooks": "Webhooks",
   "setup_2fa": "Setup 2FA",
   "show_directus_collections": "Mostra le collezioni del sistema di Directus",
   "sign_in": "Registrati",
@@ -471,6 +469,7 @@
   "version_and_updates": "Versione e aggiornamenti",
   "view_type": "Visualizza come...",
   "visible_all_users": "Visibile per tutti gli utenti",
+  "webhook_count": "No Webhooks | One Webhook | {count} Webhooks",
   "weeks": {
     "monday": "Lunedi",
     "tuesday": "Martedì",
