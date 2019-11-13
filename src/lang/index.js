@@ -4,21 +4,26 @@ import VueI18n from "vue-i18n";
 import enUS from "./en-US/index.json";
 import dateTimeFormats from "./en-US/date-format.json";
 
+import ruRU from "./ru-RU/index.json";
+import dateTimeFormatsRuRU from "./ru-RU/date-format.json";
+
 Vue.use(VueI18n);
 
 export const i18n = new VueI18n({
-  locale: "en-US",
+  locale: "ru-RU",
   fallbackLocale: "en-US",
   messages: {
+    "ru-RU": ruRU,
     "en-US": enUS
   },
   dateTimeFormats: {
+    "ru-RU": dateTimeFormatsRuRU,
     "en-US": dateTimeFormats
   },
   silentTranslationWarn: true
 });
 
-const loadedLanguages = ["en-US"];
+const loadedLanguages = ["ru-RU", "en-US"];
 
 /**
  * Change the language in the i18n plugin and set the HTML element's lang attribute

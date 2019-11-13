@@ -8,6 +8,7 @@ import axios from "axios";
 import meta from "vue-meta";
 import en from "vue-timeago/node_modules/date-fns/locale/en/";
 import fr from "vue-timeago/node_modules/date-fns/locale/fr/";
+import ru from "vue-timeago/node_modules/date-fns/locale/ru/";
 import VueTheMask from "vue-the-mask";
 
 import "./design/main.scss";
@@ -55,10 +56,11 @@ Vue.use(VTooltip, {
 Vue.use(PortalVue);
 Vue.use(VueTimeago, {
   name: "v-timeago",
-  locale: "en-US",
+  locale: "ru-RU",
   locales: {
     "en-US": en,
-    "fr-FR": fr
+    "fr-FR": fr,
+    "ru-RU": ru
   }
 });
 Vue.use(VueTheMask);
