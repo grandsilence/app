@@ -66,7 +66,7 @@ Vue.use(meta);
 Vue.component("draggable", VueDraggable);
 
 /* eslint-disable no-new */
-new Vue({
+const app = new Vue({
   render: h => h(App),
   router,
   i18n,
@@ -75,4 +75,9 @@ new Vue({
   helpers
 }).$mount("#app");
 
-store.watch(state => state.currentUser.locale, locale => loadLanguageAsync(locale));
+store.watch(
+  state => state.currentUser.locale,
+  locale => loadLanguageAsync(locale)
+);
+
+export default app;

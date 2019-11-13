@@ -1,6 +1,6 @@
 <template>
   <v-modal
-    :title="$t('duplicating_field') + ': ' + $helpers.formatTitle(fieldInfo.field)"
+    :title="$t('duplicating_field') + ': ' + $helpers.formatField(fieldInfo)"
     :buttons="buttons"
     @save="saveField()"
     @close="$emit('close')"

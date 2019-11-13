@@ -29,9 +29,7 @@
   />
 
   <v-error
-    v-else-if="
-      items.data && items.data.length === 0 && (items.meta && items.meta.total_count !== 0)
-    "
+    v-else-if="items.data && items.data.length === 0 && items.meta && items.meta.total_count !== 0"
     :title="$t('no_results')"
     :body="$t('no_results_body')"
     icon="search"
@@ -146,7 +144,7 @@ export default {
       return (
         _.mapValues(fields, field => ({
           ...field,
-          name: this.$helpers.formatTitle(field.field)
+          name: this.$helpers.formatField(field)
         })) || {}
       );
     },
@@ -393,9 +391,8 @@ export default {
       Object.assign(params, this.viewQuery);
 
       if (this.viewQuery && this.viewQuery.fields) {
-        if (params.fields instanceof Array == false)
-          params.fields = params.fields.split(",");
-          
+        if (params.fields instanceof Array == false) params.fields = params.fields.split(",");
+
         params.fields = params.fields.map(field => `${field}.*`);
 
         if (!params.fields.includes(this.primaryKeyField)) {

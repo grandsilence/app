@@ -43,7 +43,7 @@
               @click.stop="field.interface ? startEditingField(field) : false"
             >
               <div>
-                {{ $helpers.formatTitle(field.field) }}
+                {{ $helpers.formatField(field) }}
               </div>
               <div>
                 {{
@@ -343,7 +343,7 @@ export default {
           });
           this.$notify({
             title: this.$t("field_created", {
-              field: this.$helpers.formatTitle(fieldInfo.field)
+              field: this.$helpers.formatField(fieldInfo)
             }),
             color: "green",
             iconMain: "check"
@@ -387,7 +387,7 @@ export default {
 
           this.$notify({
             title: this.$t("field_updated", {
-              field: this.$helpers.formatTitle(fieldInfo.field)
+              field: this.$helpers.formatField(fieldInfo)
             }),
             color: "green",
             iconMain: "check"
@@ -399,7 +399,7 @@ export default {
 
           this.$notify({
             title: this.$t("field_created", {
-              field: this.$helpers.formatTitle(fieldInfo.field)
+              field: this.$helpers.formatField(fieldInfo)
             }),
             color: "green",
             iconMain: "check"
@@ -498,7 +498,7 @@ export default {
           this.confirmFieldRemove = false;
           this.$notify({
             title: this.$t("field_removed", {
-              field: this.$helpers.formatTitle(fieldName)
+              field: this.$helpers.formatField(fieldName, this.collection)
             }),
             color: "green",
             iconMain: "check"
