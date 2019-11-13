@@ -12,13 +12,13 @@
       "icon": "Icon",
       "search_placeholder": "Search for an icon..."
     },
-    "ru-RU": {
-      "icon": "Иконка",
-      "search_placeholder": "Найти иконку..."
-    },
 	"fr-FR": {
       "icon": "Icone",
       "search_placeholder": "Rechercher une icone"
+    },
+    "ru-RU": {
+      "icon": "Иконка",
+      "search_placeholder": "Найти иконку..."
     }
   }
 }
