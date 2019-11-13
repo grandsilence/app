@@ -20,6 +20,7 @@
         :filters="filters"
         :search-query="searchQuery"
         :field-names="filterableFieldNames"
+        collection-name="directus_files"
         :placeholder="resultCopy"
         @filter="updatePreferences('filters', $event)"
         @search="updatePreferences('search_query', $event)"
@@ -187,7 +188,7 @@ export default {
       const fields = this.$store.state.collections[this.collection].fields;
       return Object.values(fields).map(field => ({
         ...field,
-        name: this.$helpers.formatTitle(field.field)
+        name: this.$helpers.formatField(field)
       }));
     },
     currentBookmark() {
@@ -371,7 +372,10 @@ export default {
       this.$store.dispatch("loadingStart", { id });
 
       this.$api
-        .deleteItems(this.collection, this.selection.map(item => item.id))
+        .deleteItems(
+          this.collection,
+          this.selection.map(item => item.id)
+        )
         .then(() => {
           this.$store.dispatch("loadingFinished", id);
           this.$refs.listing.getItems();

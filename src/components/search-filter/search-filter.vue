@@ -110,6 +110,10 @@ export default {
       type: Array,
       default: () => []
     },
+    collectionName: {
+      type: String,
+      default: null
+    },
     filters: {
       type: Array,
       default: () => []
@@ -154,8 +158,9 @@ export default {
     },
     fields() {
       const fields = {};
+      const self = this;
       this.fieldNames.forEach(name => {
-        fields[name] = this.$helpers.formatTitle(name);
+        fields[name] = this.$helpers.formatField(name, self.collectionName);
       });
       return fields;
     }

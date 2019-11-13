@@ -9,12 +9,12 @@
         :icon="null"
         @click="emitChange"
       >
-        <span class="field-label">{{ field.name || $helpers.formatTitle(field.field) }}</span>
+        <span class="field-label">{{ $helpers.formatField(field) }}</span>
         <v-icon v-if="field.required !== false" class="required" name="star" color="accent" sup />
         <v-icon name="arrow_drop_down" icon-style="outline" size="18" class="dropdown" />
       </v-contextual-menu>
       <span v-else class="field-static">
-        <span class="field-label">{{ field.name || $helpers.formatTitle(field.field) }}</span>
+        <span class="field-label">{{ $helpers.formatField(field) }}</span>
         <v-icon v-if="field.required !== false" class="required" name="star" color="accent" sup />
       </span>
       <v-toggle

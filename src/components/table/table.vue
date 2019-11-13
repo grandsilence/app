@@ -43,7 +43,7 @@
           class="sort style-4 no-wrap"
           @click="updateSort(field)"
         >
-          {{ widths[field] > 40 ? name : null }}
+          {{ widths[field] > 40 ? $helpers.formatField(field, collection) : null }}
           <v-icon class="sort-arrow" :name="sortVal.asc ? 'arrow_upward' : 'arrow_downward'" />
         </button>
 
