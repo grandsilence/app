@@ -15,6 +15,10 @@
 	"fr-FR": {
       "primary_key": "Clef primaire",
       "immutable": "Ne peut être modifié"
+    },
+    "ru-RU": {
+      "primary_key": "Первичный ключ",
+      "immutable": "Не может быть изменен"
     }
   }
 }
