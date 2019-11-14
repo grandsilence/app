@@ -505,6 +505,7 @@
   "fields-image": "Изображение",
   "fields-img": "Изображение",
   "fields-full_img": "Изображение",
+  "fields-defaul_full_image": "Изображение",
   "fields-name": "Название",
   "fields-position": "Место",
   "fields-price": "Цена",
@@ -516,5 +517,6 @@
   "fields-splitterprofil": "Разделитель профиль",
   "fields-texture_items": "Материалы",
   "fields-help_text": "Подсказка",
-  "fields-width": "Ширина"
+  "fields-width": "Ширина",
+  "fields-thems_list": "Компоненты"
 }
