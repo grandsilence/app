@@ -197,6 +197,7 @@
     "lang": "Specific to translation interfaces, this stores the language key",
     "m2o": "Many-to-One Relationship",
     "managed": "Managed",
+    "order-link": "Order Link",
     "o2m": "One-to-Many Relationship",
     "sort": "System field used in drag-and-drop item reordering",
     "status": "System field used for publishing workflows",

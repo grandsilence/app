@@ -9,6 +9,8 @@
       "../_/": "Directus Demo API"
     },
 
+    frontendUrl: "http://mebelcalc.loc",
+
     // Allow the user to connect to any API by entering a URL in a text field
     //   instead of selecting from a dropdown
     allowOtherAPI: false,

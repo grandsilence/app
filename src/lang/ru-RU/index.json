@@ -209,6 +209,7 @@
     "lang": "Специфично для интерфейсов перевода, здесь хранится языковой ключ",
     "m2o": "Связь Многие к Одному",
     "managed": "Управляемое",
+    "order-link": "Ссылка на товар",
     "o2m": "Связь Один ко Многим",
     "sort": "Системное поле, используемое при переупорядочении элементов перетаскивания",
     "status": "Системное поле, используемое для публикации рабочих процессов",
@@ -488,6 +489,7 @@
   "writable_fields_copy": "Выберите поля, которые пользователь может редактировать",
   "yes": "Да",
   "collections-colors": "Цвета",
+  "collections-orders": "Заказы",
   "collections-layers": "Слои",
   "collections-mount_sizes": "Размеры",
   "collections-profiles": "Профили",
@@ -518,5 +520,12 @@
   "fields-texture_items": "Материалы",
   "fields-help_text": "Подсказка",
   "fields-width": "Ширина",
-  "fields-thems_list": "Компоненты"
+  "fields-thems_list": "Компоненты",
+  "fields-fio": "ФИО",
+  "fields-phone": "Телефон",
+  "fields-discount_card": "Номер дисконтной карты",
+  "fields-comment": "Комментарий",
+  "fields-secret": "Секрет",
+  "fields-created_on": "Создан",
+  "fields-status": "Статус"
 }
