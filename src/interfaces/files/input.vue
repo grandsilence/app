@@ -23,7 +23,7 @@
               type="button"
               @click="changeSort(field.field)"
             >
-              {{ $helpers.formatField(field) }}
+              {{ $helpers.formatField(field.field, field.collection) }}
               <v-icon
                 v-if="sort.field === field.field"
                 :name="sort.asc ? 'arrow_downward' : 'arrow_upward'"

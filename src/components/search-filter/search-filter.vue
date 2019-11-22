@@ -157,9 +157,8 @@ export default {
     },
     fields() {
       const fields = {};
-      const self = this;
       this.fieldNames.forEach(name => {
-        fields[name] = this.$helpers.formatField(name, self.collectionName);
+        fields[name] = this.$helpers.formatField(name, this.collectionName);
       });
       return fields;
     }

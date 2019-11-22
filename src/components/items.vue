@@ -146,7 +146,7 @@ export default {
       return (
         _.mapValues(fields, field => ({
           ...field,
-          name: this.$helpers.formatField(field)
+          name: this.$helpers.formatField(field.field, field.collection)
         })) || {}
       );
     },

@@ -9,7 +9,7 @@
         :icon="null"
         @click="emitChange"
       >
-        <span class="field-label">{{ $helpers.formatField(field) }}</span>
+        <span class="field-label">{{ $helpers.formatField(field.field, field.collection) }}</span>
         <v-icon
           v-if="field.required !== false"
           class="required"
@@ -20,7 +20,7 @@
         <v-icon name="arrow_drop_down" icon-style="outline" size="18" class="dropdown" />
       </v-contextual-menu>
       <span v-else class="field-static">
-        <span class="field-label">{{ $helpers.formatField(field) }}</span>
+        <span class="field-label">{{ $helpers.formatField(field.field, field.collection) }}</span>
         <v-icon
           v-if="field.required !== false"
           class="required"
