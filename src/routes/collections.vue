@@ -68,7 +68,7 @@ export default {
         })
         .map(collection => ({
           ...collection,
-          collection: this.$t(`collections-${collection.collection}`),
+          collection: this.$helpers.formatCollection(collection.collection),
           __link__: `/${this.currentProjectKey}/collections/${collection.collection}`
         }));
     },

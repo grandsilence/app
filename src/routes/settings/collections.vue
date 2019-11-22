@@ -156,7 +156,7 @@ export default {
         .filter(collection => collection.collection.startsWith("directus_") === false)
         .map(collection => ({
           ...collection,
-          name: this.$t(`collections-${collection.collection}`),
+          name: this.$formatCollection(collection.collection),
           __link__: `/${this.currentProjectKey}/settings/collections/${collection.collection}`
         }));
     },

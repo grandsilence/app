@@ -402,7 +402,7 @@ export default {
             path: `/${this.currentProjectKey}/collections`
           },
           {
-            name: this.$t(`collections-${this.collection}`),
+            name: this.$helpers.formatCollection(this.collection),
             path: `/${this.currentProjectKey}/collections/${this.collection}`
           }
         );

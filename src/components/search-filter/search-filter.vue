@@ -158,7 +158,11 @@ export default {
     fields() {
       const fields = {};
       this.fieldNames.forEach(name => {
-        fields[name] = this.$helpers.formatField(name, this.collectionName);
+        if (this.collectionName) {
+          fields[name] = this.$helpers.formatField(name, this.collectionName);
+        } else {
+          fields[name] = this.$helpers.formatTitle(name);
+        }
       });
       return fields;
     }

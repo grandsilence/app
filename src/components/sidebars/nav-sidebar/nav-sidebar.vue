@@ -133,7 +133,7 @@ export default {
     linksCollections() {
       return this.collections.map(({ collection, icon }) => ({
         path: `/${this.currentProjectKey}/collections/${collection}`,
-        name: this.$t(`collections-${collection}`),
+        name: this.$helpers.formatCollection(collection),
         icon
       }));
     },

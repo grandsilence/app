@@ -215,7 +215,7 @@ export default {
           path: `/${this.currentProjectKey}/settings/collections`
         },
         {
-          name: this.$t(`collections-${this.collection}`),
+          name: this.$helpers.formatCollection(this.collection),
           path: `/${this.currentProjectKey}/settings/collections/${this.collection}`
         }
       ];
