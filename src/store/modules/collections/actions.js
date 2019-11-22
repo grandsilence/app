@@ -57,6 +57,16 @@ export async function getCollections({ commit }) {
         });
       });
     }
+
+    _.forEach(collection.fields, (fieldInfo, fieldKey) => {
+      if (_.isEmpty(fieldInfo.translation) === false) {
+        _.forEach(fieldInfo.translation, (translation, locale) => {
+          i18n.mergeLocaleMessage(locale, {
+            [`fields-${collection.collection}-${fieldKey}`]: translation
+          });
+        });
+      }
+    });
   });
 
   /*
