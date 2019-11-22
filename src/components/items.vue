@@ -29,9 +29,7 @@
   />
 
   <v-error
-    v-else-if="
-      items.data && items.data.length === 0 && (items.meta && items.meta.total_count !== 0)
-    "
+    v-else-if="items.data && items.data.length === 0 && items.meta && items.meta.total_count !== 0"
     :title="$t('no_results')"
     :body="$t('no_results_body')"
     icon="search"
@@ -60,6 +58,7 @@
 
 <script>
 import formatFilters from "../helpers/format-filters";
+import { mapState } from "vuex";
 
 export default {
   name: "VItems",
@@ -111,6 +110,7 @@ export default {
     };
   },
   computed: {
+    ...mapState(["currentProjectKey"]),
     allSelected() {
       const primaryKeys = this.items.data.map(item => item[this.primaryKeyField]).sort();
       const selection = [...this.selection];
@@ -227,12 +227,26 @@ export default {
           this.$store.dispatch("loadingFinished", id);
 
           if (this.links) {
-            this.items.data = res.data.map(item => ({
-              ...item,
-              __link__: this.collection.startsWith("directus_")
-                ? `/${this.collection.substr(9)}/${item[this.primaryKeyField]}`
-                : `/collections/${this.collection}/${item[this.primaryKeyField]}`
-            }));
+            this.items.data = res.data.map(item => {
+              let link = `/${this.currentProjectKey}/collections/${this.collection}/${
+                item[this.primaryKeyField]
+              }`;
+
+              if (this.collection.startsWith("directus_")) {
+                link = `/${this.currentProjectKey}/${this.collection.substr(9)}/${
+                  item[this.primaryKeyField]
+                }`;
+              }
+
+              if (this.collection === "directus_webhooks") {
+                link = `/${this.currentProjectKey}/settings/webhooks/${item[this.primaryKeyField]}`;
+              }
+
+              return {
+                ...item,
+                __link__: link
+              };
+            });
           } else {
             this.items.data = res.data;
           }
@@ -393,13 +407,31 @@ export default {
       Object.assign(params, this.viewQuery);
 
       if (this.viewQuery && this.viewQuery.fields) {
-        if (params.fields instanceof Array == false)
-          params.fields = params.fields.split(",");
-          
+        if (params.fields instanceof Array == false) params.fields = params.fields.split(",");
+
         params.fields = params.fields.map(field => `${field}.*`);
 
         if (!params.fields.includes(this.primaryKeyField)) {
           params.fields.push(this.primaryKeyField);
+        }
+
+        /*
+          For non-admin users if created_at and status field is available in 
+          collection fetch it from API even if it is set hidden from info sidebar.
+          Because for checking role_only and mine permissions while batch updating
+          or deleting data this fields are required.
+          Fix 2123
+        */
+        if (!this.$store.state.currentUser.admin) {
+          if (
+            this.userCreatedField !== undefined &&
+            !params.fields.includes(`${this.userCreatedField}.*`)
+          ) {
+            params.fields.push(`${this.userCreatedField}.*`);
+          }
+          if (this.statusField !== null && !params.fields.includes(`${this.statusField}.*`)) {
+            params.fields.push(`${this.statusField}.*`);
+          }
         }
 
         params.fields = params.fields.join(",");

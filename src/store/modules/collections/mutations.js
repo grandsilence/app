@@ -2,6 +2,7 @@ import Vue from "vue";
 import _ from "lodash";
 
 import {
+  RESET,
   SET_COLLECTIONS,
   ADD_COLLECTION,
   DELETE_COLLECTION,
@@ -13,6 +14,12 @@ import {
 } from "../../mutation-types";
 
 const mutations = {
+  [RESET](state) {
+    // Default state is an empty object, this will delete all properties
+    Object.keys(state).forEach(key => {
+      Vue.delete(state, key);
+    });
+  },
   [SET_COLLECTIONS](state, data) {
     const collections = _.mapValues(_.keyBy(data, "collection"), info => {
       const statusField = _.find(info.fields, { interface: "status" });

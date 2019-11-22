@@ -1,12 +1,13 @@
 <template>
   <div class="collections">
-    <v-header :breadcrumb="breadcrumb" icon-color="warning" icon-link="/settings">
+    <v-header :breadcrumb="breadcrumb" :icon-link="`/${currentProjectKey}/settings`" settings>
       <template slot="buttons">
         <v-header-button
           key="add"
           icon="add"
-          color="action"
           :label="$t('new')"
+          icon-color="button-primary-text-color"
+          background-color="button-primary-background-color"
           @click="addNew = true"
         />
       </template>
@@ -21,8 +22,11 @@
     <div v-else class="table">
       <div class="header">
         <div class="row">
-          <div class="cell style-4">{{ $t("collection") }}</div>
-          <div class="cell note style-4">{{ $t("note") }}</div>
+          <div class="cell icon type-table-head">
+            <v-icon name="box" size="24" color="input-icon-color" />
+          </div>
+          <div class="cell type-table-head">{{ $t("collection") }}</div>
+          <div class="cell note type-table-head">{{ $t("note") }}</div>
         </div>
       </div>
       <div class="body">
@@ -32,11 +36,15 @@
           class="row"
           :to="collection.__link__"
         >
+          <div class="cell icon">
+            <v-icon :name="collection.icon || 'box'" size="24" color="input-icon-color" />
+          </div>
           <div class="cell">{{ collection.name }}</div>
           <div class="cell note">{{ collection.note }}</div>
           <v-button
             v-if="collection.managed"
             class="managed"
+            small
             :loading="toManage.includes(collection.collection)"
             @click="toggleManage(collection)"
           >
@@ -45,6 +53,7 @@
           <v-button
             v-else
             class="not-managed"
+            small
             :loading="toManage.includes(collection.collection)"
             @click="toggleManage(collection)"
           >
@@ -59,7 +68,7 @@
         v-model="newName"
         safe
         :confirm-text="$t('create')"
-        :message="$t('create_collection')"
+        :title="$t('create_collection')"
         :placeholder="$t('enter_collection_name')"
         :loading="adding"
         @cancel="addNew = false"
@@ -98,7 +107,7 @@
 
     <portal v-if="dontManage" to="modal">
       <v-confirm
-        :message="$t('dont_manage_copy', { collection: dontManage.name })"
+        :message="$t('dont_manage_copy')"
         color="danger"
         :confirm-text="$t('dont_manage')"
         :loading="toManage.includes(dontManage.collection.collection)"
@@ -106,10 +115,15 @@
         @confirm="stopManaging"
       />
     </portal>
+    <v-info-sidebar wide>
+      <span class="type-note">No settings</span>
+    </v-info-sidebar>
   </div>
 </template>
 
 <script>
+import { mapState } from "vuex";
+
 export default {
   name: "SettingsCollections",
   metaInfo() {
@@ -134,6 +148,7 @@ export default {
     };
   },
   computed: {
+    ...mapState(["currentProjectKey"]),
     items() {
       const collections = this.$store.state.collections || {};
 
@@ -142,18 +157,18 @@ export default {
         .map(collection => ({
           ...collection,
           name: this.$t(`collections-${collection.collection}`),
-          __link__: `/settings/collections/${collection.collection}`
+          __link__: `/${this.currentProjectKey}/settings/collections/${collection.collection}`
         }));
     },
     breadcrumb() {
       return [
         {
           name: this.$t("settings"),
-          path: "/settings"
+          path: `/${this.currentProjectKey}/settings`
         },
         {
           name: this.$t("collections_and_fields"),
-          path: "/settings/collections"
+          path: `/${this.currentProjectKey}/settings/collections`
         }
       ];
     }
@@ -215,6 +230,7 @@ export default {
           interface: "status",
           default_value: "draft",
           width: "full",
+          required: true,
           options: {
             status_mapping: {
               published: {
@@ -268,7 +284,7 @@ export default {
           interface: "status",
           hidden_detail: false,
           hidden_browse: false,
-          required: false,
+          required: true,
           options: {
             status_mapping: {
               published: {
@@ -533,7 +549,7 @@ export default {
             fields: fieldsToDispatch
           });
           this.$store.dispatch("getPermissions");
-          this.$router.push(`/settings/collections/${this.newName}`);
+          this.$router.push(`/${this.currentProjectKey}/settings/collections/${this.newName}`);
         })
         .catch(error => {
           this.adding = false;
@@ -565,9 +581,7 @@ export default {
           })
           .then(() => {
             this.$notify({
-              title: this.$t("manage_started", {
-                collection: collection.collection
-              }),
+              title: this.$t("manage_started"),
               color: "green",
               iconMain: "check"
             });
@@ -595,9 +609,7 @@ export default {
         })
         .then(() => {
           this.$notify({
-            title: this.$t("manage_stopped", {
-              collection: dontManage.collection
-            }),
+            title: this.$t("manage_stopped"),
             color: "green",
             iconMain: "check"
           });
@@ -619,17 +631,17 @@ export default {
 
 <style lang="scss" scoped>
 .collections {
-  padding: 0 32px var(--page-padding-bottom);
+  padding: var(--page-padding) var(--page-padding) var(--page-padding-bottom);
 }
 
 .table {
-  background-color: var(--white);
+  background-color: var(--page-background-color);
   position: relative;
 
   .row {
     display: flex;
     align-items: center;
-    border-bottom: 2px solid var(--off-white);
+    border-bottom: 2px solid var(--table-row-border-color);
     box-sizing: content-box;
     height: 48px;
   }
@@ -641,6 +653,9 @@ export default {
     position: relative;
     overflow: hidden;
     max-height: 100%;
+    &.icon {
+      flex-basis: 40px;
+    }
     &.note {
       flex-grow: 1;
       padding-right: 120px;
@@ -653,11 +668,11 @@ export default {
   .header {
     position: relative;
     top: 0;
-    height: var(--header-height);
+    height: var(--input-height);
 
     .row {
       height: 100%;
-      border-bottom: 2px solid var(--lightest-gray);
+      border-bottom: 2px solid var(--table-head-border-color);
     }
   }
 
@@ -671,20 +686,16 @@ export default {
 
   button {
     border-radius: var(--border-radius);
-    padding: 5px 10px;
+    padding: 4px 8px;
     position: absolute;
     right: 0;
-
     min-width: auto;
     height: auto;
-    font-size: 14px;
-    line-height: 1.3;
-    font-weight: 200;
     border: 0;
 
     &.managed {
-      background-color: var(--lightest-gray);
-      color: var(--light-gray);
+      background-color: var(--button-tertiary-background-color);
+      color: var(--button-tertiary-text-color);
 
       &:hover {
         background-color: var(--danger);
@@ -693,12 +704,12 @@ export default {
     }
 
     &.not-managed {
-      background-color: var(--darker-gray);
-      color: var(--white);
+      background-color: var(--button-primary-background-color);
+      color: var(--button-primary-text-color);
 
       &:hover {
-        background-color: var(--darkest-gray);
-        color: var(--white);
+        background-color: var(--button-primary-background-color-hover);
+        color: var(--button-primary-text-color);
       }
     }
   }
@@ -721,16 +732,8 @@ export default {
       cursor: pointer;
       width: max-content;
 
-      &:not(.disabled):hover {
-        color: var(--darkest-gray);
-      }
-
       > *:first-child {
         margin-right: 10px;
-      }
-
-      &.disabled {
-        color: var(--light-gray);
       }
     }
   }

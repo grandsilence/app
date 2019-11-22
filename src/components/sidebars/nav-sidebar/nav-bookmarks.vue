@@ -3,7 +3,10 @@
     <nav v-if="bookmarks && bookmarks.length > 0">
       <ul>
         <li v-for="bookmark in bookmarks" :key="bookmark.id" class="bookmark">
-          <router-link class="no-wrap" :to="`/bookmarks/${bookmark.collection}/${bookmark.id}`">
+          <router-link
+            class="no-wrap"
+            :to="`/${currentProjectKey}/bookmarks/${bookmark.collection}/${bookmark.id}`"
+          >
             <v-icon name="bookmark_outline" class="icon" />
             {{ bookmark.title }}
           </router-link>
@@ -15,7 +18,7 @@
               toBeDeletedBookmark = bookmark.id;
             "
           >
-            <v-icon name="remove_circle_outline" />
+            <v-icon name="delete_outline" />
           </button>
         </li>
       </ul>
@@ -31,6 +34,8 @@
 </template>
 
 <script>
+import { mapState } from "vuex";
+
 export default {
   name: "NavBookmarks",
   props: {
@@ -46,6 +51,7 @@ export default {
     };
   },
   computed: {
+    ...mapState(["currentProjectKey"]),
     isUserAdmin() {
       return this.$store.state.currentUser.admin;
     },
@@ -73,8 +79,8 @@ h3 {
   width: 20px;
   height: 22px;
   margin-right: 15px;
-  color: var(--darker-gray);
-  fill: var(--darker-gray);
+  color: var(--sidebar-text-color);
+  fill: var(--sidebar-text-color);
 
   /* Forces left-alignment of material-icons */
   display: inline-flex;
@@ -90,13 +96,13 @@ svg {
 
 .bookmark button:first-child:hover,
 .user-menu button:hover {
-  background-color: #dde3e6; // rgba(var(--lighter-gray), 0.5);
+  background-color: var(--sidebar-background-color-alt);
   border-radius: var(--border-radius);
 
   i,
   svg {
-    color: var(--darker-gray);
-    fill: var(--darker-gray);
+    color: var(--sidebar-text-color);
+    fill: var(--sidebar-text-color);
   }
 }
 
@@ -124,7 +130,7 @@ nav > ul > li > * {
     text-decoration: none;
 
     &:hover {
-      background-color: #dde3e6; // rgba(var(--lighter-gray), 0.5);
+      background-color: var(--sidebar-background-color-alt);
       border-radius: var(--border-radius);
     }
   }
@@ -136,7 +142,7 @@ nav > ul > li > * {
 
     i {
       vertical-align: baseline;
-      color: var(--lighter-gray);
+      color: var(--sidebar-text-color);
     }
 
     &:hover i {

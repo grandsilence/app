@@ -60,14 +60,14 @@ export default {
 <style lang="scss" scoped>
 .box {
   transition: all var(--fast) var(--transition);
-  background-color: var(--off-white);
+  background-color: var(--input-background-color-alt);
   border-radius: var(--border-radius);
-  border: 2px solid var(--lighter-gray);
+  border: 2px solid var(--input-border-color);
   overflow: hidden;
   margin: 12px 0;
 
   &:hover {
-    border-color: var(--light-gray);
+    border-color: var(--input-border-color-hover);
   }
 
   &.closed {
@@ -93,7 +93,7 @@ export default {
       left: 10px;
       width: calc(100% - 20px);
       height: 2px;
-      background-color: var(--lightest-gray);
+      background-color: var(--input-border-color);
       opacity: 0.1;
     }
 
@@ -102,25 +102,25 @@ export default {
       align-items: center;
       .handle {
         cursor: pointer;
-        color: var(--lighter-gray);
-        margin-right: 10px;
+        color: var(--input-icon-color);
+        margin-right: 12px;
         &:hover {
-          color: var(--gray);
+          color: var(--input-text-color);
         }
       }
 
       .v-ext-display {
-        color: var(--darker-gray);
-        font-size: 14px;
+        color: var(--page-text-color);
+        font-size: var(--input-font-size);
         margin: 10px 10px 10px 0;
       }
     }
     .end {
       i {
         transition: all var(--fast) var(--transition);
-        color: var(--lighter-gray);
+        color: var(--input-icon-color);
         &:hover {
-          color: var(--gray);
+          color: var(--input-text-color);
         }
       }
       .delete i:hover {
@@ -134,7 +134,7 @@ export default {
 
     .form {
       grid-template-columns:
-        [start] minmax(0, var(--column-width)) [half] minmax(0, var(--column-width))
+        [start] minmax(0, var(--form-column-width)) [half] minmax(0, var(--form-column-width))
         [full];
     }
   }

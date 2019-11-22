@@ -160,7 +160,10 @@ export default {
       if (this.interface.core) {
         component = import("@/interfaces/" + this.interface.id + "/input.vue");
       } else {
-        const filePath = `${this.$api.url}/${this.interface.path.replace("meta.json", "input.js")}`;
+        const filePath = `${this.$store.state.apiRootPath}${this.interface.path.replace(
+          "meta.json",
+          "input.js"
+        )}`;
 
         component = loadExtension(filePath);
       }

@@ -48,19 +48,19 @@
   "translation": {
     "en-US": {
       "toggle-icon": "Toggle Icon",
-      "text-inactive-name": "Text inactive",
+      "text-inactive-name": "Inactive Text",
       "text-inactive-comment": "Text next to the inactive icon",
       "text-inactive-placeholder": "Enter your text here",
       "icon-inactive-name": "Inactive Icon",
       "icon-inactive-comment": "Choose an inactive icon",
       "color-inactive-name": "Inactive Color",
       "color-inactive-comment": "Choose the inactive color",
-      "text-active-name": "Text active",
+      "text-active-name": "Active Text",
       "text-active-comment": "Text next to the active icon",
       "text-active-placeholder": "Enter your text here",
-      "icon-active-name": "active Icon",
+      "icon-active-name": "Active Icon",
       "icon-active-comment": "Choose an active icon",
-      "color-active-name": "active Color",
+      "color-active-name": "Active Color",
       "color-active-comment": "Choose the active color"
     },
 	"fr-FR": {

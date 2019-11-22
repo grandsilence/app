@@ -2,22 +2,11 @@
   display: block !important;
   z-index: 10000;
   border-radius: var(--border-radius);
-  background: var(--darkest-gray);
-
-  &.popover {
-    background: var(--white);
-    border: 2px solid var(--lighter-gray);
-    box-shadow: var(--box-shadow);
-  }
+  background: var(--tooltip-background-color);
 
   & .tooltip-inner {
     padding: 5px 10px 6px;
-    color: var(--white);
-  }
-
-  & .popover-inner {
-    padding: 6px 0;
-    color: var(--black);
+    color: var(--tooltip-text-color);
   }
 
   & .tooltip-arrow {
@@ -26,84 +15,181 @@
     border-style: solid;
     position: absolute;
     margin: 5px;
-    border-color: var(--darkest-gray);
+    border-color: var(--tooltip-background-color);
   }
 
-  &.inverted {
-    background: var(--lightest-gray);
-
-    & .tooltip-inner {
-      color: var(--darker-gray);
+  &.popover-arrow {
+    &:after {
+      border-color: var(--tooltip-background-color);
     }
+  }
 
-    & .tooltip-arrow {
-      border-color: var(--lightest-gray);
-    }
+  &.popover {
+    background: var(--popover-background-color);
+    border: 2px solid var(--input-border-color);
+  }
+
+  & .popover-inner {
+    padding: 6px 0;
+    color: var(--black);
   }
 
   & .popover-arrow {
-    border-color: var(--white);
-    border: 1px solid var(--lighter-gray);
+    border-color: var(--input-border-color);
+    &:after {
+      border-color: var(--popover-background-color);
+    }
+  }
+
+  &.inverted {
+    background: var(--blue-grey-50);
+
+    & .tooltip-inner {
+      color: var(--blue-grey-800);
+    }
+
+    & .tooltip-arrow {
+      border-color: var(--blue-grey-50);
+    }
   }
 
   &[x-placement^="top"] {
-    margin-bottom: 5px;
+    margin-bottom: 4px;
   }
 
   &[x-placement^="top"] .tooltip-arrow {
-    border-width: 5px 5px 0 5px;
+    border-width: 4px 4px 0 4px;
     border-left-color: transparent !important;
     border-right-color: transparent !important;
     border-bottom-color: transparent !important;
-    bottom: -5px;
-    left: calc(50% - 5px);
+    bottom: -4px;
+    left: calc(50% - 4px);
     margin-top: 0;
     margin-bottom: 0;
+    &.popover-arrow {
+      border-width: 8px 8px 0 8px;
+      bottom: -8px;
+      left: calc(50% - 8px);
+      &:after {
+        border-width: 8px 8px 0 8px;
+        border-left-color: transparent !important;
+        border-right-color: transparent !important;
+        border-bottom-color: transparent !important;
+        bottom: 3px;
+        left: calc(50% - 8px);
+        margin-top: 0;
+        margin-bottom: 0;
+        width: 0;
+        height: 0;
+        border-style: solid;
+        position: absolute;
+      }
+    }
   }
 
   &[x-placement^="bottom"] {
-    margin-top: 5px;
+    margin-top: 4px;
   }
 
   &[x-placement^="bottom"] .tooltip-arrow {
-    border-width: 0 5px 5px 5px;
+    border-width: 0 4px 4px 4px;
     border-left-color: transparent !important;
     border-right-color: transparent !important;
     border-top-color: transparent !important;
-    top: -5px;
-    left: calc(50% - 5px);
+    top: -4px;
+    left: calc(50% - 4px);
     margin-top: 0;
     margin-bottom: 0;
+    &.popover-arrow {
+      border-width: 0 8px 8px 8px;
+      top: -8px;
+      left: calc(50% - 8px);
+      &:after {
+        content: "";
+        border-width: 0 8px 8px 8px;
+        border-left-color: transparent !important;
+        border-right-color: transparent !important;
+        border-top-color: transparent !important;
+        top: 3px;
+        left: calc(50% - 8px);
+        margin-top: 0;
+        margin-bottom: 0;
+        width: 0;
+        height: 0;
+        border-style: solid;
+        position: absolute;
+      }
+    }
   }
 
   &[x-placement^="right"] {
-    margin-left: 5px;
+    margin-left: 4px;
   }
 
   &[x-placement^="right"] .tooltip-arrow {
-    border-width: 5px 5px 5px 0;
+    border-width: 4px 4px 4px 0;
     border-left-color: transparent !important;
     border-top-color: transparent !important;
     border-bottom-color: transparent !important;
-    left: -5px;
-    top: calc(50% - 5px);
+    left: -4px;
+    top: calc(50% - 4px);
     margin-left: 0;
     margin-right: 0;
+    &.popover-arrow {
+      border-width: 8px 8px 8px 0;
+      left: -8px;
+      top: calc(50% - 8px);
+      &:after {
+        content: "";
+        border-width: 8px 8px 8px 0;
+        border-left-color: transparent !important;
+        border-top-color: transparent !important;
+        border-bottom-color: transparent !important;
+        left: 3px;
+        top: calc(50% - 8px);
+        margin-left: 0;
+        margin-right: 0;
+        width: 0;
+        height: 0;
+        border-style: solid;
+        position: absolute;
+      }
+    }
   }
 
   &[x-placement^="left"] {
-    margin-right: 5px;
+    margin-right: 4px;
   }
 
   &[x-placement^="left"] .tooltip-arrow {
-    border-width: 5px 0 5px 5px;
+    border-width: 4px 0 4px 4px;
     border-top-color: transparent !important;
     border-right-color: transparent !important;
     border-bottom-color: transparent !important;
-    right: -5px;
-    top: calc(50% - 5px);
+    right: -4px;
+    top: calc(50% - 4px);
     margin-left: 0;
     margin-right: 0;
+    &.popover-arrow {
+      border-width: 8px 0 8px 8px;
+      right: -8px;
+      top: calc(50% - 8px);
+      &:after {
+        content: "";
+        border-width: 8px 0 8px 8px;
+        border-top-color: transparent !important;
+        border-right-color: transparent !important;
+        border-bottom-color: transparent !important;
+        right: 3px;
+        top: calc(50% - 8px);
+        margin-left: 0;
+        margin-right: 0;
+        width: 0;
+        height: 0;
+        border-style: solid;
+        position: absolute;
+      }
+    }
   }
 
   &[aria-hidden="true"] {

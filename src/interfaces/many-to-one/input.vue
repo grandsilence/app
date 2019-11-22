@@ -24,8 +24,8 @@
 
       <v-spinner
         v-show="loading"
-        line-fg-color="var(--light-gray)"
-        line-bg-color="var(--lighter-gray)"
+        line-fg-color="var(--blue-grey-300)"
+        line-bg-color="var(--blue-grey-200)"
         class="spinner"
       ></v-spinner>
 
@@ -235,13 +235,13 @@ button {
   width: 100%;
   height: 100%;
   background: transparent;
-  border: var(--input-border-width) solid var(--lighter-gray);
+  border: var(--input-border-width) solid var(--input-border-color);
   border-radius: var(--border-radius);
   transition: border var(--fast) var(--transition);
 
   &:hover {
     transition: none;
-    border-color: var(--light-gray);
+    border-color: var(--input-border-color-hover);
   }
 }
 
@@ -259,9 +259,9 @@ button {
   left: 0;
   top: 0;
   z-index: 2;
-  background-color: var(--white);
+  background-color: var(--page-background-color);
   &-input {
-    border-bottom: 1px solid var(--lightest-gray);
+    border-bottom: 1px solid var(--modal-header-background-color);
     padding: 12px;
 
     & >>> input {
@@ -271,7 +271,7 @@ button {
       height: var(--header-height);
 
       &::placeholder {
-        color: var(--light-gray);
+        color: var(--input-placeholder-color);
       }
     }
   }

@@ -1,6 +1,6 @@
 <template>
   <form @submit.prevent>
-    <label for="spacing" class="style-3" :class="{'required': (viewOptions.date === '__none__')}">
+    <label for="spacing" class="type-label" :class="{ required: viewOptions.date === '__none__' }">
       {{ $t("layouts-calendar-datetime") }}
     </label>
     <v-select
@@ -11,7 +11,11 @@
       icon="access_time"
       @input="setOption('datetime', $event)"
     ></v-select>
-    <label for="spacing" class="style-3" :class="{'required': (viewOptions.datetime === '__none__')}">
+    <label
+      for="spacing"
+      class="type-label"
+      :class="{ required: viewOptions.datetime === '__none__' }"
+    >
       {{ $t("layouts-calendar-date") }}
     </label>
     <v-select
@@ -22,7 +26,7 @@
       icon="today"
       @input="setOption('date', $event)"
     ></v-select>
-    <label for="spacing" class="style-3">
+    <label for="spacing" class="type-label">
       {{ $t("layouts-calendar-time") }}
     </label>
     <v-select
@@ -33,7 +37,7 @@
       icon="schedule"
       @input="setOption('time', $event)"
     ></v-select>
-    <label for="spacing" class="style-3 required">
+    <label for="spacing" class="type-label required">
       {{ $t("layouts-calendar-title") }}
     </label>
     <v-select
@@ -44,7 +48,7 @@
       icon="title"
       @input="setOption('title', $event)"
     ></v-select>
-    <label for="spacing" class="style-3">
+    <label for="spacing" class="type-label">
       {{ $t("layouts-calendar-color") }}
     </label>
     <v-select
@@ -77,8 +81,8 @@ export default {
     },
     dateOptions() {
       var options = {
-         __none__: `(${this.$t("dont_show")})`,
-         ..._.mapValues(this.fields, info => (info.type == "date" ? info.name : null))
+        __none__: `(${this.$t("dont_show")})`,
+        ..._.mapValues(this.fields, info => (info.type == "date" ? info.name : null))
       };
       return _.pickBy(options, _.identity);
     },
@@ -106,20 +110,22 @@ export default {
   },
   methods: {
     setOption(option, value) {
-        this.$emit("options", {
-         ...this.viewOptions,
+      this.$emit("options", {
+        ...this.viewOptions,
         [option]: value
       });
-
     }
   }
 };
 </script>
 
 <style lang="scss" scoped>
-label {
-  margin-bottom: 10px;
-  margin-top: 30px;
+.type-label {
+  margin-top: var(--form-vertical-gap);
+  margin-bottom: var(--input-label-margin);
+  &:first-of-type {
+    margin-top: 0;
+  }
 }
 
 .required::after {

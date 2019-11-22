@@ -39,6 +39,13 @@
       "interface": "toggle",
       "type": "BOOLEAN",
       "default": true
+    },
+    "margin": {
+      "name": "$t:margin-name",
+      "comment": "$t:margin-comment",
+      "interface": "toggle",
+      "type": "BOOLEAN",
+      "default": true
     }
   },
   "translation": {
@@ -53,7 +60,9 @@
       "desc-name": "Divider description",
       "desc-comment": "Add here a description",
       "hr-name": "HR",
-      "hr-comment": "Display a horizontal rule?"
+      "hr-comment": "Display a horizontal rule?",
+      "margin-name": "Extra Margin",
+      "margin-comment": "Add extra margin above interface"
     },
 	"fr-FR": {
       "divider": "Intercalaire",

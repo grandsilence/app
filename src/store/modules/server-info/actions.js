@@ -1,10 +1,10 @@
-import api from "../../../api";
-import { SET_SERVER_INFO } from "../../mutation-types";
+import api from "@/api";
+import { SET_SERVER_INFO } from "@/store/mutation-types";
 import { get } from "lodash";
 
 export function getServerInfo({ commit }) {
-  api
-    .serverInfo()
+  return api
+    .projectInfo()
     .then(res => res.data)
     .then(info => {
       commit(SET_SERVER_INFO, {

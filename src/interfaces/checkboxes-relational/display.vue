@@ -40,10 +40,10 @@ export default {
   padding: 0;
   margin: 0;
   li {
-    color: var(--dark-gray);
+    color: var(--blue-grey-600);
     padding: 8px 0;
     &:not(:last-of-type) {
-      border-bottom: 1px solid var(--lightest-gray);
+      border-bottom: 1px solid var(--blue-grey-50);
     }
   }
 }

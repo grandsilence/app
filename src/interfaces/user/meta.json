@@ -3,6 +3,7 @@
   "version": "1.0.1",
   "types": ["user", "integer", "user_created", "user_updated"],
   "icon": "account_circle",
+  "relation": "user",
   "recommended": {
     "length": 10
   },

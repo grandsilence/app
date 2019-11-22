@@ -1,10 +1,10 @@
 import _ from "lodash";
 import api from "../../../api";
-import * as types from "./types";
+import { SET_SETTINGS, SET_SETTING } from "@/store/mutation-types";
 
 export async function getSettings({ commit }) {
   const { data: settings } = await api.getSettings();
-  commit(types.SET_SETTINGS, settings);
+  commit(SET_SETTINGS, settings);
 }
 
 export function setSettings({ dispatch }, settings) {
@@ -21,11 +21,11 @@ export async function setSetting({ commit, state }, { key, value }) {
       key,
       value
     });
-    commit(types.SET_SETTING, setting);
+    commit(SET_SETTING, setting);
   } else {
     const { data: setting } = await api.updateItem("directus_settings", settingPrimaryKey, {
       value
     });
-    commit(types.SET_SETTING, setting);
+    commit(SET_SETTING, setting);
   }
 }

@@ -1,6 +1,6 @@
 <template>
-  <div class="interface-json">
-    <codemirror :value="stringValue" :options="cmOptions" @input="updateValue"></codemirror>
+  <div class="interface-json codemirror-custom-styles">
+    <codemirror :value="stringValue" :options="cmOptions" @input="updateValue" />
     <button v-if="options.template" @click="fillTemplate">
       <v-icon name="playlist_add" />
     </button>
@@ -11,7 +11,6 @@
 import mixin from "@directus/extension-toolkit/mixins/interface";
 
 import jsonlint from "jsonlint-mod";
-import CodeMirror from "codemirror";
 
 import "codemirror/lib/codemirror.css";
 import "codemirror/mode/javascript/javascript.js";
@@ -19,7 +18,7 @@ import "codemirror/addon/scroll/annotatescrollbar.js";
 import "codemirror/addon/edit/matchbrackets.js";
 import "codemirror/addon/display/autorefresh.js";
 import "codemirror/addon/lint/lint.js";
-
+import CodeMirror from "codemirror";
 import { codemirror } from "vue-codemirror";
 
 CodeMirror.registerHelper("lint", "json", text => {
@@ -58,9 +57,9 @@ export default {
   computed: {
     cmOptions() {
       return {
-        tabSize: 4,
+        tabSize: 2,
         autoRefresh: true,
-        indentUnit: 4,
+        indentUnit: 2,
         readOnly: this.readonly ? "nocursor" : false,
         line: true,
         lineNumbers: true,
@@ -74,8 +73,15 @@ export default {
 
     stringValue() {
       if (this.value) {
-        if (typeof this.value === "object") return JSON.stringify(this.value, null, 4);
-        return this.value;
+        if (typeof this.value === "object") {
+          return JSON.stringify(this.value, null, 2);
+        }
+
+        try {
+          return JSON.stringify(JSON.parse(this.value), null, 2);
+        } catch {
+          return this.value;
+        }
       }
 
       return "";
@@ -101,6 +107,13 @@ export default {
 <style lang="scss" scoped>
 .interface-json {
   position: relative;
+
+  ::v-deep {
+    .CodeMirror-scroll {
+      min-height: var(--form-column-width);
+      max-height: var(--form-row-max-height);
+    }
+  }
 }
 
 button {
@@ -108,14 +121,14 @@ button {
   top: 10px;
   right: 10px;
   user-select: none;
-  color: var(--light-gray);
+  color: var(--blue-grey-300);
   cursor: pointer;
   transition: color var(--fast) var(--transition-out);
   z-index: 10;
 
   &:hover {
     transition: none;
-    color: var(--dark-gray);
+    color: var(--blue-grey-600);
   }
 }
 </style>

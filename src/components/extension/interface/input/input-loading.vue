@@ -2,8 +2,8 @@
   <v-spinner
     class="v-ext-input-loading"
     size="20"
-    line-fg-color="var(--lighter-gray)"
-    line-bg-color="var(--lightest-gray)"
+    line-fg-color="var(--blue-grey-200)"
+    line-bg-color="var(--blue-grey-50)"
   />
 </template>
 

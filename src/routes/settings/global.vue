@@ -1,13 +1,14 @@
 <template>
   <div class="settings-global">
-    <v-header :breadcrumb="links" :icon-link="`/settings`" icon-color="warning">
+    <v-header :breadcrumb="links" :icon-link="`/${currentProjectKey}/settings`" settings>
       <template slot="buttons">
         <v-header-button
           :disabled="!editing"
           :loading="saving"
           :label="$t('save')"
           icon="check"
-          color="action"
+          background-color="button-primary-background-color"
+          icon-color="button-primary-text-color"
           @click="save('leave')"
         />
       </template>
@@ -19,6 +20,9 @@
       collection="directus_settings"
       @stage-value="stageValue"
     />
+    <v-info-sidebar wide>
+      <span class="type-note">No settings</span>
+    </v-info-sidebar>
   </div>
 </template>
 
@@ -41,7 +45,8 @@ export default {
   computed: {
     ...mapState({
       settings: state => state.settings.values,
-      fields: state => state.collections.directus_settings.fields
+      fields: state => state.collections.directus_settings.fields,
+      currentProjectKey: state => state.currentProjectKey
     }),
     values() {
       return {
@@ -53,11 +58,11 @@ export default {
       return [
         {
           name: this.$t("settings"),
-          path: "/settings"
+          path: `/${this.currentProjectKey}/settings`
         },
         {
           name: this.$t("settings_global"),
-          path: "/settings/global"
+          path: `/${this.currentProjectKey}/settings/global`
         }
       ];
     },
@@ -81,7 +86,12 @@ export default {
         .then(() => {
           this.saving = false;
           this.edits = {};
-          this.$router.push("/settings");
+
+          // Update the current project's info in the store when saving settings, this makes sure
+          // the logo / name in the top left etc will update
+          this.$store.dispatch("updateProjectInfo", this.currentProjectKey);
+
+          this.$router.push(`/${this.currentProjectKey}/settings`);
           this.$notify({
             title: this.$t("settings_saved"),
             color: "green",
@@ -102,6 +112,6 @@ export default {
 
 <style lang="scss" scoped>
 .settings-global {
-  padding: var(--page-padding);
+  padding: var(--page-padding-top) var(--page-padding) var(--page-padding-bottom);
 }
 </style>

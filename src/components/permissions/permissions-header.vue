@@ -1,8 +1,8 @@
 <template>
   <div class="header">
     <div class="row">
-      <div class="cell style-4">{{ $t("collection") }}</div>
-      <div class="cell style-4">
+      <div class="cell type-table-head">{{ $t("collection") }}</div>
+      <div class="cell type-table-head">
         <button
           v-tooltip="$t('create')"
           type="button"
@@ -12,7 +12,7 @@
           <v-icon name="add_circle" />
         </button>
       </div>
-      <div class="cell style-4">
+      <div class="cell type-table-head">
         <button
           v-tooltip="$t('read')"
           type="button"
@@ -22,7 +22,7 @@
           <v-icon name="visibility" />
         </button>
       </div>
-      <div class="cell style-4">
+      <div class="cell type-table-head">
         <button
           v-tooltip="$t('update')"
           type="button"
@@ -32,7 +32,7 @@
           <v-icon name="edit" />
         </button>
       </div>
-      <div class="cell style-4">
+      <div class="cell type-table-head">
         <button
           v-tooltip="$t('delete')"
           type="button"
@@ -42,7 +42,7 @@
           <v-icon name="delete" />
         </button>
       </div>
-      <div class="cell style-4">
+      <div class="cell type-table-head">
         <button
           v-tooltip="$t('comment')"
           type="button"
@@ -53,8 +53,8 @@
         </button>
       </div>
       <!-- <div class="cell">{{ $t("explain") }}</div> -->
-      <div class="cell style-4">{{ $t("fields") }}</div>
-      <div class="cell style-4">{{ $t("statuses") }}</div>
+      <div class="cell type-table-head">{{ $t("fields") }}</div>
+      <div class="cell type-table-head">{{ $t("statuses") }}</div>
     </div>
   </div>
 </template>
@@ -78,7 +78,7 @@
 
   button:hover {
     transition: none;
-    color: var(--dark-gray);
+    color: var(--blue-grey-600);
   }
 }
 </style>

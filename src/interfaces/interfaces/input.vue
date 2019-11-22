@@ -11,16 +11,32 @@
 
 <script>
 import mixin from "@directus/extension-toolkit/mixins/interface";
+import { mapState } from "vuex";
 
 export default {
   mixins: [mixin],
   computed: {
+    ...mapState({
+      interfaces: state => state.extensions.interfaces || {}
+    }),
     choices() {
-      const interfaces = this.$store.state.extensions.interfaces || {};
-
       let choices = {};
 
-      Object.keys(interfaces).forEach(key => {
+      let interfaceNames = Object.keys(this.interfaces);
+
+      if (this.options.relational === false) {
+        interfaceNames = interfaceNames.filter(key => {
+          return this.interfaces[key].relation === undefined;
+        });
+      }
+
+      if (this.options.status === false) {
+        interfaceNames = interfaceNames.filter(key => {
+          return this.interfaces[key].types[0] !== "status";
+        });
+      }
+
+      interfaceNames.forEach(key => {
         choices[key] = this.$helpers.formatTitle(key);
       });
 

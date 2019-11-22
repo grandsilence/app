@@ -43,3 +43,9 @@ export default {
   user-select: none;
 }
 </style>
+
+<style lang="scss">
+.flatpickr-calendar {
+  background-color: var(--input-background-color);
+}
+</style>

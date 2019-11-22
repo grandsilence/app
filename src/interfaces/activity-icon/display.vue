@@ -41,7 +41,7 @@ export default {
         },
         authenticate: {
           icon: "lock_open",
-          color: "dark-gray"
+          color: "blue-grey-600"
         },
         upload: {
           icon: "cloud_done",
@@ -71,7 +71,7 @@ export default {
     color() {
       return this.value && this.styles[this.value.toLowerCase()]
         ? this.styles[this.value.toLowerCase()].color
-        : "lighter-gray";
+        : "blue-grey-200";
     },
     label() {
       if (this.value) {

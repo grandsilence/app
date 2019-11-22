@@ -72,7 +72,7 @@ div.options {
   font-style: italic;
   font-size: var(--size-3);
   line-height: 1.5em;
-  color: var(--light-gray);
+  color: var(--blue-grey-300);
   font-weight: var(--weight-bold);
 }
 </style>

@@ -45,6 +45,7 @@ export default {
       } else {
         queryFields = fieldValues
           .filter(field => field.primary_key === false || field.primary_key === "0")
+          .filter(field => field.hidden_browse !== true)
           .slice(0, 4)
           .map(field => field.field);
       }
@@ -107,6 +108,7 @@ export default {
 
 <style lang="scss" scoped>
 .layout {
-  padding: 0 32px;
+  margin-top: var(--page-padding-top-table);
+  padding: 0 var(--page-padding);
 }
 </style>

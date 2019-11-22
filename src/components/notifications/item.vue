@@ -4,8 +4,8 @@
       <v-icon v-if="!!item.iconMain" :color="iconColor" :name="item.iconMain" />
     </div>
     <div class="content">
-      <div class="title">{{ item.title }}</div>
-      <div class="details" v-html="detailHtml"></div>
+      <div class="title selectable">{{ item.title }}</div>
+      <div class="details selectable" v-html="detailHtml"></div>
     </div>
     <div class="icon-right" @click="actionClick">
       <v-icon v-if="!!item.iconRight" :name="item.iconRight" />
@@ -28,12 +28,12 @@ export default {
       return this.item.details !== undefined ? this.$helpers.snarkdown(this.item.details) : "";
     },
     iconColor() {
-      return this.item.color !== undefined ? `${this.item.color}-500` : "blue-gray-500";
+      return this.item.color !== undefined ? `${this.item.color}-500` : "blue-grey-500";
     },
     ringColor() {
       return this.item.color !== undefined
         ? `var(--${this.item.color}-100)`
-        : "var(--blue-gray-100)";
+        : "var(--blue-grey-100)";
     }
   },
   methods: {
@@ -65,32 +65,32 @@ export default {
   align-items: center;
   min-height: 64px;
   width: 100%;
-  border: var(--input-border-width) solid var(--lightest-gray);
+  border: var(--input-border-width) solid var(--input-border-color);
   border-radius: 5px;
   margin-bottom: 12px;
   padding: 10px;
-  background-color: var(--white);
+  background-color: var(--page-background-color);
   &.red {
     .title {
-      color: var(--red-500);
+      color: var(--red);
     }
   }
 
   &.green {
     .title {
-      color: var(--green-500);
+      color: var(--green);
     }
   }
 
   &.amber {
     .title {
-      color: var(--amber-500);
+      color: var(--amber);
     }
   }
 
   &.blue {
     .title {
-      color: var(--blue-500);
+      color: var(--blue);
     }
   }
 }
@@ -103,19 +103,19 @@ export default {
   align-items: center;
   justify-content: center;
   border-radius: 50%;
-  background-color: var(--lighter-gray);
+  background-color: var(--input-icon-color);
 }
 
 .icon-right {
   width: 24px;
   height: 24px;
   margin-left: auto;
-  color: var(--lighter-gray);
+  color: var(--input-icon-color);
   transition: color var(--fast) var(--transition);
   cursor: pointer;
 
   &:hover {
-    color: var(--dark-gray);
+    color: var(--page-text-color);
   }
 }
 
@@ -123,12 +123,11 @@ export default {
   padding-left: 10px;
   padding-right: 10px;
   .title {
-    font-size: var(--size-2);
-    color: var(--darker-gray);
+    color: var(--heading-text-color);
   }
 
   .details {
-    color: var(--light-gray);
+    color: var(--note-text-color);
   }
 }
 </style>

@@ -5,6 +5,7 @@
     icon-right-color=""
     :value="value || ''"
     :readonly="readonly"
+    :monospace="options.monospace"
     :placeholder="options.placeholder"
     :icon-left="options.iconLeft"
     :icon-right="options.iconRight"

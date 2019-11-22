@@ -1,7 +1,8 @@
 import Vue from "vue";
 import Vuex from "vuex";
+import createPersistedState from "vuex-persistedstate";
+import api from "@/api";
 
-import auth from "./modules/auth/";
 import extensions from "./modules/extensions";
 import collections from "./modules/collections";
 import edits from "./modules/edits";
@@ -12,23 +13,34 @@ import relations from "./modules/relations";
 import serverInfo from "./modules/server-info";
 import notifications from "./modules/notifications";
 
-import state from "./state";
+import initialState from "./state";
 import * as actions from "./actions";
 import * as getters from "./getters";
 import mutations from "./mutations";
+import { RESET } from "./mutation-types";
 
 Vue.use(Vuex);
 
 const debug = process.env.NODE_ENV !== "production"; // eslint-disable-line no-undef
 
 const store = new Vuex.Store({
-  state,
+  state: _.clone(initialState),
   actions,
   getters,
-  mutations,
+  mutations: {
+    [RESET](state) {
+      // Some parts of the state are system wide and don't have to / shouldn't be reset
+      const protectedKeys = ["latency", "currentProjectKey", "projects"];
+
+      Object.keys(initialState).forEach(key => {
+        if (protectedKeys.includes(key)) return;
+        state[key] = initialState[key];
+      });
+    },
+    ...mutations
+  },
   strict: debug,
   modules: {
-    auth,
     collections,
     extensions,
     edits,
@@ -38,21 +50,17 @@ const store = new Vuex.Store({
     serverInfo,
     notifications,
     settings
-  }
+  },
+  plugins: [
+    createPersistedState({
+      key: "directus-app",
+      paths: ["currentProjectKey"],
+      storage: window.sessionStorage,
+      rehydrated: store => {
+        api.config.project = store.state.currentProjectKey;
+      }
+    })
+  ]
 });
 
-// Make a clone of the current Vuex state without the reactivity
-const initialStateCopy = JSON.parse(JSON.stringify(store.state));
-
 export default store;
-
-export function resetState() {
-  // the store.replaceState method will make the passed in object reactive.
-  // This will make a clone to modify, so the original initialStateCopy stays
-  // as-is
-  const newState = JSON.parse(JSON.stringify(initialStateCopy));
-  newState.auth.projectName = store.state.auth.projectName;
-  newState.auth.project = store.state.auth.project;
-  newState.auth.url = store.state.auth.url;
-  store.replaceState(newState);
-}

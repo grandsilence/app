@@ -190,7 +190,7 @@ form.options {
   }
 
   .required {
-    color: var(--darkest-gray);
+    color: var(--blue-grey-900);
     vertical-align: super;
     font-size: 7px;
   }
@@ -200,7 +200,7 @@ form.options {
     font-style: italic;
     font-size: 12px;
     line-height: 1.5em;
-    color: var(--light-gray);
+    color: var(--blue-grey-300);
     & b {
       font-weight: 600;
     }

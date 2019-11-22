@@ -13,7 +13,7 @@ export default {
       return this.value ? "lock_outline" : "lock_open";
     },
     colorChange() {
-      return this.value ? "dark-gray" : "warning";
+      return this.value ? "blue-grey-600" : "warning";
     }
   }
 };

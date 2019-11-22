@@ -27,7 +27,7 @@
       "collections": "Collections",
       "placeholder": "Placeholder",
       "placeholder_comment": "Static text that shown before a value is selected",
-      "placeholder_default": "Choose a collection",
+      "placeholder_default": "Choose a collection...",
       "option": "Option",
       "include_system": "Include System",
       "include_system_comment": "Include system collections in the options"

@@ -5,8 +5,10 @@
       info-toggle
       :item-detail="false"
       :breadcrumb="breadcrumb"
-      :icon="collectionInfo.icon || 'box'"
+      :icon="breadcrumbIcon"
+      :settings="collection === 'directus_webhooks'"
       :title="currentBookmark && currentBookmark.title"
+      :icon-link="collection === 'directus_webhooks' ? `/${currentProjectKey}/settings/` : null"
     >
       <template slot="title">
         <button
@@ -30,19 +32,12 @@
       />
       <template slot="buttons">
         <v-header-button
-          v-if="this.$store.state.currentUser.admin"
-          :label="$t('settings')"
-          icon="settings"
-          icon-color="lighter_gray"
-          no-background
-          @click="editCollection()"
-        />
-        <v-header-button
           v-if="editButton && !activity"
           key="edit"
           icon="mode_edit"
-          color="gray"
-          hover-color="warning"
+          background-color="warning"
+          icon-color="white"
+          hover-color="warning-dark"
           :disabled="!editButtonEnabled"
           :label="$t('batch')"
           :to="batchURL"
@@ -51,8 +46,9 @@
           v-if="deleteButton && !activity"
           key="delete"
           icon="delete_outline"
-          color="gray"
-          hover-color="danger"
+          icon-color="white"
+          background-color="danger"
+          hover-color="danger-dark"
           :disabled="!deleteButtonEnabled"
           :label="$t('delete')"
           @click="confirmRemove = true"
@@ -61,9 +57,10 @@
           v-if="addButton && !activity"
           key="add"
           icon="add"
-          color="action"
+          icon-color="button-primary-text-color"
+          background-color="button-primary-background-color"
           :label="$t('new')"
-          :to="`/collections/${collection}/+`"
+          :to="createLink"
         />
       </template>
     </v-header>
@@ -94,9 +91,9 @@
             </option>
           </select>
           <div class="preview">
-            <v-icon :name="layoutIcons[viewType]" color="darker-gray" />
+            <v-icon :name="layoutIcons[viewType]" color="sidebar-text-color" />
             <span>{{ layoutNames[viewType] }}</span>
-            <v-icon name="expand_more" color="light-gray" />
+            <v-icon name="expand_more" color="sidebar-text-color" />
           </div>
         </div>
       </template>
@@ -109,17 +106,14 @@
         :view-options="viewOptions"
         :view-query="viewQuery"
         :selection="selection"
+        :primary-key-field="primaryKeyField"
         link="__link__"
         @query="setViewQuery"
         @options="setViewOptions"
       />
-
-      <router-link v-if="canReadActivity" to="/activity" class="notifications">
-        <div class="preview">
-          <v-icon name="notifications" color="light-gray" />
-          <span>{{ $t("notifications") }}</span>
-        </div>
-      </router-link>
+    </v-info-sidebar>
+    <v-info-sidebar v-else wide>
+      <span class="type-note">No settings</span>
     </v-info-sidebar>
 
     <portal v-if="confirmRemove" to="modal">
@@ -148,6 +142,7 @@ import store from "../store/";
 import VSearchFilter from "../components/search-filter/search-filter.vue";
 import VCreateBookmark from "../components/bookmarks/create-bookmark.vue";
 import VNotFound from "./not-found.vue";
+import { mapState } from "vuex";
 
 import api from "../api";
 
@@ -174,15 +169,44 @@ export default {
     };
   },
   computed: {
+    ...mapState(["currentProjectKey"]),
     activity() {
       return this.collection === "directus_activity";
+    },
+    breadcrumbIcon() {
+      if (this.collection === "directus_webhooks") return "arrow_back";
+      return this.collectionInfo?.icon || "box";
+    },
+    createLink() {
+      if (this.collection === "directus_webhooks") {
+        return `/${this.currentProjectKey}/settings/webhooks/+`;
+      }
+
+      if (this.collection.startsWith("directus_")) {
+        return `/${this.currentProjectKey}/${this.collection.substr(9)}/+`;
+      }
+
+      return `/${this.currentProjectKey}/collections/${this.collection}/+`;
     },
     breadcrumb() {
       if (this.collection === "directus_users") {
         return [
           {
             name: this.$t("user_directory"),
-            path: "/users"
+            path: `/${this.currentProjectKey}/users`
+          }
+        ];
+      }
+
+      if (this.collection === "directus_webhooks") {
+        return [
+          {
+            name: this.$t("settings"),
+            path: `/${this.currentProjectKey}/settings`
+          },
+          {
+            name: this.$t("settings_webhooks"),
+            path: `/${this.currentProjectKey}/settings/webhooks`
           }
         ];
       }
@@ -191,7 +215,7 @@ export default {
         return [
           {
             name: this.$t("file_library"),
-            path: "/files"
+            path: `/${this.currentProjectKey}/files`
           }
         ];
       }
@@ -200,18 +224,18 @@ export default {
         return [
           {
             name: this.$helpers.formatTitle(this.collection.substr(9)),
-            path: `/${this.collection.substring(9)}`
+            path: `/${this.currentProjectKey}/${this.collection.substring(9)}`
           }
         ];
       } else {
         return [
           {
             name: this.$t("collections"),
-            path: "/collections"
+            path: `/${this.currentProjectKey}/collections`
           },
           {
             name: this.$t(`collections-${this.collection}`),
-            path: `/collections/${this.collection}`
+            path: `/${this.currentProjectKey}/collections/${this.collection}`
           }
         ];
       }
@@ -229,7 +253,7 @@ export default {
       return filteredFields;
     },
     batchURL() {
-      return `/collections/${this.collection}/${this.selection
+      return `/${this.currentProjectKey}/collections/${this.collection}/${this.selection
         .map(item => item[this.primaryKeyField])
         .join(",")}`;
     },
@@ -259,6 +283,7 @@ export default {
       return currentBookmark || null;
     },
     collection() {
+      if (this.$route.path.endsWith("webhooks")) return "directus_webhooks";
       return this.$route.params.collection;
     },
     collectionInfo() {
@@ -331,12 +356,17 @@ export default {
         !_.isEmpty(this.preferences.filters) ||
         (!_.isNil(this.preferences.search_query) && this.preferences.search_query.length > 0);
 
+      /* total_count returns the total number of data in collection.So for mine and
+         role only permissions it also returns the same.So to fix it removed
+         total_count from item_count and added result_count.
+         Issue Fix 2122
+      */
       return isFiltering
         ? this.$tc("item_count_filter", this.meta.result_count, {
             count: this.$n(this.meta.result_count)
           })
-        : this.$tc("item_count", this.meta.total_count, {
-            count: this.$n(this.meta.total_count)
+        : this.$tc("item_count", this.meta.result_count, {
+            count: this.$n(this.meta.result_count)
           });
     },
     filterableFieldNames() {
@@ -398,9 +428,6 @@ export default {
     permission() {
       return this.permissions[this.collection];
     },
-    canReadActivity() {
-      return this.permissions.directus_activity.read !== "none";
-    },
     addButton() {
       if (this.$store.state.currentUser.admin) return true;
 
@@ -427,7 +454,7 @@ export default {
       this.selection.forEach(item => {
         const status = this.statusField ? item[this.statusField] : null;
         const permission = this.statusField ? this.permission.statuses[status] : this.permission;
-        const userID = item[this.userCreatedField];
+        const userID = item[this.userCreatedField] ? item[this.userCreatedField].id : null;
 
         if (permission.delete === "none") {
           return (enabled = false);
@@ -438,15 +465,14 @@ export default {
         }
 
         if (permission.delete === "role") {
-          const userRoles = this.$store.state.users[userID].roles;
-          const currentUserRoles = this.$store.state.currentUser.roles;
-          let contains = false;
+          const userRole = this.$store.state.users[userID].role;
+          const currentUserRole = this.$store.state.currentUser.role.id;
 
-          userRoles.forEach(role => {
-            if (currentUserRoles.includes(role)) contains = true;
-          });
+          if (userRole === currentUserRole) {
+            enabled = true;
+          }
 
-          if (contains === false) return (enabled = false);
+          return;
         }
       });
 
@@ -465,7 +491,7 @@ export default {
       this.selection.forEach(item => {
         const status = this.statusField ? item[this.statusField] : null;
         const permission = this.statusField ? this.permission.statuses[status] : this.permission;
-        const userID = item[this.userCreatedField];
+        const userID = item[this.userCreatedField] ? item[this.userCreatedField].id : null;
 
         if (permission.update === "none") {
           return (enabled = false);
@@ -476,15 +502,13 @@ export default {
         }
 
         if (permission.update === "role") {
-          const userRoles = this.$store.state.users[userID].roles;
-          const currentUserRoles = this.$store.state.currentUser.roles;
-          let contains = false;
+          const userRole = this.$store.state.users[userID].role;
+          const currentUserRole = this.$store.state.currentUser.role.id;
 
-          userRoles.forEach(role => {
-            if (currentUserRoles.includes(role)) contains = true;
-          });
-
-          if (contains === false) return (enabled = false);
+          if (userRole === currentUserRole) {
+            enabled = true;
+            return;
+          }
         }
       });
 
@@ -504,7 +528,7 @@ export default {
     keyBy: _.keyBy,
     editCollection() {
       if (!this.$store.state.currentUser.admin) return;
-      this.$router.push(`/settings/collections/${this.collection}`);
+      this.$router.push(`/${this.currentProjectKey}/settings/collections/${this.collection}`);
     },
     closeBookmark() {
       this.bookmarkModal = false;
@@ -628,7 +652,9 @@ export default {
     }
   },
   beforeRouteEnter(to, from, next) {
-    const { collection } = to.params;
+    let { collection } = to.params;
+
+    if (to.path.endsWith("webhooks")) collection = "directus_webhooks";
 
     const collectionInfo = store.state.collections[collection] || null;
 
@@ -639,7 +665,7 @@ export default {
     if (collection === "directus_files") return next("/files");
 
     if (collectionInfo && collectionInfo.single) {
-      return next(`/collections/${collection}/1`);
+      return next(`/${store.state.currentProjectKey}/collections/${collection}/1`);
     }
 
     const id = shortid.generate();
@@ -677,7 +703,7 @@ export default {
     }
 
     if (collectionInfo && collectionInfo.single) {
-      return next(`/collections/${collection}/1`);
+      return next(`/${store.state.currentProjectKey}/collections/${collection}/1`);
     }
 
     const id = this.$helpers.shortid.generate();
@@ -702,26 +728,22 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-label.style-4 {
-  padding-bottom: 5px;
-}
-
 .bookmark,
 .settings {
-  margin-left: 5px;
+  margin-left: 8px;
   position: relative;
 
   i {
     transition: color var(--fast) var(--transition);
-    color: var(--light-gray);
+    color: var(--input-border-color);
     font-size: 24px;
     height: 20px;
-    transform: translateY(-1px); // Vertical alignment of icon
+    transform: translateY(-2px); // Vertical alignment of icon
   }
 
   &:hover {
     i {
-      color: var(--darker-gray);
+      color: var(--input-border-color-hover);
     }
   }
 }
@@ -729,16 +751,17 @@ label.style-4 {
 .bookmark.active {
   opacity: 1;
   i {
-    color: var(--accent);
+    color: var(--input-background-color-active);
   }
 }
 
-.layout-picker,
-.notifications {
-  margin: -20px;
-  padding: 20px;
-  background-color: #dde3e6;
-  color: var(--darker-gray);
+.layout-picker {
+  color: var(--sidebar-text-color);
+  background-color: var(--input-background-color);
+  border: var(--input-border-width) solid var(--input-border-color);
+  border-radius: var(--border-radius);
+  height: var(--input-height);
+  padding: 8px 4px;
   position: relative;
   display: block;
 
@@ -766,14 +789,5 @@ label.style-4 {
 
 .layout-options {
   margin-bottom: 64px;
-}
-
-.notifications {
-  position: fixed;
-  width: var(--info-sidebar-width);
-  bottom: 0;
-  right: 0;
-  margin: 0;
-  text-decoration: none;
 }
 </style>

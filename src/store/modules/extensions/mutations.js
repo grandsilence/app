@@ -1,7 +1,14 @@
 import { keyBy } from "lodash";
-import { SET_INTERFACES, SET_LAYOUTS, SET_PAGES } from "../../mutation-types";
+import { RESET, SET_INTERFACES, SET_LAYOUTS, SET_PAGES } from "../../mutation-types";
+import { initialState } from "./";
 
 const mutations = {
+  [RESET](state) {
+    Object.keys(initialState).forEach(key => {
+      state[key] = initialState[key];
+    });
+  },
+
   [SET_INTERFACES](state, interfaces) {
     state.interfaces = keyBy(interfaces, "id");
   },

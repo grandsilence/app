@@ -12,7 +12,7 @@
       "name": "$t:active_color",
       "comment": "$t:active_color_comment",
       "interface": "color-palette",
-      "default": "blue-grey-900"
+      "default": "amber"
     },
     "max_stars": {
       "name": "$t:max_stars",
@@ -24,7 +24,7 @@
       "name": "$t:display",
       "comment": "$t:display_comment",
       "interface": "button-group",
-      "default": "number",
+      "default": "star",
       "type": "JSON",
       "options": {
         "choices": [

@@ -1,24 +1,30 @@
 <template>
-  <div v-if="userInfo">
+  <div v-if="userInfo" class="user-updated">
     <v-avatar
       v-if="options.display !== 'name'"
       v-tooltip="options.display === 'avatar' ? displayValue : null"
-      class="display-user"
-      :size="28"
+      class="avatar"
+      :size="32"
       :src="src"
       :alt="displayValue"
-      color="light-gray"
     ></v-avatar>
-    <span v-if="options.display !== 'avatar'" class="label gray style-3">
-      <div>{{ displayValue }}</div>
+    <span v-if="options.display !== 'avatar'" class="name">
+      {{ displayValue }}
     </span>
+    <v-icon name="account_box" />
   </div>
-  <div v-else-if="newItem" class="gray style-3">
-    {{ $t("interfaces-user-updated-you") }}
-  </div>
-  <div v-else class="gray style-3">
-    {{ $t("interfaces-user-updated-unknown") }}
-  </div>
+  <v-input
+    v-else-if="newItem"
+    :readonly="true"
+    :placeholder="$t('interfaces-user-updated-you')"
+    icon-right="account_box"
+  />
+  <v-input
+    v-else
+    :readonly="true"
+    :placeholder="$t('interfaces-user-updated-unknown')"
+    icon-right="account_box"
+  />
 </template>
 
 <script>
@@ -50,20 +56,31 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.display-user {
-  width: max-content;
-  display: inline-block;
-  vertical-align: top;
-}
-.label {
-  display: inline-block;
-  margin-left: 4px;
-  height: 28px;
-  div {
-    margin-top: 6px;
+.user-updated {
+  position: relative;
+  border: var(--input-border-width) solid var(--input-border-color);
+  border-radius: var(--border-radius);
+  height: var(--input-height);
+  font-size: var(--input-font-size);
+  padding: 4px 10px;
+  display: flex;
+  align-items: center;
+  background-color: var(--input-background-color-disabled);
+  i {
+    position: absolute;
+    top: 50%;
+    color: var(--input-icon-color);
+    transform: translateY(-50%);
+    font-size: 24px;
+    right: 10px;
   }
 }
-.gray {
-  color: var(--light-gray);
+.avatar {
+  width: max-content;
+  display: inline-block;
+  margin-right: 12px;
+}
+.name {
+  display: inline-block;
 }
 </style>

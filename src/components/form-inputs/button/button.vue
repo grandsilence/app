@@ -1,9 +1,8 @@
 <template>
   <button
-    :class="[bg || 'no-bg', { fullwidth, loading }, color]"
+    :class="[bg || 'no-bg', { fullwidth, loading, small }, color, outline]"
     :type="type"
     :disabled="disabled || loading"
-    class="form-button style-btn"
     @click.prevent.stop="$emit('click')"
   >
     <v-icon v-if="icon && !loading" :name="icon" class="icon" />
@@ -11,7 +10,7 @@
       v-if="loading"
       :line-size="2"
       size="13"
-      line-fg-color="var(--light-gray)"
+      line-fg-color="var(--blue-grey-300)"
       line-bg-color="#fff"
       class="spinner"
     />
@@ -24,6 +23,10 @@ export default {
   name: "VButton",
   props: {
     fullwidth: {
+      type: Boolean,
+      default: false
+    },
+    small: {
       type: Boolean,
       default: false
     },
@@ -52,6 +55,10 @@ export default {
       type: String,
       default: "action",
       validator: value => ["action", "gray", "warning", "danger"].includes(value)
+    },
+    outline: {
+      type: Boolean,
+      default: false
     }
   }
 };
@@ -59,22 +66,22 @@ export default {
 
 <style lang="scss" scoped>
 button.action {
-  background-color: var(--darker-gray);
-  border-color: var(--darker-gray);
+  background-color: var(--button-primary-background-color);
+  border-color: var(--button-primary-background-color);
 
   &:hover:not(:disabled) {
-    background-color: var(--darkest-gray);
-    border-color: var(--darkest-gray);
+    background-color: var(--button-primary-background-color-hover);
+    border-color: var(--button-primary-background-color-hover);
   }
 }
 
 button.gray {
-  background-color: var(--lightest-gray);
-  border-color: var(--lightest-gray);
+  background-color: var(--button-tertiary-background-color);
+  border-color: var(--button-tertiary-background-color);
 
   &:hover:not(:disabled) {
-    background-color: var(--lighter-gray);
-    border-color: var(--lighter-gray);
+    background-color: var(--blue-grey-200);
+    border-color: var(--blue-grey-200);
   }
 }
 
@@ -99,7 +106,7 @@ button.danger {
 }
 
 button.black {
-  color: var(--darker-gray);
+  color: var(--blue-grey-800);
 }
 
 button.white {
@@ -115,15 +122,22 @@ button {
   display: flex;
   align-items: center;
   justify-content: center;
+  color: var(--white);
+  font-size: var(--button-font-size);
+  font-weight: var(--weight-bold);
   padding: 0 20px 1px;
-  height: 44px;
+  height: var(--button-height);
   min-width: 136px;
   border: var(--input-border-width) solid var(--action);
 
+  &.small {
+    font-size: inherit;
+  }
+
   &:disabled:not(.loading) {
-    background-color: var(--lightest-gray);
-    border: var(--input-border-width) solid var(--lightest-gray);
-    color: var(--light-gray);
+    background-color: var(--button-primary-background-color-disabled);
+    border: var(--input-border-width) solid var(--button-primary-background-color-disabled);
+    color: var(--button-primary-text-color-disabled);
     cursor: not-allowed;
   }
 

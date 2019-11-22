@@ -1,13 +1,21 @@
 import Vue from "vue";
 import {
+  RESET,
   DISCARD_CHANGES,
   ITEM_CREATED,
   START_EDITING,
   UNSTAGE_VALUE,
   STAGE_VALUE
 } from "../../mutation-types";
+import { initialState } from "./";
 
 const mutations = {
+  [RESET](state) {
+    Object.keys(initialState).forEach(key => {
+      state[key] = initialState[key];
+    });
+  },
+
   [DISCARD_CHANGES](state) {
     state.saving = false;
     state.error = null;

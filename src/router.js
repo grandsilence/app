@@ -5,17 +5,17 @@ import store from "./store";
 import { TOGGLE_NAV, TOGGLE_INFO } from "./store/mutation-types";
 import { i18n } from "./lang/";
 import EventBus from "./events/";
-import hydrateStore from "./hydrate";
 import Collections from "./routes/collections.vue";
 import Items from "./routes/items.vue";
 import FileLibrary from "./routes/file-library.vue";
 import Item from "./routes/item.vue";
 import Login from "./routes/login.vue";
-import TFAActivation from "./routes/2fa-activation.vue";
+import Setup2FA from "./routes/setup-2fa.vue";
+import ResetPassword from "./routes/reset-password.vue";
+import Install from "./routes/install.vue";
 import NotFound from "./routes/not-found.vue";
 import Interfaces from "./routes/settings/interfaces.vue";
 import InterfaceDebugger from "./routes/settings/interface-debugger.vue";
-import Debug from "./routes/debug.vue";
 import Settings from "./routes/settings/settings.vue";
 import SettingsGlobal from "./routes/settings/global.vue";
 import SettingsCollections from "./routes/settings/collections.vue";
@@ -23,21 +23,12 @@ import SettingsFields from "./routes/settings/fields.vue";
 import SettingsRoles from "./routes/settings/roles.vue";
 import SettingsPermissions from "./routes/settings/permissions.vue";
 import PageExtension from "./routes/page-extension.vue";
-
-import ModalDebug from "./routes/modal-debug.vue";
+import hydrateStore from "@/hydrate";
 
 Vue.use(Router);
 
-const routerMode = window.__DirectusConfig__ && window.__DirectusConfig__.routerMode;
-
-const base =
-  process.env.NODE_ENV === "production" // eslint-disable-line
-    ? window.__DirectusConfig__ && window.__DirectusConfig__.routerBaseUrl
-    : "/";
-
 const router = new Router({
-  mode: routerMode || "hash",
-  base: base || "/",
+  mode: "hash",
   // Make sure that the page is scrolled to the top on navigation
   scrollBehavior(to, from, savedPosition) {
     if (savedPosition) {
@@ -50,24 +41,16 @@ const router = new Router({
   },
   routes: [
     {
-      path: "/modals",
-      component: ModalDebug
-    },
-    {
-      path: "/",
-      redirect: "/collections"
-    },
-    {
-      path: "/collections",
+      path: "/:project/collections",
       component: Collections
     },
     {
-      path: "/collections/:collection",
+      path: "/:project/collections/:collection",
       props: true,
       component: Items
     },
     {
-      path: "/collections/:collection/:primaryKey",
+      path: "/:project/collections/:collection/:primaryKey",
       props: true,
       component: Item,
       meta: {
@@ -75,12 +58,12 @@ const router = new Router({
       }
     },
     {
-      path: "/ext/:id",
+      path: "/:project/ext/:id",
       props: true,
       component: PageExtension
     },
     {
-      path: "/bookmarks/:collection/:bookmarkID",
+      path: "/:project/bookmarks/:collection/:bookmarkID",
       beforeEnter(to, from, next) {
         const { collection, bookmarkID } = to.params;
 
@@ -117,7 +100,7 @@ const router = new Router({
                 listing page in question). By adding this param, it forces the update.
                 The listing view will remove the query on load so it doesn't clutter the URL too much
                */
-              path: `/collections/${collection}?b=${bookmark.id}`
+              path: `/:project/collections/${collection}?b=${bookmark.id}`
             });
           })
           .catch(error =>
@@ -129,102 +112,110 @@ const router = new Router({
       }
     },
     {
-      path: "/files",
+      path: "/:project/files",
       component: FileLibrary
     },
     {
-      path: "/collections/directus_files/:primaryKey",
+      path: "/:project/collections/directus_files/:primaryKey",
       component: Item,
-      alias: "/files/:primaryKey",
+      alias: "/:project/files/:primaryKey",
       meta: {
         infoSidebarWidth: "wide"
       }
     },
     {
-      path: "/collections/directus_users",
+      path: "/:project/collections/directus_users",
       component: Items,
-      alias: "/users"
+      alias: "/:project/users"
     },
     {
-      path: "/collections/directus_users/:primaryKey",
+      path: "/:project/collections/directus_users/:primaryKey",
       component: Item,
-      alias: "/users/:primaryKey",
+      alias: "/:project/users/:primaryKey",
       meta: {
         infoSidebarWidth: "wide"
       }
     },
     {
-      path: "/collections/directus_activity",
+      path: "/:project/collections/directus_activity",
       component: Items,
-      alias: "/activity"
+      alias: "/:project/activity"
     },
     {
-      path: "/collections/directus_activity/:primaryKey",
+      path: "/:project/collections/directus_activity/:primaryKey",
       component: Item,
-      alias: "/activity/:primaryKey"
+      alias: "/:project/activity/:primaryKey"
     },
     {
-      path: "/debug",
-      component: Debug
-    },
-    {
-      path: "/settings",
+      path: "/:project/settings",
       component: Settings
     },
     {
-      path: "/settings/global",
+      path: "/:project/settings/global",
       component: SettingsGlobal
     },
     {
-      path: "/settings/collections",
+      path: "/:project/settings/collections",
       component: SettingsCollections
     },
     {
-      path: "/settings/collections/:collection",
+      path: "/:project/settings/collections/:collection",
       component: SettingsFields,
       props: true
     },
     {
-      path: "/settings/roles",
+      path: "/:project/settings/roles",
       component: SettingsRoles
     },
     {
-      path: "/settings/roles/:id",
+      path: "/:project/settings/roles/:id",
       component: SettingsPermissions,
       props: true
     },
     {
-      path: "/settings/interfaces",
+      path: "/:project/settings/interfaces",
       component: Interfaces
     },
     {
-      path: "/settings/interfaces/:id",
+      path: "/:project/settings/interfaces/:id",
       component: InterfaceDebugger,
       props: true
+    },
+    {
+      path: "/:project/settings/webhooks",
+      component: Items
+    },
+    {
+      path: "/:project/settings/webhooks/:primaryKey",
+      props: true,
+      component: Item
     },
     {
       path: "/login",
       component: Login,
       meta: {
         publicRoute: true
-      },
-      beforeEnter(to, from, next) {
-        if (api.loggedIn) return next(false);
-        return next();
       }
     },
     {
-      path: "/2fa-activation",
-      component: TFAActivation,
+      path: "/reset-password",
+      component: ResetPassword,
       meta: {
         publicRoute: true
       }
     },
     {
-      path: "/logout",
-      beforeEnter(to, from, next) {
-        store.dispatch("logout");
-        next("/login");
+      path: "/install",
+      component: Install,
+      meta: {
+        publicRoute: true
+      }
+    },
+    {
+      path: "/setup-2fa",
+      component: Setup2FA,
+      meta: {
+        publicRoute: true
       }
     },
     {
@@ -234,53 +225,61 @@ const router = new Router({
   ]
 });
 
-router.beforeEach((to, from, next) => {
-  const loggedIn = api.loggedIn;
-  const publicRoute = to.matched.some(record => record.meta.publicRoute);
+router.beforeEach(async (to, from, next) => {
+  const publicRoute = to.meta.publicRoute;
 
-  store.commit(TOGGLE_NAV, false);
-  store.commit(TOGGLE_INFO, false);
-
-  if (loggedIn === false) {
-    if (to.path === "/2fa-activation") {
-      return next();
-    }
-
-    if (publicRoute) {
-      return next();
-    }
-
-    //This check prevents the default redirect query parameter which is "/collections"
-    if (from.fullPath === "/" && to.redirectedFrom === "/") {
-      return next({ path: "/login" });
-    }
-
-    //If user tried to open the private route and not logged in.
-    //Save the path in query as to 'redirect'
-    return next({
-      path: "/login",
-      query: { redirect: to.fullPath }
-    });
+  if (store.state.sidebars.nav === true) {
+    store.commit(TOGGLE_NAV, false);
   }
 
-  // NOTE: This is first load
-  if (store.state.hydrated === false) {
-    return hydrateStore().then(() => {
-      if (store.getters.editing) {
-        const { collection, primaryKey } = store.state.edits;
-        return next(`/collections/${collection}/${primaryKey}`);
-      }
-      return next();
-    });
+  if (store.state.sidebars.info === true) {
+    store.commit(TOGGLE_INFO, false);
   }
 
-  return next();
+  // This runs on first load
+  if (store.state.projects === null) {
+    await store.dispatch("getProjects");
+  }
+
+  // It's false when there aren't any projects installed (no private ones either)
+  if (store.state.projects === false && to.path !== "/install") {
+    return next("/install");
+  }
+
+  if (publicRoute) {
+    return next();
+  }
+
+  const loggedIn = store.getters.currentProject?.data?.authenticated || false;
+
+  // Make sure the project reloads when the user manually changes the project in the URL
+  // This will also happen when a user clicks a link from an external source
+  if (from.params.project && from.params.project !== to.params.project) {
+    if (to.params.project !== store.state.currentProjectKey) {
+      await store.dispatch("setCurrentProject", to.params.project);
+    }
+  } else if (loggedIn && store.state.hydrated === false) {
+    await hydrateStore();
+  }
+
+  if (loggedIn) {
+    return next();
+  }
+
+  if (to.path === "/") {
+    return next({ path: "/login", query: to.query });
+  }
+
+  return next({
+    path: "/login",
+    query: { redirect: to.fullPath }
+  });
 });
 
-router.afterEach((to, from) => {
+router.afterEach(to => {
   // Prevent tracking if not logged in
-  if (store.state.hydrated && api.loggedIn === true) {
-    const pathsToIgnore = ["/2fa-activation", "/logout", "/login"];
+  if (store.state.hydrated) {
+    const pathsToIgnore = ["/setup-2fa", "/logout", "/login"];
     if (!pathsToIgnore.includes(to.path)) {
       store.dispatch("track", { page: to.path });
     }

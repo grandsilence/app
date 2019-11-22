@@ -62,9 +62,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.interface-button-group {
-  font-weight: 500;
-}
 /*
 Theme: Outline
 */
@@ -75,7 +72,7 @@ Theme: Outline
 }
 
 .button-group-button {
-  border: var(--input-border-width) solid var(--gray);
+  border: var(--input-border-width) solid var(--input-border-color);
   cursor: pointer;
   transition: var(--fast) var(--transition);
   transition-property: border-color, background-color, color;
@@ -83,19 +80,18 @@ Theme: Outline
   align-items: center;
   justify-content: center;
   padding: 0px 16px;
-  height: 44px;
-  line-height: 44px;
+  height: var(--input-height);
   white-space: nowrap;
-  color: var(--gray);
+  color: var(--input-icon-color);
+  font-size: var(--input-font-size);
   margin-bottom: 8px;
 
   &:hover {
-    background-color: var(--lightest-gray);
+    background-color: var(--input-border-color);
+    color: var(--input-text-color);
   }
 
   i {
-    font-size: 18px;
-
     + span {
       margin-left: 4px;
     }
@@ -112,7 +108,7 @@ Theme: Outline
 		*/
     &:focus {
       + .button-group-button {
-        background-color: var(--light-gray);
+        background-color: var(--blue-grey-300);
       }
     }
     /**
@@ -120,8 +116,9 @@ Theme: Outline
 		*/
     &:checked {
       + .button-group-button {
-        background-color: var(--gray);
-        color: var(--white);
+        background-color: var(--input-background-color-active);
+        border-color: var(--input-background-color-active);
+        color: var(--input-text-color-active);
       }
     }
     /**
@@ -129,15 +126,15 @@ Theme: Outline
 		*/
     &:disabled {
       + .button-group-button {
-        border-color: var(--lighter-gray);
-        background-color: var(--lightest-gray);
-        color: var(--light-gray);
+        border-color: var(--blue-grey-200);
+        background-color: var(--blue-grey-50);
+        color: var(--blue-grey-300);
         cursor: not-allowed;
       }
       &:checked {
         + .button-group-button {
-          background-color: var(--lighter-gray);
-          color: var(--gray);
+          background-color: var(--blue-grey-200);
+          color: var(--blue-grey-400);
         }
       }
     }
@@ -210,10 +207,10 @@ Theme: Solid | Default
     border-bottom: none;
     border-left: none;
     margin-right: 2px;
-    background-color: var(--lightest-gray);
-    color: var(--dark-gray);
+    background-color: var(--input-background-color-alt);
+    color: var(--input-text-color);
     &:hover {
-      background-color: var(--blue-grey-100);
+      background-color: var(--input-background-color-alt-hover);
     }
   }
 
@@ -224,14 +221,14 @@ Theme: Solid | Default
 			*/
       &:focus {
         + .button-group-button {
-          background-color: var(--darker-gray);
+          background-color: var(--blue-grey-800);
           color: var(--white);
         }
       }
       &:checked {
         + .button-group-button {
-          background-color: var(--darker-gray);
-          color: var(--white);
+          background-color: var(--input-background-color-active);
+          color: var(--input-text-color-active);
         }
       }
       /**
@@ -239,12 +236,12 @@ Theme: Solid | Default
 			*/
       &:disabled {
         + .button-group-button {
-          color: var(--light-gray);
+          color: var(--blue-grey-300);
         }
         &:checked {
           + .button-group-button {
-            background-color: var(--gray);
-            color: var(--lightest-gray);
+            background-color: var(--blue-grey-400);
+            color: var(--blue-grey-50);
           }
         }
       }

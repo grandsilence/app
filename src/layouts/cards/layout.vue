@@ -1,26 +1,5 @@
 <template>
   <div class="layout-cards" @scroll="onScroll">
-    <div class="toolbar">
-      <p>{{ $t("sort_by") }}</p>
-
-      <div class="sort-select">
-        <select :value="sortedOn" @input="setSort($event.target.value)">
-          <option v-for="(fieldInfo, name) in sortableFields" :key="name" :value="name">
-            {{ $helpers.formatTitle(name) }}
-          </option>
-        </select>
-        <v-icon class="icon" name="arrow_drop_down" />
-      </div>
-
-      <div class="sort-select">
-        <select :value="sortDirection" @input="setSortDirection($event.target.value)">
-          <option value="asc">{{ $t("ASC") }}</option>
-          <option value="desc">{{ $t("DESC") }}</option>
-        </select>
-        <v-icon class="icon" name="arrow_drop_down" />
-      </div>
-    </div>
-
     <div class="cards" :class="{ loading: loading }">
       <v-card
         v-for="(item, index) in items"
@@ -72,10 +51,10 @@
       </v-card>
       <v-card
         v-if="lazyLoading"
-        color="dark-gray"
         icon="hourglass_empty"
         opacity="half"
         :title="$t('loading_more')"
+        :subtitle="$t('one_moment')"
       ></v-card>
     </div>
 
@@ -100,39 +79,6 @@ export default {
     },
     content() {
       return this.viewOptions.content;
-    },
-    sortableFields() {
-      return _.pickBy(this.fields, field => field.datatype);
-    },
-    sortedOn() {
-      let fieldName;
-      const sortableFieldNames = Object.keys(this.sortableFields);
-      const viewQuerySort = this.viewQuery.sort;
-      if (
-        sortableFieldNames &&
-        viewQuerySort &&
-        sortableFieldNames.some(sortableFieldName => sortableFieldName === viewQuerySort)
-      ) {
-        fieldName = viewQuerySort;
-      } else if (sortableFieldNames && sortableFieldNames.length > 0) {
-        // If the user didn't sort, default to the first field
-        fieldName = sortableFieldNames[0];
-      } else {
-        return null;
-      }
-
-      // If the sort viewQuery was already descending, remove the - so we don't
-      // run into server errors with double direction characters
-      if (fieldName.startsWith("-")) fieldName = fieldName.substring(1);
-
-      return fieldName;
-    },
-    sortDirection() {
-      if (!this.viewQuery.sort) return "asc";
-
-      if (this.viewQuery.sort.substring(0, 1) === "-") return "desc";
-
-      return "asc";
     }
   },
   methods: {
@@ -184,16 +130,6 @@ export default {
       }
 
       this.$emit("select", newSelection);
-    },
-    setSort(fieldName) {
-      this.$emit("query", {
-        sort: fieldName
-      });
-    },
-    setSortDirection(direction) {
-      this.$emit("query", {
-        sort: (direction === "desc" ? "-" : "") + this.sortedOn
-      });
     }
   }
 };
@@ -203,11 +139,11 @@ export default {
 .layout-cards {
   overflow: auto;
   height: 100%;
-  max-height: calc(100vh - var(--header-height));
+  max-height: calc(100vh - var(--header-height-expanded));
 }
 
 .toolbar {
-  background-color: var(--white);
+  background-color: var(--page-background-color);
   width: 100%;
   position: sticky;
   top: 0;
@@ -217,7 +153,7 @@ export default {
   display: flex;
   align-items: center;
   justify-content: flex-end;
-  border-bottom: 2px solid var(--lightest-gray);
+  border-bottom: 2px solid var(--sidebar-background-color);
 }
 
 .sort-select {
@@ -236,7 +172,7 @@ export default {
     -moz-appearance: none;
     appearance: none;
     vertical-align: middle;
-    background-color: var(--lightest-gray);
+    background-color: var(--input-background-color-alt);
     border-radius: var(--border-radius);
     border: 0;
     overflow: hidden;
@@ -256,11 +192,10 @@ export default {
 }
 
 .cards {
-  padding: var(--page-padding);
-  padding-bottom: var(--page-padding-bottom);
+  padding: var(--page-padding-top) var(--page-padding) var(--page-padding-bottom);
   display: grid;
-  grid-template-columns: repeat(auto-fill, 136px);
-  grid-gap: 30px 20px;
+  grid-template-columns: repeat(auto-fill, var(--card-size));
+  grid-gap: var(--card-vertical-gap) var(--card-horizontal-gap);
   justify-content: space-between;
   width: 100%;
 

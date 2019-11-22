@@ -3,13 +3,13 @@
     <v-input
       class="input"
       type="text"
-      :placeholder="$t('interfaces-tags-placeholder_text')"
+      :placeholder="options.placeholder || $t('interfaces-tags-placeholder_text')"
       :icon-left="options.iconLeft"
       :icon-right="options.iconRight"
       :icon-right-color="null"
       @keydown="onInput"
     ></v-input>
-    <div class="buttons">
+    <div v-if="valueArray.length > 0" class="buttons">
       <v-tag v-for="value in valueArray" :key="value" clickable @click.prevent="removeTag(value)">
         {{ value }}
       </v-tag>

@@ -47,6 +47,7 @@
       "template": "Dropdown Template",
       "template_comment": "How to format the dropdown options",
       "visible_fields": "Visible Fields",
+      "visible_fields_placeholder": "title,author",
       "visible_fields_note": "CSV of fields visible when selecting an item in the modal",
       "template_placeholder": "{{title}} — {{author}}",
       "placeholder": "Placeholder",
@@ -58,7 +59,7 @@
       "icon_comment": "Choose an optional icon to display on the left of the input",
       "select_one": "Select one",
       "threshold": "Threshold",
-      "threshold_comment": "The amount of items after which the interface will render a modal instead of a dropdown"
+      "threshold_comment": "The number of items after which a modal will be used instead of a dropdown"
     },
 	"fr-FR": {
       "m2o": "Plusieurs-à-un (M2O)",

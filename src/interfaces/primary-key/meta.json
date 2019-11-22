@@ -6,11 +6,20 @@
   "recommended": {
     "length": 10
   },
-  "options": {},
+  "options": {
+    "monospace": {
+      "name": "$t:monospace",
+      "comment": "$t:monospace_comment",
+      "interface": "toggle",
+      "default": true
+    }
+  },
   "translation": {
     "en-US": {
       "primary_key": "Primary Key",
-      "immutable": "Can not be changed"
+      "immutable": "Can not be changed",
+      "monospace": "Monospace",
+      "monospace_comment": "Use a monospace font"
     },
 	"fr-FR": {
       "primary_key": "Clef primaire",

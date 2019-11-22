@@ -168,6 +168,9 @@ export default {
   margin: -4px;
   .form-checkbox {
     padding: 4px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 }
 </style>

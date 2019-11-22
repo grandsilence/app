@@ -30,22 +30,27 @@
           v-if="selection.length > 1"
           key="edit"
           icon="mode_edit"
-          color="warning"
+          background-color="warning"
+          icon-color="white"
+          hover-color="warning-dark"
           :label="$t('batch')"
-          :to="`/collections/${collection}/${selection.join(',')}`"
+          :to="batchURL"
         />
         <v-header-button
           v-if="selection.length"
           key="delete"
           icon="delete_outline"
-          color="danger"
+          background-color="danger"
+          icon-color="white"
+          hover-color="danger-dark"
           :label="$t('delete')"
           @click="confirmRemove = true"
         />
         <v-header-button
           key="add"
           icon="add"
-          color="action"
+          background-color="button-primary-background-color"
+          icon-color="button-primary-text-color"
           :label="$t('new')"
           @click="newModal = true"
         />
@@ -72,7 +77,7 @@
 
     <v-info-sidebar v-if="preferences">
       <template slot="system">
-        <label for="listing" class="style-4">{{ $t("view_type") }}</label>
+        <label for="listing" class="type-label">{{ $t("view_type") }}</label>
         <v-select
           id="listing"
           :options="layoutNames"
@@ -139,9 +144,10 @@
 
 <script>
 import shortid from "shortid";
-import store from "../store/";
+import store from "@/store/";
 import VSearchFilter from "../components/search-filter/search-filter.vue";
 import VNotFound from "./not-found.vue";
+import { mapState } from "vuex";
 
 import api from "../api";
 
@@ -175,13 +181,17 @@ export default {
     };
   },
   computed: {
+    ...mapState(["currentProjectKey"]),
     breadcrumb() {
       return [
         {
           name: this.$t("file_library"),
-          path: "/files"
+          path: `/${this.currentProjectKey}/files`
         }
       ];
+    },
+    batchURL() {
+      return `/${this.currentProjectKey}/files/${this.selection.map(item => item.id).join(",")}`;
     },
     fields() {
       const fields = this.$store.state.collections[this.collection].fields;
@@ -371,7 +381,10 @@ export default {
       this.$store.dispatch("loadingStart", { id });
 
       this.$api
-        .deleteItems(this.collection, this.selection.map(item => item.id))
+        .deleteItems(
+          this.collection,
+          this.selection.map(item => item.id)
+        )
         .then(() => {
           this.$store.dispatch("loadingFinished", id);
           this.$refs.listing.getItems();
@@ -424,7 +437,7 @@ export default {
     }
 
     if (collectionInfo && collectionInfo.single) {
-      return next(`/collections/${collection}/1`);
+      return next(`/${store.state.currentProjectKey}/collections/${collection}/1`);
     }
 
     const id = shortid.generate();
@@ -464,7 +477,7 @@ export default {
     }
 
     if (collectionInfo && collectionInfo.single) {
-      return next(`/collections/${collection}/1`);
+      return next(`/${store.state.currentProjectKey}/collections/${collection}/1`);
     }
 
     const id = this.$helpers.shortid.generate();
@@ -491,31 +504,31 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-label.style-4 {
-  padding-bottom: 5px;
+.type-label {
+  padding-bottom: var(--input-label-margin);
 }
 .bookmark {
-  margin-left: 10px;
-  opacity: 0.4;
+  margin-left: 8px;
   transition: opacity var(--fast) var(--transition);
+  color: var(--input-border-color);
   position: relative;
   &:hover {
-    opacity: 1;
+    color: var(--input-border-color-hover);
   }
   i {
     font-size: 24px;
     height: 20px;
-    transform: translateY(-3px); // Vertical alignment of icon
+    transform: translateY(-1px); // Vertical alignment of icon
   }
 }
 .bookmark.active {
   opacity: 1;
   i {
-    color: var(--accent);
+    color: var(--input-background-color-active);
   }
 }
 .bookmark-name {
-  color: var(--darkest-gray);
+  color: var(--blue-grey-900);
   margin-left: 5px;
   margin-top: 3px;
   font-size: 0.77em;

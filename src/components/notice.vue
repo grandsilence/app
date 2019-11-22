@@ -30,7 +30,7 @@ export default {
       type: String,
       default: "gray",
       validator(val) {
-        return ["gray", "accent", "warning", "danger", "success"].includes(val);
+        return ["gray", "gray-subdued", "accent", "warning", "danger", "success"].includes(val);
       }
     },
     icon: {
@@ -47,18 +47,34 @@ export default {
   padding: 16px;
   border-radius: var(--border-radius);
   max-width: 632px;
+  font-size: var(--input-font-size);
   vertical-align: middle;
+  display: flex;
+  align-items: center;
   .icon {
     margin-right: 12px;
     line-height: 0;
     margin-top: -2px;
   }
   &.gray {
-    background-color: var(--lightest-gray);
+    color: var(--notice-text-color);
+    background-color: var(--notice-background-color);
+  }
+  &.gray-subdued {
+    color: var(--notice-text-color-alt);
+    background-color: var(--notice-background-color);
+  }
+  &.danger {
+    color: var(--danger);
+    background-color: var(--danger-light);
   }
   &.warning {
     color: var(--warning);
     background-color: var(--warning-light);
+  }
+  &.success {
+    color: var(--success);
+    background-color: var(--success-light);
   }
 }
 </style>

@@ -31,7 +31,7 @@ export default {
 
 <style lang="scss" scoped>
 .buttons {
-  margin-top: 30px;
+  margin-top: 32px;
 
   .confirm {
     float: right;

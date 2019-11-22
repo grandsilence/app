@@ -6,6 +6,8 @@
     :name="name"
     :min="options.min"
     :max="options.max"
+    :icon-left="options.iconLeft"
+    :icon-right="options.iconRight"
     :readonly="readonly"
     :value="value"
     @input="$emit('input', $event)"

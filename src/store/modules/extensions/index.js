@@ -1,14 +1,14 @@
 import * as actions from "./actions";
 import mutations from "./mutations";
 
-const state = {
+export const initialState = {
   layouts: {},
   interfaces: {},
   pages: {}
 };
 
 export default {
-  state,
+  state: _.clone(initialState),
   actions,
   mutations
 };

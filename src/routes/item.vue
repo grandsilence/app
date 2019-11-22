@@ -13,7 +13,7 @@
   </div>
 
   <div v-else-if="fields === null">
-    <v-header :icon-link="`/collections`" />
+    <v-header :icon-link="`/${currentProjectKey}/collections`" />
     <v-loader area="content" />
   </div>
 
@@ -21,9 +21,10 @@
     <v-header
       :breadcrumb="breadcrumb"
       :info-toggle="!newItem && !batch && !activityDetail"
-      :icon-link="singleItem ? null : `/collections/${collection}`"
+      :icon-link="iconLink"
       :icon="singleItem ? collectionInfo.icon || 'box' : 'arrow_back'"
       item-detail
+      :settings="collection === 'directus_webhooks'"
     >
       <template v-if="status" slot="title">
         <span
@@ -36,8 +37,9 @@
         <v-header-button
           v-if="!newItem && !singleItem && permission.delete !== 'none'"
           icon="delete_outline"
-          color="gray"
-          hover-color="danger"
+          icon-color="white"
+          background-color="danger"
+          hover-color="danger-dark"
           :label="$t('delete')"
           @click="confirmRemove = true"
         />
@@ -48,8 +50,9 @@
           :loading="saving"
           :label="$t('save')"
           icon="check"
-          color="action"
-          hover-color="success"
+          icon-color="button-primary-text-color"
+          background-color="button-primary-background-color"
+          hover-color="button-primary-background-color-hover"
           @click="confirmBatchSave = true"
         />
 
@@ -60,8 +63,9 @@
           :label="$t('save')"
           :options="saveOptions"
           icon="check"
-          color="action"
-          hover-color="success"
+          icon-color="button-primary-text-color"
+          background-color="button-primary-background-color"
+          hover-color="button-primary-background-color-hover"
           @click="singleItem ? save('stay') : save('leave')"
           @input="save"
         />
@@ -78,13 +82,9 @@
         @input="postComment"
         @revert="revertActivity = $event"
       />
-
-      <router-link v-if="canReadActivity" to="/activity" class="notifications">
-        <div class="preview">
-          <v-icon name="notifications" color="light-gray" />
-          <span>{{ $t("notifications") }}</span>
-        </div>
-      </router-link>
+    </v-info-sidebar>
+    <v-info-sidebar v-else wide>
+      <span class="type-note">No settings</span>
     </v-info-sidebar>
 
     <v-form
@@ -118,6 +118,7 @@
 
     <portal v-if="confirmNavigation" to="modal">
       <v-confirm
+        title="Unsaved Changes"
         :message="$t('unsaved_changes_copy')"
         :confirm-text="$t('keep_editing')"
         :cancel-text="$t('discard_changes')"
@@ -179,6 +180,7 @@ import formatTitle from "@directus/format-title";
 import VNotFound from "./not-found.vue";
 import store from "../store/";
 import api from "../api";
+import { mapState } from "vuex";
 
 function getFieldsQuery(collection) {
   const fields = store.state.collections[collection].fields;
@@ -196,7 +198,6 @@ function getFieldsQuery(collection) {
       }
 
       if (
-        (fieldInfo.type && fieldInfo.type.toLowerCase()) === "m2o" ||
         (fieldInfo.type && fieldInfo.type.toLowerCase()) === "o2m" ||
         (fieldInfo.type && fieldInfo.type.toLowerCase()) === "m2m" ||
         (fieldInfo.type && fieldInfo.type.toLowerCase()) === "translation" ||
@@ -244,10 +245,6 @@ export default {
     VActivity
   },
   props: {
-    collection: {
-      type: String,
-      required: true
-    },
     primaryKey: {
       type: null,
       required: true
@@ -278,6 +275,24 @@ export default {
     };
   },
   computed: {
+    ...mapState(["currentProjectKey"]),
+    collection() {
+      if (this.$route.path.includes("settings/webhooks")) return "directus_webhooks";
+      return this.$route.params.collection;
+    },
+    iconLink() {
+      if (this.singleItem) return null;
+
+      if (this.collection === "directus_webhooks") {
+        return `/${this.currentProjectKey}/settings/webhooks`;
+      }
+
+      if (this.collection.startsWith("directus_")) {
+        return `/${this.currentProjectKey}/${this.collection.substring(9)}`;
+      }
+
+      return `/${this.currentProjectKey}/collections/${this.collection}`;
+    },
     saveOptions() {
       if (this.singleItem) {
         return {};
@@ -319,7 +334,7 @@ export default {
         return [
           {
             name: this.$t("user_directory"),
-            path: "/users"
+            path: `/${this.currentProjectKey}/users`
           },
           {
             name: crumbName,
@@ -332,7 +347,24 @@ export default {
         return [
           {
             name: this.$t("file_library"),
-            path: "/files"
+            path: `/${this.currentProjectKey}/files`
+          },
+          {
+            name: this.newItem ? this.$t("creating_item") : this.$t("editing_item"),
+            path: this.$route.path
+          }
+        ];
+      }
+
+      if (this.collection === "directus_webhooks") {
+        return [
+          {
+            name: this.$t("settings"),
+            path: `/${this.currentProjectKey}/settings`
+          },
+          {
+            name: this.$t("settings_webhooks"),
+            path: `/${this.currentProjectKey}/settings/webhooks`
           },
           {
             name: this.newItem ? this.$t("creating_item") : this.$t("editing_item"),
@@ -345,7 +377,7 @@ export default {
         return [
           {
             name: this.$t("collections"),
-            path: "/collections"
+            path: `/${this.currentProjectKey}/collections`
           },
           {
             name: this.$t("editing_single", {
@@ -361,17 +393,17 @@ export default {
       if (this.collection.startsWith("directus_")) {
         breadcrumb.push({
           name: this.$helpers.formatTitle(this.collection.substr(9)),
-          path: `/${this.collection.substring(9)}`
+          path: `/${this.currentProjectKey}/${this.collection.substring(9)}`
         });
       } else {
         breadcrumb.push(
           {
             name: this.$t("collections"),
-            path: "/collections"
+            path: `/${this.currentProjectKey}/collections`
           },
           {
             name: this.$t(`collections-${this.collection}`),
-            path: `/collections/${this.collection}`
+            path: `/${this.currentProjectKey}/collections/${this.collection}`
           }
         );
       }
@@ -506,9 +538,6 @@ export default {
     permissions() {
       return this.$store.state.permissions;
     },
-    canReadActivity() {
-      return this.permissions.directus_activity.read !== "none";
-    },
     readonly() {
       return this.permission.update === "none";
     },
@@ -557,7 +586,7 @@ export default {
     },
     notFound(notFound) {
       if (this.singleItem && notFound === true) {
-        this.$router.push(`/collections/${this.collection}/+`);
+        this.$router.push(`/${this.currentProjectKey}/collections/${this.collection}/+`);
       }
     }
   },
@@ -622,7 +651,7 @@ export default {
           });
           this.confirmRemoveLoading = false;
           this.confirmRemove = false;
-          this.$router.push(`/collections/${this.collection}`);
+          this.$router.push(`/${this.currentProjectKey}/collections/${this.collection}`);
         })
         .catch(error => {
           this.$store.dispatch("loadingFinished", id);
@@ -673,11 +702,20 @@ export default {
               color: "green",
               iconMain: "check"
             });
-            if (this.collection.startsWith("directus_")) {
-              return this.$router.push(`/${this.collection.substring(9)}/${pk}`);
+
+            if (this.collection === "directus_webhooks") {
+              return this.$router.push(`/${this.currentProjectKey}/settings/webhooks/${pk}`);
             }
 
-            return this.$router.push(`/collections/${this.collection}/${pk}`);
+            if (this.collection.startsWith("directus_")) {
+              return this.$router.push(
+                `/${this.currentProjectKey}/${this.collection.substring(9)}/${pk}`
+              );
+            }
+
+            return this.$router.push(
+              `/${this.currentProjectKey}/collections/${this.collection}/${pk}`
+            );
           })
           .catch(error => {
             this.$store.dispatch("loadingFinished", id);
@@ -712,11 +750,17 @@ export default {
           });
 
           if (method === "leave") {
-            if (this.collection.startsWith("directus_")) {
-              return this.$router.push(`/${this.collection.substring(9)}`);
+            if (this.collection === "directus_webhooks") {
+              return this.$router.push(`/${this.currentProjectKey}/settings/webhooks`);
             }
 
-            return this.$router.push(`/collections/${this.collection}`);
+            if (this.collection.startsWith("directus_")) {
+              return this.$router.push(
+                `/${this.currentProjectKey}/${this.collection.substring(9)}`
+              );
+            }
+
+            return this.$router.push(`/${this.currentProjectKey}/collections/${this.collection}`);
           }
 
           if (method === "stay") {
@@ -724,7 +768,22 @@ export default {
 
             if (this.newItem) {
               const primaryKey = savedValues[this.primaryKeyField];
-              return this.$router.push(`/collections/${this.collection}/${primaryKey}`);
+
+              if (this.collection === "directus_webhooks") {
+                return this.$router.push(
+                  `/${this.currentProjectKey}/settings/webhooks/${primaryKey}`
+                );
+              }
+
+              if (this.collection.startsWith("directus_")) {
+                return this.$router.push(
+                  `/${this.currentProjectKey}/${this.collection.substring(9)}/${primaryKey}`
+                );
+              }
+
+              return this.$router.push(
+                `/${this.currentProjectKey}/collections/${this.collection}/${primaryKey}`
+              );
             }
 
             this.$store.dispatch("startEditing", {
@@ -744,7 +803,7 @@ export default {
                 savedValues: {}
               });
             } else {
-              this.$router.push(`/collections/${this.collection}/+`);
+              this.$router.push(`/${this.currentProjectKey}/collections/${this.collection}/+`);
             }
           }
         })
@@ -770,7 +829,8 @@ export default {
         this.$api.getActivity({
           "filter[collection][eq]": this.collection,
           "filter[item][eq]": this.primaryKey,
-          fields: "id,action,action_on,comment,action_by.first_name,action_by.last_name",
+          fields:
+            "id,action,action_on,comment,action_by.id,action_by.first_name,action_by.last_name",
           sort: "-action_on"
         }),
         this.activityDetail
@@ -800,6 +860,7 @@ export default {
                 id: act.id,
                 date,
                 name,
+                action_by: act.action_by.id,
                 action: act.action.toLowerCase(),
                 comment: act.comment
               };
@@ -852,7 +913,7 @@ export default {
       store.dispatch("loadingStart", { id });
       const currentUser = this.$store.state.currentUser;
 
-      this.$api
+      this.$api.api
         .post("/activity/comment", {
           collection: this.collection,
           item: this.primaryKey,
@@ -908,7 +969,9 @@ export default {
     }
   },
   beforeRouteEnter(to, from, next) {
-    const { collection, primaryKey } = to.params;
+    let { collection, primaryKey } = to.params;
+
+    if (!collection && to.path.includes("settings/webhooks")) collection = "directus_webhooks";
     const exists =
       Object.keys(store.state.collections).includes(collection) ||
       collection.startsWith("directus_");
@@ -945,7 +1008,7 @@ export default {
       })
       .catch(error => {
         store.dispatch("loadingFinished", id);
-        if (error && error.code === 203) {
+        if (error && +error.code === 203) {
           return next(vm => (vm.$data.notFound = true));
         }
 
@@ -1016,7 +1079,7 @@ export default {
       })
       .catch(error => {
         this.$store.dispatch("loadingFinished", id);
-        if (error && error.code === 203) {
+        if (error && +error.code === 203) {
           this.notFound = true;
           return next();
         }
@@ -1049,8 +1112,7 @@ export default {
 
 <style lang="scss" scoped>
 .edit {
-  padding: var(--page-padding);
-  padding-bottom: var(--page-padding-bottom);
+  padding: var(--page-padding-top) var(--page-padding) var(--page-padding-bottom);
 }
 
 .revert {
@@ -1071,37 +1133,5 @@ export default {
 
 .activity {
   margin-bottom: 64px;
-}
-
-.notifications {
-  position: fixed;
-  width: var(--info-sidebar-width);
-  bottom: 0;
-  right: 0;
-  text-decoration: none;
-  padding: 20px;
-  background-color: #dde3e6;
-  color: var(--darker-gray);
-  display: block;
-
-  .preview {
-    display: flex;
-    align-items: center;
-
-    span {
-      flex-grow: 1;
-      margin-left: 10px;
-    }
-  }
-
-  select {
-    opacity: 0;
-    width: 100%;
-    height: 100%;
-    position: absolute;
-    top: 0;
-    left: 0;
-    cursor: pointer;
-  }
 }
 </style>

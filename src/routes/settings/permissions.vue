@@ -1,6 +1,6 @@
 <template>
   <div v-if="error">
-    <v-header :icon-link="`/settings/roles`" icon-color="warning" />
+    <v-header :icon-link="`/${currentProjectKey}/settings/roles`" settings />
     <v-error
       v-if="error"
       icon="error_outline"
@@ -11,15 +11,16 @@
   </div>
 
   <div v-else class="settings-permissions">
-    <v-header :breadcrumb="breadcrumb" icon-link="/settings/roles" icon-color="warning">
+    <v-header :breadcrumb="breadcrumb" :icon-link="`/${currentProjectKey}/settings/roles`" settings>
       <template slot="buttons">
         <v-header-button
           v-if="!isNew && !isSystem"
           :loading="removing"
           :label="$t('delete')"
           icon="delete_outline"
-          color="gray"
-          hover-color="danger"
+          icon-color="white"
+          background-color="danger"
+          hover-color="danger-dark"
           @click="confirmRemove = true"
         />
         <v-header-button
@@ -27,13 +28,14 @@
           :loading="saving"
           :label="$t('save')"
           icon="check"
-          color="action"
+          background-color="button-primary-background-color"
+          icon-color="button-primary-text-color"
           @click="save"
         />
       </template>
     </v-header>
 
-    <label>{{ $t("permissions") }}</label>
+    <label class="type-label">{{ $t("permissions") }}</label>
     <v-notice v-if="isAdmin" color="warning" class="admin-note">
       {{ $t("permissions_admin") }}
     </v-notice>
@@ -64,6 +66,9 @@
         @confirm="remove"
       />
     </portal>
+    <v-info-sidebar wide>
+      <span class="type-note">No settings</span>
+    </v-info-sidebar>
   </div>
 </template>
 
@@ -73,6 +78,7 @@ import formatTitle from "@directus/format-title";
 import api from "../../api";
 import VPermissions from "../../components/permissions/permissions.vue";
 import { defaultNone } from "../../store/modules/permissions/defaults";
+import { mapState } from "vuex";
 
 export default {
   name: "SettingsPermissions",
@@ -111,6 +117,7 @@ export default {
     };
   },
   computed: {
+    ...mapState(["currentProjectKey"]),
     isNew() {
       return this.$route.params.id === "+";
     },
@@ -134,16 +141,16 @@ export default {
         return [
           {
             name: this.$t("settings"),
-            path: "/settings",
+            path: `/${this.currentProjectKey}/settings`,
             color: "warning"
           },
           {
             name: this.$t("roles"),
-            path: "/settings/roles"
+            path: `/${this.currentProjectKey}/settings/roles`
           },
           {
             name: this.$t("creating_role"),
-            path: "/settings/roles/+"
+            path: `/${this.currentProjectKey}/settings/roles/+`
           }
         ];
       }
@@ -151,15 +158,15 @@ export default {
       return [
         {
           name: this.$t("settings"),
-          path: "/settings"
+          path: `/${this.currentProjectKey}/settings`
         },
         {
           name: this.$t("roles"),
-          path: "/settings/roles"
+          path: `/${this.currentProjectKey}/settings/roles`
         },
         {
           name: this.$helpers.formatTitle(this.role.name),
-          path: `/settings/roles/${this.role.id}`
+          path: `/${this.currentProjectKey}/settings/roles/${this.role.id}`
         }
       ];
     },
@@ -259,8 +266,11 @@ export default {
           });
         });
     }
+    const params = {
+      fields: "*.*.*"
+    };
 
-    return Promise.all([api.getRole(+id), api.getFields("directus_roles")])
+    return Promise.all([api.getRole(+id, params), api.getFields("directus_roles")])
       .then(([roleRes, fieldsRes]) => ({
         role: roleRes.data,
         fields: keyBy(
@@ -309,7 +319,7 @@ export default {
         .then(() => {
           this.$store.dispatch("loadingFinished", id);
           this.saving = false;
-          this.$router.push("/settings/roles");
+          this.$router.push(`/${this.currentProjectKey}/settings/roles`);
           this.$store.dispatch("getCurrentUser");
         })
         .catch(error => {
@@ -427,7 +437,7 @@ export default {
         .then(() => {
           this.$store.dispatch("loadingFinished", id);
           this.removing = false;
-          this.$router.push("/settings/roles");
+          this.$router.push(`${this.currentProjectKey}/settings/roles`);
         })
         .catch(error => {
           this.$store.dispatch("loadingFinished", id);
@@ -532,17 +542,11 @@ export default {
 
 <style lang="scss" scoped>
 .settings-permissions {
-  padding: var(--page-padding);
-  padding-bottom: var(--page-padding-bottom);
+  padding: var(--page-padding-top) var(--page-padding) var(--page-padding-bottom);
 }
 
 label {
-  margin-bottom: 10px;
-  text-transform: none;
-  color: var(--darker-gray);
-  font-size: 1.2rem;
-  line-height: 1.1;
-  font-weight: 400;
+  margin-bottom: var(--input-label-margin);
   text-overflow: ellipsis;
   white-space: nowrap;
   overflow: hidden;

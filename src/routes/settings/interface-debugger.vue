@@ -1,8 +1,12 @@
 <template>
   <div class="interface-debugger">
-    <v-header :breadcrumb="links" :icon-link="`/settings/interfaces`" icon-color="warning" />
+    <v-header
+      :breadcrumb="links"
+      :icon-link="`/${currentProjectKey}/settings/interfaces`"
+      settings
+    />
 
-    <label>Dummy Label</label>
+    <label class="type-label">Dummy Label</label>
 
     <div :style="{ width: width + 'px' }" class="interface">
       <v-ext-input
@@ -24,14 +28,13 @@
 
     <form @submit.prevent>
       <fieldset>
-        <legend>Output</legend>
+        <legend class="type-label">Output</legend>
 
-        <label for="value">Value</label>
-        <p>The value saved into the database</p>
+        <label for="value" class="type-label">Value</label>
         <v-input id="value" v-model="value" type="text" class="value" />
+        <p class="type-note">The value saved into the database</p>
 
-        <label>Display</label>
-        <p>Appearance on the Items Page (eg: Tabular)</p>
+        <label class="type-label">Display</label>
         <div class="listing">
           <v-ext-display
             v-model="value"
@@ -47,11 +50,12 @@
             :relation="relation"
           />
         </div>
+        <p class="type-note">Appearance on the Items Page (eg: Tabular)</p>
       </fieldset>
       <fieldset>
-        <legend>Options</legend>
+        <legend class="type-label">Options</legend>
         <div v-for="(option, optionID) in extension.options" :key="optionID" class="options">
-          <label :for="optionID">{{ option.name }}</label>
+          <label :for="optionID" class="type-label">{{ option.name }}</label>
           <p v-if="options.comment" v-html="$helpers.snarkdown(option.comment)" />
           <v-ext-input
             :id="option.interface"
@@ -67,32 +71,31 @@
         </div>
       </fieldset>
       <fieldset>
-        <legend>Settings</legend>
+        <legend class="type-label">Settings</legend>
 
         <div class="settings">
-          <label for="type">Type</label>
-          <p>Allowed datatypes this interface supports</p>
+          <label for="type" class="type-label">Type</label>
           <v-simple-select id="type" v-model="type" class="small">
             <option v-for="type in extension.types" :key="type" :value="type">
               {{ type }}
             </option>
           </v-simple-select>
+          <p class="type-note">Allowed datatypes this interface supports</p>
         </div>
 
         <div class="settings">
-          <label for="length">Length</label>
-          <p>Database length for the column</p>
+          <label for="length" class="type-label">Length</label>
           <v-input id="length" v-model="length" type="number" class="length" :min="0" />
+          <p class="type-note">Database length for the column</p>
         </div>
 
         <div class="settings">
-          <label for="collection">Collection</label>
-          <p>The parent collection for this field</p>
+          <label for="collection" class="type-label">Collection</label>
           <v-input id="collection" v-model="collection" class="value" />
+          <p class="type-note">The parent collection for this field</p>
         </div>
 
         <div class="settings">
-          <p>Toggle the readonly/disabled state</p>
           <v-checkbox
             id="readonly"
             v-model="readonly"
@@ -100,11 +103,11 @@
             class="checkbox"
             type="checkbox"
           />
-          <label for="readonly" class="inline">Read only</label>
+          <label for="readonly" class="inline type-label">Read only</label>
+          <p class="type-note">Toggle the readonly/disabled state</p>
         </div>
 
         <div class="settings">
-          <p>Toggle the required state</p>
           <v-checkbox
             id="required"
             v-model="required"
@@ -112,11 +115,11 @@
             class="checkbox"
             type="checkbox"
           />
-          <label for="required" class="inline">Required</label>
+          <label for="required" class="inline type-label">Required</label>
+          <p class="type-note">Toggle the required state</p>
         </div>
 
         <div class="settings">
-          <p>Toggle the loading state (Beta)</p>
           <v-checkbox
             id="loading"
             v-model="loading"
@@ -124,15 +127,16 @@
             class="checkbox"
             type="checkbox"
           />
-          <label for="loading" class="inline">Loading</label>
+          <label for="loading" class="inline type-label">Loading</label>
+          <p class="type-note">Toggle the loading state (Beta)</p>
         </div>
       </fieldset>
       <fieldset>
-        <legend>Relation</legend>
+        <legend class="type-label">Relation</legend>
 
         <div class="relation">
           <div class="settings">
-            <label for="collection_many">Collection Many</label>
+            <label for="collection_many" class="type-label">Collection Many</label>
             <v-input
               id="collection_many"
               v-model="relation.collection_many"
@@ -142,12 +146,12 @@
           </div>
 
           <div class="settings">
-            <label for="field_many">Field Many</label>
+            <label for="field_many" class="type-label">Field Many</label>
             <v-input id="field_many" v-model="relation.field_many" type="text" class="value" />
           </div>
 
           <div class="settings">
-            <label for="collection_one">Collection One</label>
+            <label for="collection_one" class="type-label">Collection One</label>
             <v-input
               id="collection_one"
               v-model="relation.collection_one"
@@ -157,12 +161,12 @@
           </div>
 
           <div class="settings">
-            <label for="field_one">Field One</label>
+            <label for="field_one" class="type-label">Field One</label>
             <v-input id="field_one" v-model="relation.field_one" type="text" class="value" />
           </div>
 
           <div class="settings">
-            <label for="junction_field">Junction Field</label>
+            <label for="junction_field" class="type-label">Junction Field</label>
             <v-input
               id="junction_field"
               v-model="relation.junction_field"
@@ -173,20 +177,24 @@
         </div>
       </fieldset>
       <fieldset>
-        <legend>Misc.</legend>
+        <legend class="type-label">Misc.</legend>
 
         <div class="misc">
-          <p>Toggle viewing between New and Edit</p>
           <v-checkbox id="new" v-model="newItem" value="newItem" class="checkbox" type="checkbox" />
-          <label for="new" class="inline">New item</label>
+          <label for="new" class="inline type-label">New item</label>
+          <p class="type-note">Toggle viewing between New and Edit</p>
         </div>
       </fieldset>
     </form>
+    <v-info-sidebar wide>
+      <span class="type-note">No settings</span>
+    </v-info-sidebar>
   </div>
 </template>
 
 <script>
 import mapping, { datatypes } from "../../type-map";
+import { mapState } from "vuex";
 
 export default {
   name: "InterfaceDebugger",
@@ -283,19 +291,20 @@ export default {
     };
   },
   computed: {
+    ...mapState(["currentProjectKey"]),
     links() {
       return [
         {
           name: this.$t("settings"),
-          path: "/settings"
+          path: `/${this.currentProjectKey}/settings`
         },
         {
           name: this.$t("interfaces"),
-          path: "/settings/interfaces"
+          path: `/${this.currentProjectKey}/settings/interfaces`
         },
         {
           name: this.extension.name,
-          path: `/settings/interfaces/${this.id}`
+          path: `/${this.currentProjectKey}/settings/interfaces/${this.id}`
         }
       ];
     },
@@ -365,28 +374,37 @@ export default {
 
 <style scoped lang="scss">
 .interface-debugger {
-  padding: var(--page-padding);
+  padding: var(--page-padding-top) var(--page-padding) var(--page-padding-bottom);
+}
+
+form {
+  margin-top: var(--form-vertical-gap);
+}
+
+label.type-label {
+  margin-top: var(--form-vertical-gap);
+  margin-bottom: var(--input-label-margin);
+}
+
+.type-note {
+  margin-top: var(--input-note-margin);
 }
 
 .checkbox {
   width: auto;
   display: inline-block;
   vertical-align: middle;
-  padding-right: 5px;
 }
 
 .interface {
-  margin-bottom: 40px;
   max-width: 100%;
 }
 
 .value {
-  margin-bottom: 20px;
   max-width: 300px;
 }
 
 .listing {
-  margin-bottom: 40px;
   max-width: 100%;
 }
 
@@ -399,30 +417,25 @@ export default {
 }
 
 label {
-  margin-bottom: 10px;
+  margin-bottom: var(--input-label-margin);
   width: max-content;
 }
 
 fieldset {
-  border-top: 1px solid var(--lighter-gray);
+  border-top: 2px solid var(--blue-grey-50);
+  margin: 40px 0;
 
   legend {
-    color: var(--gray);
+    color: var(--blue-grey-200);
     padding: 10px 20px;
     text-align: center;
   }
 
   p {
-    color: var(--light-gray);
+    color: var(--blue-grey-300);
     padding-bottom: 10px;
     font-style: italic;
     max-width: 460px;
-  }
-
-  .settings,
-  .options,
-  .misc {
-    margin-bottom: 40px;
   }
 }
 

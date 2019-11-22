@@ -1,5 +1,5 @@
 {
-  "name": "$t:wysiwyg",
+  "name": "WYSIWYG",
   "version": "1.0.1",
   "types": ["string"],
   "icon": "format_quote",
@@ -7,58 +7,85 @@
     "length": 65534
   },
   "options": {
-    "placeholder": {
-      "name": "$t:placeholder",
-      "comment": "$t:placeholder_comment",
-      "interface": "text-input",
-      "length": 200
-    },
-    "buttons": {
-      "name": "$t:buttons",
-      "comment": "$t:buttons_comment",
+    "toolbar": {
+      "name": "Toolbar Options",
+      "comment": "Show, hide and reorder toolbar options",
       "interface": "checkboxes",
-      "default": ["bold", "italic", "underline", "anchor", "h2", "h3", "quote"],
+      "default": [
+        "bold",
+        "italic",
+        "underline",
+        "removeformat",
+        "link",
+        "bullist",
+        "numlist",
+        "blockquote",
+        "h1",
+        "h2",
+        "h3",
+        "image",
+        "media",
+        "hr",
+        "code"
+      ],
       "options": {
-        "wrap": false,
         "choices": {
+          "aligncenter": "Align Center",
+          "alignjustify": "Align Justify",
+          "alignleft": "Align Left",
+          "alignnone": "Align None",
+          "alignright": "Align Right",
+          "forecolor": "Foreground Color",
+          "backcolor": "Background Color",
           "bold": "Bold",
           "italic": "Italic",
           "underline": "Underline",
           "strikethrough": "Strikethrough",
           "subscript": "Subscript",
           "superscript": "Superscript",
-          "anchor": "Link",
-          "quote": "Quote",
-          "pre": "Pre",
-          "orderedlist": "Ordered List",
-          "unorderedlist": "Unordered List",
-          "h1": "H1",
-          "h2": "H2",
-          "h3": "H3",
-          "h4": "H4",
-          "h5": "H5",
-          "h6": "H6",
-          "removeFormat": "Remove all formatting"
+          "blockquote": "Blockquote",
+          "bullist": "Bullet List",
+          "numlist": "Numbered List",
+          "hr": "Horizontal Rule",
+          "link": "Add Link",
+          "unlink": "Remove Link",
+          "media": "Add Media",
+          "image": "Add Image",
+          "copy": "Copy",
+          "cut": "Cut",
+          "paste": "Paste",
+          "h1": "Heading 1",
+          "h2": "Heading 2",
+          "h3": "Heading 3",
+          "h4": "Heading 4",
+          "h5": "Heading 5",
+          "h6": "Heading 6",
+          "fontselect": "Select Font",
+          "fontsizeselect": "Select Font Size",
+          "indent": "Indent",
+          "outdent": "Outdent",
+          "undo": "Undo",
+          "redo": "Redo",
+          "remove": "Remove",
+          "removeformat": "Remove Format",
+          "selectall": "Select All",
+          "table": "Table",
+          "visualaid": "View invisible elements",
+          "code": "View Source"
         }
       }
-    }
-  },
-  "translation": {
-    "en-US": {
-      "wysiwyg": "WYSIWYG",
-      "placeholder": "Placeholder",
-      "placeholder_comment": "Enter placeholder text",
-      "buttons": "Buttons",
-      "buttons_comment": "Choose what buttons to use in the toolbar",
-      "distraction_free_mode": "Distracton Free Mode"
     },
-	"fr-FR": {
-      "wysiwyg": "Editeur simplifié de contenu avec présentation « tel écran, tel écrit »",
-      "placeholder": "Paramètre fictif",
-      "placeholder_comment": "Texte statique qui est affiché avant la sélection d'une valeur",
-      "buttons": "Boutons",
-      "buttons_comment": "Choix des boutons utilisables à travers la barre d'outils",
-      "distraction_free_mode": "Mode « non distractif »"
+    "custom_formats": {
+      "name": "Custom Formats",
+      "comment": "Custom HTML wrappers for content",
+      "interface": "json",
+      "default": [{
+        "title": "My Custom Format",
+        "inline": "span",
+        "classes": "custom-wrapper",
+        "styles": { "color": "#00ff00", "font-size": "20px" },
+        "attributes": { "title": "My Custom Wrapper" }
+      }]
     }
   }
 }

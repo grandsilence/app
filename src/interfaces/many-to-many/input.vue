@@ -9,12 +9,17 @@
         <div class="header">
           <div class="row">
             <button v-if="sortable" class="sort-column" @click="toggleManualSort">
-              <v-icon name="sort" size="18" :color="manualSortActive ? 'action' : 'light-gray'" />
+              <v-icon
+                name="sort"
+                size="18"
+                :color="manualSortActive ? 'action' : 'blue-grey-300'"
+              />
             </button>
             <button
               v-for="field in visibleFields"
               :key="field.field"
               type="button"
+              class="type-table-head"
               @click="changeSort(field.field)"
             >
               {{ $helpers.formatTitle(field.field) }}
@@ -66,7 +71,7 @@
         </draggable>
       </div>
 
-      <v-notice v-else>{{ $t("no_items_selected") }}</v-notice>
+      <v-notice v-else color="gray-subdued" icon="info">{{ $t("no_items_selected") }}</v-notice>
 
       <div v-if="!readonly" class="buttons">
         <v-button
@@ -495,8 +500,8 @@ export default {
 
 <style lang="scss" scoped>
 .table {
-  background-color: var(--white);
-  border: var(--input-border-width) solid var(--lighter-gray);
+  background-color: var(--page-background-color);
+  border: var(--input-border-width) solid var(--input-border-color);
   border-radius: var(--border-radius);
   border-spacing: 0;
   width: 100%;
@@ -504,22 +509,16 @@ export default {
 
   .header {
     height: var(--input-height);
-    border-bottom: 2px solid var(--lightest-gray);
+    border-bottom: 2px solid var(--table-head-border-color);
 
     button {
       text-align: left;
-      font-weight: 500;
       transition: color var(--fast) var(--transition);
-
-      &:hover {
-        transition: none;
-        color: var(--darker-gray);
-      }
     }
 
     i {
       vertical-align: top;
-      color: var(--light-gray);
+      color: var(--input-icon-color);
     }
   }
 
@@ -527,6 +526,7 @@ export default {
     display: flex;
     align-items: center;
     padding: 0 5px;
+    color: var(--input-text-color);
 
     > div {
       padding: 3px 5px;
@@ -555,7 +555,7 @@ export default {
       cursor: pointer;
       position: relative;
       height: 50px;
-      border-bottom: 2px solid var(--off-white);
+      border-bottom: 2px solid var(--table-row-border-color);
 
       &:hover {
         background-color: var(--highlight);
@@ -566,7 +566,7 @@ export default {
       }
 
       button {
-        color: var(--lighter-gray);
+        color: var(--input-icon-color);
         transition: color var(--fast) var(--transition);
 
         &:hover {
@@ -585,7 +585,7 @@ export default {
     flex-basis: 36px !important;
 
     &.disabled i {
-      color: var(--lightest-gray);
+      color: var(--input-background-color-disabled);
       cursor: not-allowed;
     }
   }
@@ -613,10 +613,10 @@ export default {
 
 .edit-modal-body {
   padding: 30px 30px 60px 30px;
-  background-color: var(--body-background);
+  background-color: var(--page-background-color);
   .form {
     grid-template-columns:
-      [start] minmax(0, var(--column-width)) [half] minmax(0, var(--column-width))
+      [start] minmax(0, var(--form-column-width)) [half] minmax(0, var(--form-column-width))
       [full];
   }
 }

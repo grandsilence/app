@@ -64,7 +64,7 @@ export default {
   }
   span {
     padding: 13px 12px;
-    background-color: var(--lightest-gray);
+    background-color: var(--blue-grey-50);
     border-radius: var(--border-radius);
   }
 }

@@ -1,15 +1,12 @@
-/* global process */
-
 import store from "./store/";
 
 let fastInterval = null;
 
 export function startPolling() {
+  store.dispatch("latency");
+
   fastInterval = setInterval(() => {
-    // Only track user position / latency in production environments
-    if (process.env.NODE_ENV === "production") {
-      store.dispatch("latency");
-    }
+    store.dispatch("latency");
   }, 10000);
 }
 

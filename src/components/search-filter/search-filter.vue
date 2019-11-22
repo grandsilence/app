@@ -2,10 +2,9 @@
   <div ref="searchFilter" :class="{ open }" class="search-filter">
     <v-header-button
       class="toggle"
-      icon-color="lighter-gray"
       :alert="hasFilters"
       icon="filter_list"
-      no-background
+      outline
       @click="open = !open"
     >
       Filter
@@ -57,7 +56,7 @@
             <p>{{ fields[filter.field] }}</p>
             <span>
               {{ $t(operators[filter.operator]) }}
-              <v-icon name="arrow_drop_down" />
+              <v-icon name="expand_more" size="18" />
               <select @change="updateFilter(i, 'operator', $event.target.value)">
                 <option v-for="(name, operator) in operators" :key="operator" :value="operator">
                   {{ $t(name) }}
@@ -219,11 +218,11 @@ export default {
   left: 0;
   z-index: 19;
   padding: 20px;
-  color: var(--darkest-gray);
+  color: var(--blue-grey-900);
   transform-origin: top;
-  box-shadow: var(--box-shadow);
-  border-bottom: 2px solid var(--lighter-gray);
+  border-bottom: 2px solid var(--input-border-color);
   border-radius: 0 0 var(--border-radius) var(--border-radius);
+  background-color: var(--input-background-color-alt);
 
   @media (min-width: 800px) {
     left: var(--nav-sidebar-width);
@@ -231,8 +230,8 @@ export default {
   }
 
   @media (min-width: 1000px) {
-    border-left: 2px solid var(--lighter-gray);
-    border-right: 2px solid var(--lighter-gray);
+    border-left: 2px solid var(--input-border-color);
+    border-right: 2px solid var(--input-border-color);
     left: 0;
     width: 100%;
   }
@@ -252,16 +251,14 @@ export default {
   .name {
     display: flex;
     align-items: center;
-    font-size: 11px;
-    text-transform: uppercase;
-    margin-bottom: 5px;
-    color: var(--dark-gray);
-    font-weight: 700;
+    margin-bottom: 4px;
+    color: var(--input-placeholder-color);
+    font-weight: 500;
 
     span {
       position: relative;
-      color: var(--darkest-gray);
-      margin-left: 5px;
+      color: var(--input-text-color);
+      margin-left: 4px;
       padding-right: 2em;
       flex-grow: 1;
       display: flex;
@@ -284,11 +281,10 @@ export default {
     }
 
     .remove {
-      text-transform: uppercase;
       opacity: 0;
       transition: var(--fast) var(--transition);
       transition-property: color, opacity;
-      color: var(--gray);
+      color: var(--input-text-color);
 
       &:hover,
       .user-is-tabbing &:focus {
@@ -344,33 +340,38 @@ export default {
 
     .search {
       width: 100%;
-      height: var(--input-height);
+      height: 44px;
       border-radius: 22px;
       display: block;
-      border: 2px solid var(--lighter-gray);
-      color: var(--gray);
+      border: 2px solid var(--input-border-color);
       padding: 10px 40px 10px 40px;
       line-height: 1.5;
       transition: var(--fast) var(--transition);
       transition-property: color, border-color, padding, border-radius;
+      color: var(--input-text-color);
+      background-color: var(--input-background-color);
 
       &::placeholder {
-        color: var(--light-gray);
+        color: var(--input-placeholder-color);
+      }
+
+      &:hover {
+        border-color: var(--input-border-color-hover);
+        outline: 0;
       }
 
       &:focus {
-        color: var(--darker-gray);
-        border-color: var(--gray);
+        border-color: var(--input-border-color-focus);
         outline: 0;
       }
 
       &:focus + i {
-        color: var(--darker-gray);
+        color: var(--blue-grey-800);
       }
 
       &:-webkit-autofill {
-        color: var(--dark-gray) !important;
-        -webkit-text-fill-color: var(--dark-gray) !important;
+        color: var(--input-text-color) !important;
+        -webkit-text-fill-color: var(--input-text-color) !important;
       }
 
       &:-webkit-autofill,
@@ -397,7 +398,7 @@ export default {
       }
 
       > i {
-        color: var(--lighter-gray);
+        color: var(--input-border-color);
         left: 10px;
       }
 
@@ -406,12 +407,13 @@ export default {
       }
 
       .toggle {
+        transition: all var(--fast) var(--transition);
         right: 10px;
-        color: var(--gray);
+        color: var(--input-border-color);
 
         &:hover,
         .user-is-tabbing &:focus {
-          color: var(--darker-gray);
+          color: var(--input-text-color);
         }
 
         &::after {
@@ -424,7 +426,7 @@ export default {
           position: absolute;
           top: -3%;
           right: -3%;
-          border: 2px solid var(--white);
+          border: 2px solid var(--input-background-color);
           transform: scale(0);
           transition: transform var(--fast) var(--transition-out);
         }
@@ -437,8 +439,8 @@ export default {
       }
 
       .clear-filters {
-        right: 40px;
-        color: var(--gray);
+        right: 36px;
+        color: var(--input-text-color);
 
         &:hover,
         .user-is-tabbing &:focus {
@@ -454,7 +456,7 @@ export default {
     &.open {
       .toggle {
         i {
-          color: var(--darker-gray);
+          color: var(--input-text-color);
         }
       }
 

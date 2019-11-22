@@ -41,7 +41,7 @@
       <div id="header-end">
         <div
           id="today"
-          class="button style-btn"
+          class="button"
           :class="{ hidden: monthDistance == 0 }"
           @click="resetMonth()"
         >
@@ -143,9 +143,6 @@ export default {
   },
   methods: {
     getData(date) {
-      this.$store.dispatch("loadingStart", {
-        id: "fetch_cal_items"
-      });
       var dateId = this.viewOptions.date;
       var datetimeId = this.viewOptions.datetime;
       var columnName = "";
@@ -196,11 +193,9 @@ export default {
             item.to = "test";
           });
           this.events = res.data;
-          this.$store.dispatch("loadingFinished", "fetch_cal_items");
         })
         .catch(e => {
           console.log(e);
-          this.$store.dispatch("loadingFinished", "fetch_cal_items");
         });
     },
     increaseYear() {
@@ -377,7 +372,7 @@ export default {
   height: 40px;
   width: 136px;
   border-radius: var(--border-radius);
-  border: var(--input-border-width) solid var(--gray);
+  border: var(--input-border-width) solid var(--blue-grey-400);
   cursor: pointer;
   display: flex;
   align-items: center;
@@ -431,7 +426,7 @@ export default {
   width: 100%;
   z-index: 1;
   border-radius: var(--border-radius);
-  background-color: var(--lighter-gray);
+  background-color: var(--blue-grey-200);
   transition: opacity 100ms;
 }
 
@@ -447,8 +442,8 @@ export default {
 
 .mark-month {
   font-weight: 500;
-  color: var(--darker-gray);
-  /* border: 1px solid var(--dark-gray);
+  color: var(--blue-grey-800);
+  /* border: 1px solid var(--blue-grey-600);
     border-radius: var(--border-radius); */
 }
 
@@ -471,7 +466,7 @@ export default {
 }
 
 #today {
-  color: var(--dark-gray);
+  color: var(--blue-grey-600);
   text-transform: uppercase;
 }
 
