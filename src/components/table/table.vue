@@ -35,7 +35,11 @@
           class="sort type-table-head no-wrap"
           @click="updateSort(field)"
         >
-          {{ widths[field] > 40 ? $helpers.formatField(field, collection) : null }}
+          {{
+            widths[field] > 40
+              ? $helpers.formatField(field, columns[index].fieldInfo.collection)
+              : null
+          }}
           <v-icon
             class="sort-arrow"
             size="12"
