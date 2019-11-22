@@ -64,6 +64,7 @@ export const availableLanguages = {
 };
 
 i18n.availableLanguages = availableLanguages;
+window.i18n = i18n;
 
 /**
  * Load a new language file (if it hasn't been loaded yet) and change the system language
@@ -86,7 +87,7 @@ export async function loadLanguageAsync(lang) {
           /* webpackChunkName: "lang-[request]" */ `@/lang/${lang}/index.json`
         );
 
-        i18n.setLocaleMessage(lang, msgs);
+        i18n.mergeLocaleMessage(lang, msgs);
       } catch {}
 
       try {
