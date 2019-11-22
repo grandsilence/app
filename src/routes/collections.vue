@@ -4,7 +4,7 @@
       :breadcrumb="[
         {
           name: $t('collections'),
-          path: '/collections'
+          path: `/${currentProjectKey}/collections`
         }
       ]"
       icon="box"
@@ -24,11 +24,15 @@
         @select="select"
       />
     </div>
+    <v-info-sidebar wide>
+      <span class="type-note">No settings</span>
+    </v-info-sidebar>
   </div>
 </template>
 
 <script>
 import VError from "../components/error.vue";
+import { mapState } from "vuex";
 
 export default {
   name: "Collections",
@@ -41,6 +45,7 @@ export default {
     VError
   },
   computed: {
+    ...mapState(["currentProjectKey"]),
     items() {
       if (this.collections == null) return [];
 
@@ -64,7 +69,7 @@ export default {
         .map(collection => ({
           ...collection,
           collection: this.$t(`collections-${collection.collection}`),
-          __link__: `/collections/${collection.collection}`
+          __link__: `/${this.currentProjectKey}/collections/${collection.collection}`
         }));
     },
     fields() {
@@ -96,10 +101,6 @@ export default {
 
 <style lang="scss" scoped>
 .collections {
-  padding-bottom: var(--page-padding-bottom);
-}
-
-.padding {
-  padding: 0 32px;
+  padding: var(--page-padding-top-table) var(--page-padding) var(--page-padding-bottom);
 }
 </style>

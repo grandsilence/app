@@ -30,39 +30,7 @@ function setI18nLanguage(lang) {
   return lang;
 }
 
-/**
- * Load a new language file (if it hasn't been loaded yet) and change the system language
- *   to this new language.
- * @async
- * @param {string} lang The language to change to
- * @returns {Promise<string>} The language that was passed
- */
-export async function loadLanguageAsync(lang) {
-  if (typeof lang === "undefined") {
-    return;
-  }
-  if (i18n.locale !== lang) {
-    if (!loadedLanguages.includes(lang)) {
-      // route level code-splitting
-      // this generates a separate chunk (lang-[request].[hash].js) for this route
-      // which is lazy-loaded when the route is visited.
-      const msgs = await import(
-        /* webpackChunkName: "lang-[request]" */ `@/lang/${lang}/index.json`
-      );
-      const dateTimeFormats = await import(
-        /* webpackChunkName: "date-[request]" */ `@/lang/${lang}/date-format.json`
-      );
-      i18n.setLocaleMessage(lang, msgs);
-      i18n.setDateTimeFormat(lang, dateTimeFormats);
-      loadedLanguages.push(lang);
-      return setI18nLanguage(lang);
-    }
-    return Promise.resolve(setI18nLanguage(lang));
-  }
-  return Promise.resolve(lang);
-}
-
-// Array of available languages in the system
+// List of available languages in the system
 export const availableLanguages = {
   "af-ZA": "Afrikaans (South Africa)",
   "ar-SA": "Arabic (Saudi Arabia)",
@@ -78,6 +46,7 @@ export const availableLanguages = {
   "el-GR": "Greek (Greece)",
   "he-IL": "Hebrew (Israel)",
   "hu-HU": "Hungarian (Hungary)",
+  "id-ID": "Indonesian (Indonesia)",
   "it-IT": "Italian (Italy)",
   "ja-JP": "Japanese (Japan)",
   "ko-KR": "Korean (Korea)",
@@ -95,3 +64,42 @@ export const availableLanguages = {
 };
 
 i18n.availableLanguages = availableLanguages;
+
+/**
+ * Load a new language file (if it hasn't been loaded yet) and change the system language
+ *   to this new language.
+ * @async
+ * @param {string} lang The language to change to
+ * @returns {Promise<string>} The language that was passed
+ */
+export async function loadLanguageAsync(lang) {
+  if (!lang) return;
+  if (Object.keys(availableLanguages).includes(lang) === false) return;
+
+  if (i18n.locale !== lang) {
+    if (!loadedLanguages.includes(lang)) {
+      // route level code-splitting
+      // this generates a separate chunk (lang-[request].[hash].js) for this route
+      // which is lazy-loaded when the route is visited.
+      try {
+        const msgs = await import(
+          /* webpackChunkName: "lang-[request]" */ `@/lang/${lang}/index.json`
+        );
+
+        i18n.setLocaleMessage(lang, msgs);
+      } catch {}
+
+      try {
+        const dateTimeFormats = await import(
+          /* webpackChunkName: "date-[request]" */ `@/lang/${lang}/date-format.json`
+        );
+        i18n.setDateTimeFormat(lang, dateTimeFormats);
+      } catch {}
+
+      loadedLanguages.push(lang);
+      return setI18nLanguage(lang);
+    }
+    return Promise.resolve(setI18nLanguage(lang));
+  }
+  return Promise.resolve(lang);
+}

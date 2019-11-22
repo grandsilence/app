@@ -121,7 +121,10 @@ export default {
       if (this.layout.core) {
         component = import("@/layouts/" + this.layout.id + "/layout.vue");
       } else {
-        const filePath = `${this.$api.url}/${this.layout.path.replace("meta.json", "layout.js")}`;
+        const filePath = `${this.$store.state.apiRootPath}${this.layout.path.replace(
+          "meta.json",
+          "layout.js"
+        )}`;
 
         component = loadExtension(filePath);
       }

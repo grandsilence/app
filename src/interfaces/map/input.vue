@@ -84,12 +84,12 @@ export default {
     },
     accentColor() {
       return getComputedStyle(document.documentElement)
-        .getPropertyValue("--darkest-gray")
+        .getPropertyValue("--blue-grey-900")
         .trim();
     },
     darkAccentColor() {
       return getComputedStyle(document.documentElement)
-        .getPropertyValue("--darkest-gray")
+        .getPropertyValue("--blue-grey-900")
         .trim();
     }
   },
@@ -340,11 +340,15 @@ export default {
 }
 
 .map {
+  transition: all var(--fast) var(--transition);
   position: relative;
   display: flex;
   flex-direction: column;
-  border: var(--input-border-width) solid var(--lighter-gray);
+  border: var(--input-border-width) solid var(--input-border-color);
   border-radius: var(--border-radius);
+  &:hover {
+    border-color: var(--input-border-color-hover);
+  }
 }
 
 .map-container {
@@ -378,10 +382,10 @@ export default {
     height: 44px;
     border-radius: var(--border-radius);
     color: var(--white);
-    background: var(--lighter-gray);
+    background: var(--blue-grey-200);
     margin-right: 8px;
     &:hover {
-      background: var(--light-gray);
+      background: var(--blue-grey-300);
     }
   }
 }
@@ -392,11 +396,11 @@ export default {
   width: 44px;
   border-radius: var(--border-radius);
   color: var(--white);
-  background: var(--lighter-gray);
+  background: var(--blue-grey-200);
   margin-right: 8px;
 
   &:hover {
-    background: var(--light-gray);
+    background: var(--blue-grey-300);
   }
 }
 
@@ -406,11 +410,11 @@ export default {
   width: 44px;
   border-radius: var(--border-radius);
   color: var(--white);
-  background: var(--lighter-gray);
+  background: var(--blue-grey-200);
   margin-right: 8px;
 
   &:hover {
-    background: var(--light-gray);
+    background: var(--blue-grey-300);
   }
 }
 
@@ -423,7 +427,7 @@ export default {
   background-color: rgba(255, 255, 255, 0.6);
   border-radius: 0 var(--border-radius) 0 0;
   span {
-    color: var(--light-gray);
+    color: var(--blue-grey-300);
     text-transform: initial;
     font-style: italic;
   }

@@ -161,14 +161,13 @@ export default {
 
 <style lang="scss" scoped>
 .form {
-  --column-width: 300px;
-  --gap-width: 36px 32px;
+  --gap-width: var(--form-vertical-gap) 32px;
 
   @media (min-width: 1000px) {
     display: grid;
-    gap: var(--gap-width);
+    gap: var(--form-vertical-gap) var(--form-horizontal-gap);
     grid-template-columns:
-      [start] minmax(0, var(--column-width)) [half] minmax(0, var(--column-width))
+      [start] minmax(0, var(--form-column-width)) [half] minmax(0, var(--form-column-width))
       [full] 1fr [fill];
   }
 }

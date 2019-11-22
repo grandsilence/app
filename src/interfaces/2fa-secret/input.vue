@@ -1,14 +1,9 @@
 <template>
   <div class="interface-2fa-value">
     <v-notice v-if="tfa_secret" icon="info" class="qr-info">
-      Scan this code in your authenticator app
+      {{ $t("scan_in_authenticator") }}
     </v-notice>
-    <qr-code
-      v-if="tfa_secret"
-      class="qr"
-      :value="'otpauth://totp/Directus?secret=' + tfa_secret"
-      :options="{ width: 200 }"
-    />
+    <qr-code v-if="tfa_secret" class="qr" :value="totpUrl" :options="{ width: 200 }" />
 
     <v-button v-if="!value" :loading="loading" @click="getToken">Enable 2FA</v-button>
     <v-button v-if="value" @click="removeValue">Disable 2FA</v-button>
@@ -32,13 +27,18 @@ export default {
       tfa_secret: null
     };
   },
+  computed: {
+    totpUrl() {
+      return `otpauth://totp/Directus:${this.$store.state.currentUser.email}?secret=${this.tfa_secret}&issuer=Directus`;
+    }
+  },
   methods: {
     getToken() {
       this.loading = true;
 
-      this.$api
+      this.$api.api
         .get("/utils/2fa_secret")
-        .then(res => res["2fa_secret"])
+        .then(res => res.data["2fa_secret"])
         .then(token => {
           this.$emit("input", token);
           this.tfa_secret = token;
@@ -58,7 +58,7 @@ export default {
 
 <style scoped>
 .qr {
-  border: var(--input-border-width) solid var(--lightest-gray);
+  border: var(--input-border-width) solid var(--blue-grey-50);
   border-radius: var(--border-radius);
   margin-bottom: 16px;
 }

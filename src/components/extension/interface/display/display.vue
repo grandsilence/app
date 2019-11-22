@@ -144,7 +144,7 @@ export default {
       } else if (this.interfaceInfo.core) {
         component = import("@/interfaces/" + this.interfaceInfo.id + "/display.vue");
       } else {
-        const filePath = `${this.$api.url}/${this.interfaceInfo.path.replace(
+        const filePath = `${this.$store.state.apiRootPath}${this.interfaceInfo.path.replace(
           "meta.json",
           "display.js"
         )}`;

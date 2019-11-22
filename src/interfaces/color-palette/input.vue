@@ -30,7 +30,7 @@ export default {
   },
   methods: {
     useDarkIconColor(value) {
-      const hex = getComputedStyle(document.documentElement)
+      const hex = getComputedStyle(document.body)
         .getPropertyValue(`--${value}`)
         .trim();
 
@@ -56,14 +56,14 @@ export default {
 
 <style lang="scss" scoped>
 .interface-color-picker {
-  --swatch-size: 20px;
+  --swatch-size: 25px;
 
   position: relative;
   display: flex;
   flex-direction: column;
   flex-wrap: wrap;
   height: calc(var(--swatch-size) * 11);
-  margin-bottom: var(--swatch-size);
+  margin-bottom: calc(var(--swatch-size) + var(--input-note-margin));
 
   button {
     flex-basis: var(--swatch-size);
@@ -84,7 +84,7 @@ export default {
       left: 0;
       right: 0;
       bottom: 0;
-      top: 1px;
+      top: 3px;
       margin: auto;
       color: var(--white);
 
@@ -108,7 +108,7 @@ export default {
 
     &:nth-last-child(2) {
       flex-grow: 1;
-      border: 1px solid var(--lightest-gray);
+      border: 1px solid var(--blue-grey-50);
 
       position: absolute;
       left: 0;

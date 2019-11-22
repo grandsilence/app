@@ -1,6 +1,6 @@
 <template>
   <div class="settings">
-    <v-header :breadcrumb="links" icon="settings" icon-color="warning" />
+    <v-header :breadcrumb="links" icon="settings" settings />
 
     <v-details :title="$t('settings_project')" type="break" open>
       <nav>
@@ -9,7 +9,7 @@
             :title="$t('settings_global')"
             :subtitle="$tc('item_count', globalNum, { count: globalNum })"
             element="li"
-            to="/settings/global"
+            :to="`/${currentProjectKey}/settings/global`"
             icon="public"
           />
 
@@ -17,7 +17,7 @@
             :title="$t('settings_collections_fields')"
             :subtitle="$tc('collection_count', collectionsNum, { count: collectionsNum })"
             element="li"
-            to="/settings/collections"
+            :to="`/${currentProjectKey}/settings/collections`"
             icon="box"
           />
 
@@ -25,16 +25,16 @@
             :title="$t('settings_permissions')"
             :subtitle="roleCount"
             element="li"
-            to="/settings/roles"
+            :to="`/${currentProjectKey}/settings/roles`"
             icon="group"
           />
 
           <v-card
-            :title="$t('settings_update_database')"
-            :subtitle="$t('settings_update_database_subtext')"
+            :title="$t('settings_webhooks')"
+            :subtitle="webhookCount"
             element="li"
-            icon="update"
-            @click="updateDBActive = true"
+            :to="`/${currentProjectKey}/settings/webhooks`"
+            icon="send"
           />
         </ul>
       </nav>
@@ -47,7 +47,7 @@
             :title="$t('interfaces')"
             :subtitle="$tc('interface_count', interfaceCount, { count: interfaceCount })"
             element="li"
-            to="/settings/interfaces"
+            :to="`/${currentProjectKey}/settings/interfaces`"
             icon="extension"
           />
 
@@ -55,8 +55,8 @@
             :title="$t('activity_log')"
             :subtitle="activityCount"
             element="li"
-            to="/activity"
-            icon="warning"
+            :to="`/${currentProjectKey}/activity`"
+            icon="assignment"
           />
 
           <v-card
@@ -120,21 +120,16 @@
       </nav>
     </v-details>
 
-    <portal v-if="updateDBActive" to="modal">
-      <v-confirm
-        :message="$t('settings_update_database_confirm')"
-        :confirm-text="$t('update')"
-        :loading="updateDBInProgress"
-        @confirm="updateDB"
-        @cancel="updateDBActive = false"
-      />
-    </portal>
+    <v-info-sidebar wide>
+      <span class="type-note">No settings</span>
+    </v-info-sidebar>
   </div>
 </template>
 
 <script>
 import { version } from "../../../package.json";
 import VSignal from "../../components/signal.vue";
+import { mapGetters, mapState } from "vuex";
 
 export default {
   name: "Settings",
@@ -148,13 +143,14 @@ export default {
   },
   data() {
     return {
-      roleCount: "Loading...",
-      activityCount: "Loading...",
-      updateDBActive: false,
-      updateDBInProgress: false
+      roleCount: this.$t("loading"),
+      activityCount: this.$t("loading"),
+      webhookCount: this.$t("loading")
     };
   },
   computed: {
+    ...mapGetters(["currentProject"]),
+    ...mapState(["currentProjectKey"]),
     globalNum() {
       return Object.keys(this.$store.state.collections.directus_settings.fields).length;
     },
@@ -164,7 +160,7 @@ export default {
       ).length;
     },
     projectName() {
-      return this.$store.state.auth.projectName;
+      return this.currentProject.project_name;
     },
     interfaceCount() {
       return Object.keys(this.$store.state.extensions.interfaces).length;
@@ -176,7 +172,7 @@ export default {
       return [
         {
           name: this.$t("settings"),
-          path: "/settings"
+          path: `/${this.currentProjectKey}/settings`
         }
       ];
     }
@@ -184,6 +180,7 @@ export default {
   created() {
     this.getRoleCount();
     this.getActivityCount();
+    this.getWebhookCount();
   },
   methods: {
     getRoleCount() {
@@ -220,26 +217,20 @@ export default {
           this.activityCount = "--";
         });
     },
-    updateDB() {
-      this.updateDBInProgress = true;
-
+    getWebhookCount() {
       this.$api
-        .updateDatabase()
-        .then(() => {
-          this.updateDBInProgress = false;
-          this.updateDBActive = false;
-          this.$notify({
-            title: this.$t("db_updated"),
-            color: "green",
-            iconMain: "check"
+        .getItems("directus_webhooks", {
+          limit: 0,
+          meta: "total_count"
+        })
+        .then(res => res.meta)
+        .then(({ total_count }) => {
+          this.webhookCount = this.$tc("webhook_count", total_count, {
+            count: this.$n(total_count)
           });
         })
-        .catch(error => {
-          this.updateDBInProgress = false;
-          this.$events.emit("error", {
-            notify: this.$t("db_update_failed"),
-            error
-          });
+        .catch(() => {
+          this.webhookCount = "--";
         });
     }
   }
@@ -248,14 +239,14 @@ export default {
 
 <style lang="scss" scoped>
 .settings {
-  padding: var(--page-padding);
+  padding: var(--page-padding-top) var(--page-padding) var(--page-padding-bottom);
 }
 
 nav ul {
   padding: 0;
   display: grid;
-  grid-template-columns: repeat(auto-fill, 140px);
-  grid-gap: 20px;
+  grid-template-columns: repeat(auto-fill, var(--card-size));
+  grid-gap: var(--card-horizontal-gap);
 
   li {
     display: block;

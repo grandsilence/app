@@ -6,6 +6,8 @@
 </template>
 
 <script>
+import { mapGetters } from "vuex";
+
 export default {
   name: "VLogo",
   data() {
@@ -14,18 +16,16 @@ export default {
     };
   },
   computed: {
+    ...mapGetters(["currentProject"]),
     customLogoPath() {
-      if (this.customLogoExists) {
-        return this.$store.state.settings.values.logo.data.full_url;
+      if (this.currentProject?.data?.project_logo) {
+        return this.currentProject.data.project_logo.full_url;
       } else {
         return null;
       }
     },
-    customLogoExists() {
-      return Boolean(this.$store.state.settings.values.logo);
-    },
     projectName() {
-      return this.$store.state.auth.projectName;
+      return this.currentProject?.data.project_name;
     },
     queueContainsItems() {
       return this.$store.state.queue.length !== 0;
@@ -50,27 +50,32 @@ export default {
 
 <style lang="scss" scoped>
 .v-logo {
-  height: var(--header-height);
   background-color: var(--brand);
-  padding: 12px;
-  display: grid;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
   position: relative;
+  width: 64px;
+  height: 64px;
+  padding: 12px;
 
   > * {
     width: 100%;
     height: 100%;
     object-fit: contain;
-    grid-column: 1;
-    grid-row: 1;
   }
 
   .logo {
     background-image: url("../../../assets/sprite.svg");
-    background-size: 882px;
-    background-position: 0%;
-    width: 59px;
-    height: 48px;
+    background-size: 600px 32px;
+    background-position: 0% 0%;
+    width: 40px;
+    height: 32px;
     margin: 0 auto;
+    position: absolute;
+    top: 20px;
+    left: 12px;
   }
 
   .running {

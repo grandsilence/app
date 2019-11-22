@@ -8,6 +8,8 @@
       :src="src"
       :icon="icon"
       :href="href"
+      text-background
+      color="black"
       :options="{
         deselect: {
           text: $t('deselect'),
@@ -18,7 +20,7 @@
           icon: 'delete'
         }
       }"
-      big-image
+      medium-image
       @deselect="$emit('input', null)"
       @remove="removeFile"
     ></v-card>
@@ -32,32 +34,12 @@
       @upload="saveUpload"
     ></v-upload>
 
-    <v-button type="button" :disabled="readonly" @click="newFile = true">
-      <v-icon name="add" />
-      {{ $t("new_file") }}
-    </v-button>
-    <!--
-    -->
-    <v-button type="button" :disabled="readonly" @click="existing = true">
-      <v-icon name="playlist_add" />
-      {{ $t("existing") }}
-    </v-button>
-
-    <portal v-if="newFile" to="modal">
-      <v-modal
-        :title="$t('file_upload')"
-        :buttons="{
-          done: {
-            text: $t('done')
-          }
-        }"
-        @close="newFile = false"
-      >
-        <div class="body">
-          <v-upload :accept="options.accept" :multiple="false" @upload="saveUpload"></v-upload>
-        </div>
-      </v-modal>
-    </portal>
+    <div v-if="!value" class="buttons">
+      <v-button type="button" :disabled="readonly" @click="existing = true">
+        <v-icon name="playlist_add" />
+        {{ $t("existing") }}
+      </v-button>
+    </div>
 
     <portal v-if="existing" to="modal">
       <v-modal
@@ -67,7 +49,7 @@
             text: $t('done')
           }
         }"
-        action-required
+        @cancel="existing = false"
         @close="existing = false"
         @done="existing = false"
       >
@@ -75,7 +57,7 @@
           <div class="search">
             <v-input
               type="search"
-              :placeholder="$t('search')"
+              :placeholder="$t('search_for_item')"
               class="search-input"
               @input="onSearchInput"
             />
@@ -107,7 +89,6 @@ export default {
   mixins: [mixin],
   data() {
     return {
-      newFile: false,
       existing: false,
       viewOptionsOverride: {},
       viewTypeOverride: null,
@@ -121,7 +102,10 @@ export default {
       if (!this.image) return "";
 
       return (
-        this.image.filename.split(".").pop() +
+        this.image.filename
+          .split(".")
+          .pop()
+          .toUpperCase() +
         " • " +
         this.$d(new Date(this.image.uploaded_on), "short")
       );
@@ -129,13 +113,7 @@ export default {
     subtitleExtra() {
       // Image ? -> display dimensions and formatted filesize
       return this.image.type && this.image.type.startsWith("image")
-        ? " • " +
-            this.image.width +
-            " x " +
-            this.image.height +
-            " (" +
-            formatSize(this.image.filesize) +
-            ")"
+        ? " • " + formatSize(this.image.filesize)
         : null;
     },
     src() {
@@ -206,8 +184,6 @@ export default {
       this.image = fileInfo.data;
       // We know that the primary key of directus_files is called `id`
       this.$emit("input", { id: fileInfo.data.id });
-
-      this.newFile = false;
     },
     setViewOptions(updates) {
       this.viewOptionsOverride = {
@@ -228,8 +204,14 @@ export default {
     },
     saveSelection(value) {
       const file = value[value.length - 1];
-      this.image = file;
-      this.$emit("input", { id: file.id });
+
+      if (file) {
+        this.image = file;
+        this.$emit("input", { id: file.id });
+      } else {
+        this.image = null;
+        this.$emit("input", null);
+      }
     },
     async removeFile() {
       const file = this.value;
@@ -249,13 +231,16 @@ export default {
 <style lang="scss" scoped>
 .card,
 .uploader {
-  margin-bottom: 20px;
   width: 100%;
   max-width: var(--width-x-large);
 }
 
 .uploader {
-  height: 190px;
+  height: 236px;
+}
+
+.buttons {
+  margin-top: 24px;
 }
 
 button {
@@ -271,7 +256,7 @@ button {
 }
 
 .search-input {
-  border-bottom: 2px solid var(--lightest-gray);
+  border-bottom: 2px solid var(--input-border-color);
   &::v-deep input {
     border-radius: 0;
     border: none;
@@ -279,7 +264,7 @@ button {
     height: var(--header-height);
 
     &::placeholder {
-      color: var(--dark-gray);
+      color: var(--input-placeholder-color);
     }
   }
 }

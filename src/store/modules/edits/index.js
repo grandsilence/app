@@ -2,7 +2,7 @@ import * as actions from "./actions";
 import * as getters from "./getters";
 import mutations from "./mutations";
 
-export const state = {
+export const initialState = {
   collection: null,
   primaryKey: null,
   values: {},
@@ -12,6 +12,6 @@ export const state = {
 export default {
   actions,
   mutations,
-  state,
+  state: _.clone(initialState),
   getters
 };

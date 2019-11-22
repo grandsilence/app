@@ -1,20 +1,26 @@
 <template>
   <not-found v-if="!collectionInfo" />
   <div v-else class="settings-fields">
-    <v-header :breadcrumb="breadcrumb" :icon-link="`/settings/collections`" icon-color="warning">
+    <v-header
+      :breadcrumb="breadcrumb"
+      :icon-link="`/${currentProjectKey}/settings/collections`"
+      settings
+    >
       <template slot="buttons">
         <v-header-button
           key="delete"
           icon="delete_outline"
-          color="gray"
-          hover-color="danger"
+          background-color="danger"
+          icon-color="white"
+          hover-color="danger-dark"
           :label="$t('delete')"
           @click="confirmRemove = true"
         />
         <v-header-button
           key="save"
           icon="check"
-          color="action"
+          background-color="button-primary-background-color"
+          icon-color="button-primary-text-color"
           :loading="saving"
           :disabled="Object.keys(edits).length === 0"
           :label="$t('save')"
@@ -23,7 +29,7 @@
       </template>
     </v-header>
 
-    <label class="label">{{ $t("fields") }}</label>
+    <label class="type-label">{{ $t("fields") }}</label>
     <v-notice color="warning" icon="warning">{{ $t("fields_are_saved_instantly") }}</v-notice>
     <div class="table">
       <div class="header">
@@ -120,6 +126,9 @@
       @close="duplicatingField = false"
       @save="duplicateFieldSettings"
     />
+    <v-info-sidebar wide>
+      <span class="type-note">No settings</span>
+    </v-info-sidebar>
   </div>
 </template>
 
@@ -133,6 +142,7 @@ import api from "../../api.js";
 import NotFound from "../not-found.vue";
 import VFieldSetup from "../../components/field-setup.vue";
 import VFieldDuplicate from "../../components/field-duplicate.vue";
+import { mapState } from "vuex";
 
 export default {
   name: "SettingsFields",
@@ -193,19 +203,20 @@ export default {
     };
   },
   computed: {
+    ...mapState(["currentProjectKey"]),
     breadcrumb() {
       return [
         {
           name: this.$t("settings"),
-          path: "/settings"
+          path: `/${this.currentProjectKey}/settings`
         },
         {
           name: this.$t("collections_and_fields"),
-          path: "/settings/collections"
+          path: `/${this.currentProjectKey}/settings/collections`
         },
         {
           name: this.$t(`collections-${this.collection}`),
-          path: `/settings/collections/${this.collection}`
+          path: `/${this.currentProjectKey}/settings/collections/${this.collection}`
         }
       ];
     },
@@ -255,13 +266,11 @@ export default {
           this.$store.dispatch("loadingFinished", id);
           this.$store.dispatch("removeCollection", this.collection);
           this.$notify({
-            title: this.$t("collection_removed", {
-              collection: this.$helpers.formatTitle(this.collection)
-            }),
+            title: this.$t("collection_removed"),
             color: "green",
             iconMain: "check"
           });
-          this.$router.push("/settings/collections");
+          this.$router.push(`/${this.currentProjectKey}/settings/collections`);
         })
         .catch(error => {
           this.$store.dispatch("loadingFinished", id);
@@ -281,9 +290,7 @@ export default {
         .updateCollection(this.collection, this.edits)
         .then(() => {
           this.$notify({
-            title: this.$t("collection_updated", {
-              collection: this.$helpers.formatTitle(this.collection)
-            }),
+            title: this.$t("collection_updated"),
             color: "green",
             iconMain: "check"
           });
@@ -293,7 +300,7 @@ export default {
             collection: this.collection,
             edits: this.edits
           });
-          this.$router.push("/settings/collections");
+          this.$router.push(`/${this.currentProjectKey}/settings/collections`);
         })
         .catch(error => {
           this.saving = false;
@@ -529,7 +536,7 @@ export default {
       const id = this.$helpers.shortid.generate();
       this.$store.dispatch("loadingStart", { id });
 
-      this.$api
+      this.$api.api
         .patch(`/fields/${this.collection}`, fieldUpdates, {
           activity_skip: 1
         })
@@ -608,7 +615,7 @@ export default {
 
 <style lang="scss" scoped>
 .settings-fields {
-  padding: var(--page-padding);
+  padding: var(--page-padding-top) var(--page-padding) var(--page-padding-bottom);
 }
 
 h2 {
@@ -620,8 +627,8 @@ h2 {
 }
 
 .table {
-  background-color: var(--white);
-  border: var(--input-border-width) solid var(--lighter-gray);
+  background-color: var(--page-background-color);
+  border: var(--input-border-width) solid var(--input-border-color);
   border-radius: var(--border-radius);
   border-spacing: 0;
   width: 100%;
@@ -629,10 +636,10 @@ h2 {
   margin: 10px 0 20px;
 
   .header {
-    border-bottom: 2px solid var(--lightest-gray);
-    height: 60px;
+    border-bottom: 2px solid var(--table-head-border-color);
+    height: calc(var(--input-height) - 2px); // -2px, border on container
     .row {
-      height: 60px;
+      height: calc(var(--input-height) - 2px); // -2px, border on container
     }
   }
 
@@ -664,24 +671,20 @@ h2 {
   .dragging .sortable-chosen,
   .sortable-chosen:active {
     background-color: var(--highlight) !important;
-    color: var(--darkest-gray);
-
-    .manual-sort {
-      color: var(--darkest-gray);
-    }
   }
 
   .body {
-    &.dragging .row:hover {
-      background-color: var(--white);
+    .dragging .row.link:hover {
+      background-color: var(--page-background-color);
     }
 
     .row {
       cursor: pointer;
       position: relative;
-      height: 48px;
-      border-bottom: 2px solid var(--off-white);
+      height: calc(var(--input-height) - 2px); // -2px, border on container
+      border-bottom: 2px solid var(--table-row-border-color);
 
+      &.inner,
       &:last-of-type {
         border-bottom: none;
       }
@@ -694,10 +697,10 @@ h2 {
     .drag {
       user-select: none;
       cursor: -webkit-grab;
-      color: var(--lighter-gray);
+      color: var(--input-border-color);
 
       &:hover {
-        color: var(--dark-gray);
+        color: var(--input-border-color-hover);
       }
     }
   }
@@ -714,32 +717,28 @@ h2 {
   transform: translateY(-50%);
 
   i {
-    color: var(--lighter-gray);
+    color: var(--blue-grey-200);
     transition: color var(--fast) var(--transition);
   }
 
   &:hover {
     i {
       transition: none;
-      color: var(--gray);
+      color: var(--blue-grey-400);
     }
   }
 }
 
 em.note {
-  color: var(--lighter-gray);
-  margin-top: 4px;
-  margin-bottom: 40px;
+  color: var(--note-text-color);
+  margin-top: var(--input-note-margin);
+  margin-bottom: var(--form-vertical-gap);
   display: block;
 }
 
-label.label {
-  margin-bottom: 10px;
+label.type-label {
+  margin-bottom: var(--input-label-margin);
   text-transform: none;
-  color: var(--darker-gray);
-  font-size: 1.2rem;
-  line-height: 1.1;
-  font-weight: 400;
 }
 
 .ctx-menu {
@@ -752,31 +751,31 @@ label.label {
   }
 
   i {
-    color: var(--light-gray);
-    margin-right: 5px;
+    color: var(--blue-grey-300);
+    margin-right: 8px;
     transition: color var(--fast) var(--transition);
   }
 
   button {
     display: flex;
     align-items: center;
-    padding: 5px;
-    color: var(--gray);
+    padding: 4px;
+    color: var(--blue-grey-400);
     width: 100%;
     height: 100%;
     transition: color var(--fast) var(--transition);
     &:disabled,
     &[disabled] {
-      color: var(--lighter-gray);
+      color: var(--blue-grey-200);
       i {
-        color: var(--lighter-gray);
+        color: var(--blue-grey-200);
       }
     }
     &:not(:disabled):not(&[disabled]):hover {
-      color: var(--darkest-gray);
+      color: var(--blue-grey-900);
       transition: none;
       i {
-        color: var(--darkest-gray);
+        color: var(--blue-grey-900);
         transition: none;
       }
     }
@@ -785,26 +784,23 @@ label.label {
 
 button {
   &.not-managed {
-    padding: 5px 10px;
+    padding: 4px 8px;
     border-radius: var(--border-radius);
-    background-color: var(--darker-gray);
-    color: var(--white);
+    background-color: var(--button-primary-background-color);
+    color: var(--button-primary-text-color);
 
     min-width: auto;
     height: auto;
-    font-size: 14px;
-    line-height: 1.3;
-    font-weight: 200;
     border: 0;
 
     &:hover {
-      background-color: var(--darkest-gray);
-      color: var(--white);
+      background-color: var(--button-primary-background-color-hover);
+      color: var(--button-primary-text-color);
     }
   }
 }
 
 .optional {
-  color: var(--lighter-gray);
+  color: var(--blue-grey-200);
 }
 </style>

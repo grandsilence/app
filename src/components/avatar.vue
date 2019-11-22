@@ -1,9 +1,10 @@
 <template>
-  <div class="v-avatar">
+  <div class="v-avatar" :class="{ hover }">
     <div
       :style="{
         width: `${size}px`,
-        height: `${size}px`
+        height: `${size}px`,
+        backgroundColor: backgroundColor ? `var(--${backgroundColor})` : null
       }"
       class="wrapper"
     >
@@ -41,6 +42,14 @@ export default {
       type: String,
       default: "success"
     },
+    hover: {
+      type: Boolean,
+      default: false
+    },
+    backgroundColor: {
+      type: String,
+      default: "card-background-color"
+    },
     size: {
       type: Number,
       default: 40
@@ -69,11 +78,15 @@ export default {
 <style lang="scss" scoped>
 .v-avatar {
   position: relative;
+  &.hover:hover {
+    i {
+      color: var(--white);
+    }
+  }
 }
 
 .wrapper {
-  border-radius: var(--border-radius);
-  background-color: var(--lightest-gray);
+  background-color: var(--card-background-color);
   height: 100%;
   width: 100%;
   position: relative;
@@ -87,12 +100,13 @@ img {
 }
 
 i {
+  transition: all var(--fast) var(--transition);
   position: absolute;
   left: 0;
   right: 0;
   top: 50%;
   transform: translateY(-50%);
-  color: var(--lighter-gray);
+  color: var(--input-icon-color);
   text-align: center;
 }
 

@@ -31,8 +31,7 @@ span {
   transition: all var(--fast) var(--transition);
   margin: 4px 8px 4px 0;
   padding: 4px 8px 5px;
-  background-color: var(--lightest-gray);
-  color: var(--dark-gray);
+  background-color: var(--input-background-color-alt);
   border-radius: var(--border-radius);
 }
 

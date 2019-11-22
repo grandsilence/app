@@ -1,7 +1,7 @@
 import mutations from "./mutations";
 import * as actions from "./actions";
 
-const state = {
+export const initialState = {
   apiVersion: null,
   phpVersion: null,
   maxUploadSize: null,
@@ -11,7 +11,7 @@ const state = {
 };
 
 export default {
-  state,
+  state: _.clone(initialState),
   mutations,
   actions
 };

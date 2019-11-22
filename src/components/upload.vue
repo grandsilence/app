@@ -15,7 +15,7 @@
         <v-icon name="cloud_upload" />
       </div>
       <div class="info">
-        <p class="name">{{ $tc("drop_files", multiple ? 2 : 1) }}</p>
+        <p class="name type-heading-small">{{ $tc("drop_files", multiple ? 2 : 1) }}</p>
         <p class="file-info no-wrap">
           {{
             $t("max_size", {
@@ -248,12 +248,12 @@ export default {
 <style lang="scss" scoped>
 .v-upload {
   position: relative;
-  background-color: var(--white);
+  background-color: var(--page-background-color);
   width: 100%;
   height: var(--width-medium);
 
   &.disabled {
-    background-color: var(--body-background);
+    background-color: var(--page-background-color);
     cursor: not-allowed;
   }
 }
@@ -288,12 +288,12 @@ export default {
 
       input {
         border-radius: var(--border-radius);
-        border: 1px solid var(--lighter-gray);
+        border: 1px solid var(--blue-grey-200);
         padding: 4px;
-        color: var(--dark-gray);
+        color: var(--blue-grey-600);
 
         &::placeholder {
-          color: var(--lighter-gray);
+          color: var(--blue-grey-200);
         }
 
         padding-right: 40px;
@@ -305,13 +305,13 @@ export default {
         position: absolute;
         right: 0;
         height: 100%;
-        background-color: var(--light-gray);
+        background-color: var(--blue-grey-300);
         border-top-right-radius: var(--border-radius);
         border-bottom-right-radius: var(--border-radius);
         color: var(--white);
 
         &:hover {
-          background-color: var(--darkest-gray);
+          background-color: var(--blue-grey-900);
           color: var(--white);
         }
       }
@@ -334,7 +334,7 @@ input.select {
 }
 
 .v-upload:not(.uploading) .dropzone {
-  color: var(--dark-gray);
+  color: var(--page-text-color);
   height: 100%;
   display: flex;
   justify-content: center;
@@ -343,56 +343,45 @@ input.select {
   user-select: none;
   transition: var(--fast) var(--transition);
   transition-property: border-color, color;
-  border: var(--input-border-width) dashed var(--lighter-gray);
+  border: var(--input-border-width) dashed var(--input-border-color);
   border-radius: var(--border-radius);
 
   .icon i {
     font-size: 100px !important;
-    color: var(--lighter-gray);
+    color: var(--input-icon-color);
   }
 
   p {
     color: currentColor;
-
-    &:first-of-type {
-      font-size: 34px;
-      font-weight: 300;
-    }
   }
 
   .info {
     text-align: center;
-    color: var(--lighter-gray);
+    color: var(--input-border-color);
   }
 
   .file-info {
     text-align: center;
-    color: var(--lighter-gray);
-    margin-top: 8px;
+    color: var(--input-border-color);
+    margin-top: 4px;
   }
 
   .buttons > * {
-    color: var(--lighter-gray);
+    color: var(--input-border-color);
 
     &:hover {
-      color: var(--dark-gray);
+      color: var(--page-text-color);
     }
   }
 
   .dragging & {
     transition: border-color var(--slow) var(--transition);
-    border-color: var(--darkest-gray);
+    border-color: var(--input-background-color-active);
   }
 
   &.smaller {
     .icon i {
       font-size: 60px !important;
-    }
-
-    p {
-      &:first-of-type {
-        font-size: 22px;
-      }
     }
   }
 }
@@ -403,17 +392,18 @@ input.select {
 
   .dragging & ol {
     transition: border-color var(--slow) var(--transition);
-    border-color: var(--darkest-gray);
+    border-color: var(--input-background-color-active);
   }
 
   .dropzone {
-    background-color: var(--darkest-gray);
+    background-color: var(--input-background-color-alt);
     border-top-left-radius: var(--border-radius);
     border-top-right-radius: var(--border-radius);
-    padding: 10px 20px;
+    padding: 8px 12px;
     padding-right: 50px;
-    border: var(--input-border-width) solid var(--darkest-gray);
-    color: var(--white);
+    border: var(--input-border-width) solid var(--input-border-color);
+    border-bottom: none;
+    color: var(--heading-text-color);
     flex-shrink: 0;
 
     .info {
@@ -421,7 +411,7 @@ input.select {
     }
 
     .file-info {
-      color: var(--light-gray);
+      color: var(--note-text-color);
     }
 
     .icon {
@@ -440,17 +430,17 @@ input.select {
         flex-grow: 0;
         flex-shrink: 0;
         border-radius: 50%;
-        border: 2px solid var(--white);
-        color: var(--white);
+        border: 2px solid var(--heading-text-color);
+        color: var(--heading-text-color);
       }
     }
 
     .buttons {
       & > * {
-        color: var(--light-gray);
+        color: var(--input-icon-color);
 
         &:hover {
-          color: var(--white);
+          color: var(--heading-text-color);
         }
       }
     }
@@ -458,11 +448,11 @@ input.select {
 
   ol {
     flex-grow: 1;
-    border: var(--input-border-width) dashed var(--lighter-gray);
+    border: var(--input-border-width) dashed var(--input-border-color);
     border-top: 0;
     border-bottom-left-radius: var(--border-radius);
     border-bottom-right-radius: var(--border-radius);
-    padding: 0 20px;
+    padding: 0 12px;
     list-style: none;
     overflow: auto;
     -webkit-overflow-scrolling: touch;
@@ -481,14 +471,14 @@ input.select {
 
   li {
     padding: 10px 0;
-    background-color: var(--white);
+    background-color: var(--input-background-color);
 
     &:not(:last-of-type) {
-      border-bottom: 1px solid var(--lightest-gray);
+      border-bottom: 2px solid var(--input-background-color-alt);
     }
 
     .file-info {
-      color: var(--gray);
+      color: var(--note-text-color);
     }
   }
 }

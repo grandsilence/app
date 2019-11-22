@@ -1,6 +1,5 @@
 {
   "name": "$t:interfaces",
-  "version": "1.0.0",
   "types": ["string"],
   "icon": "category",
   "recommended": {
@@ -13,6 +12,16 @@
       "comment": "$t:placeholder_comment",
       "default": "$t:placeholder_default",
       "length": 200
+    },
+    "relational": {
+      "name": "$t:relational",
+      "interface": "toggle",
+      "default": true
+    },
+    "status": {
+      "name": "$t:include_status",
+      "interface": "toggle",
+      "default": true
     }
   },
   "translation": {
@@ -21,7 +30,9 @@
       "placeholder": "Placeholder",
       "placeholder_comment": "Static text that shown before a value is selected",
       "placeholder_default": "Choose an interface",
-      "option": "Option"
+      "option": "Option",
+      "relational": "Include relational interfaces",
+      "include_status": "Include the status interfaces"
     },
 	"fr-FR": {
       "interfaces": "Interfaces",

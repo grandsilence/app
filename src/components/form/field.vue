@@ -1,24 +1,37 @@
 <template>
   <div :data-collection="collection" :data-field="field.field">
-    <div v-if="showLabel" class="name">
+    <div v-if="showLabel" class="type-label">
       <v-contextual-menu
         v-if="field.readonly === false"
         class="field-action"
-        placement="right-start"
+        placement="bottom-start"
         :options="options"
         :icon="null"
         @click="emitChange"
       >
         <span class="field-label">{{ $helpers.formatField(field) }}</span>
-        <v-icon v-if="field.required !== false" class="required" name="star" color="accent" sup />
+        <v-icon
+          v-if="field.required !== false"
+          class="required"
+          name="star"
+          color="input-required-color"
+          sup
+        />
         <v-icon name="arrow_drop_down" icon-style="outline" size="18" class="dropdown" />
       </v-contextual-menu>
       <span v-else class="field-static">
         <span class="field-label">{{ $helpers.formatField(field) }}</span>
-        <v-icon v-if="field.required !== false" class="required" name="star" color="accent" sup />
+        <v-icon
+          v-if="field.required !== false"
+          class="required"
+          name="star"
+          color="blue-grey-200"
+          sup
+        />
       </span>
       <v-toggle
         v-if="batchMode"
+        v-tooltip="$t('batch_edit_field')"
         class="batch-toggle"
         :value="!blocked"
         @input="$emit(blocked ? 'activate' : 'deactivate', field.field)"
@@ -55,7 +68,7 @@
         "
       />
     </div>
-    <div v-if="field.note" class="note" v-html="$helpers.snarkdown(field.note)"></div>
+    <div v-if="field.note" class="type-note" v-html="$helpers.snarkdown(field.note)"></div>
   </div>
 </template>
 
@@ -193,21 +206,17 @@ export default {
 </script>
 
 <style scoped lang="scss">
-.note {
-  color: var(--light-gray);
-  margin-top: 4px;
+.type-note {
+  margin-top: var(--input-note-margin);
 }
 
-.name {
-  font-size: var(--size-2);
-  margin-bottom: 10px;
-  color: var(--darkest-gray);
+.type-label {
+  margin-bottom: var(--input-label-margin);
 }
 
 .required {
   display: inline-block;
   margin-top: -8px;
-  margin-left: 2px;
 }
 
 .field-static {
@@ -218,20 +227,21 @@ export default {
   display: inline-block;
   transition: all var(--fast) var(--transition);
   &:hover {
-    color: var(--accent);
     .dropdown {
-      color: var(--accent);
+      transition: all var(--fast) var(--transition);
+      opacity: 1;
     }
   }
   .dropdown {
-    color: var(--lighter-gray);
+    color: var(--blue-grey-200);
     vertical-align: -2px;
+    opacity: 0;
   }
 }
 
 .batch-toggle {
   display: inline-block;
-  vertical-align: -4px;
-  margin-left: 4px;
+  vertical-align: -5px;
+  transform: translate(-4px, 2px);
 }
 </style>

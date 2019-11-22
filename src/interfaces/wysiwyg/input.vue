@@ -1,418 +1,318 @@
 <template>
-  <div ref="input" :class="[{ fullscreen: distractionFree }, 'interface-wysiwyg-container']">
-    <div ref="editor" :class="['interface-wysiwyg', readonly ? 'readonly' : '']"></div>
-    <button
-      v-tooltip="$t('interfaces-wysiwyg-distraction_free_mode')"
-      type="button"
-      class="fullscreen-toggle"
-      @click="distractionFree = !distractionFree"
+  <div class="interface-wysiwyg">
+    <Editor
+      ref="editorElement"
+      :init="initOptions"
+      :value="value"
+      @onKeyUp="updateValue"
+      @onExecCommand="updateValue"
+      @onBlur="updateValue"
+      @onPaste="updateValue"
+      @onUndo="updateValue"
+      @onRedo="updateValue"
+    />
+    <v-modal
+      v-if="newInlineFile"
+      :title="$t('file_upload')"
+      :buttons="{
+        done: {
+          text: $t('done')
+        }
+      }"
+      @close="newInlineFile = false"
+      @done="selectCallback"
     >
-      <v-icon :name="fullscreenIcon" />
-    </button>
+      <div class="body">
+        <v-ext-input
+          id="file"
+          name="file"
+          :required="false"
+          :readonly="false"
+          :options="fileInputOptions"
+          type="file"
+          datatype="INT"
+          :value="selectedFile"
+          :relation="relation"
+          :fields="null"
+          collection="directus_files"
+          :values="null"
+          :length="10"
+          :new-item="newItem"
+          @input="selectedFile = $event"
+        />
+      </div>
+    </v-modal>
   </div>
 </template>
 
 <script>
-import MediumEditor from "medium-editor";
-import "medium-editor/dist/css/medium-editor.css";
-
 import mixin from "@directus/extension-toolkit/mixins/interface";
 
+import "tinymce/tinymce";
+import "tinymce/themes/silver";
+import "tinymce/plugins/media/plugin";
+import "tinymce/plugins/table/plugin";
+import "tinymce/plugins/hr/plugin";
+import "tinymce/plugins/lists/plugin";
+import "tinymce/plugins/image/plugin";
+import "tinymce/plugins/imagetools/plugin";
+import "tinymce/plugins/link/plugin";
+import "tinymce/plugins/pagebreak/plugin";
+import "tinymce/plugins/code/plugin";
+import "tinymce/plugins/insertdatetime/plugin";
+import "tinymce/plugins/autoresize/plugin";
+import "tinymce/plugins/paste/plugin";
+import "tinymce/plugins/preview/plugin";
+
+import Editor from "@tinymce/tinymce-vue";
+
+function cssVar(name) {
+  return getComputedStyle(document.body).getPropertyValue(name);
+}
+
 export default {
-  name: "InterfaceWysiwyg",
+  components: {
+    Editor
+  },
   mixins: [mixin],
   data() {
     return {
-      distractionFree: false
+      newInlineFile: false,
+      selectedFile: null,
+      selectCallback: () => {}
     };
   },
   computed: {
-    editorOptions() {
+    fileInputOptions() {
       return {
-        disableEditing: this.readonly,
-        placeholder: {
-          text: this.options.placeholder || "",
-          hideOnClick: true
+        viewOptions: {
+          content: "description",
+          src: "data",
+          subtitle: "type",
+          title: "title"
         },
-        toolbar: this.readonly
-          ? false
-          : {
-              buttons: this.options.buttons
-            }
+        viewType: "cards"
       };
     },
-    fullscreenIcon() {
-      return this.distractionFree ? "close" : "fullscreen";
+    initOptions() {
+      const styleFormats = this.getStyleFormats();
+      let toolbarString = this.options.toolbar.join(" ");
+
+      if (styleFormats) {
+        toolbarString += " styleselect";
+      }
+
+      return {
+        skin: false,
+        skin_url: false,
+        content_css: false,
+        content_style: this.contentStyle,
+        plugins:
+          "media table hr lists image link pagebreak code insertdatetime autoresize paste preview",
+        branding: false,
+        max_height: 1000,
+        elementpath: false,
+        statusbar: false,
+        menubar: false,
+        convert_urls: false,
+        readonly: this.readonly,
+        extended_valid_elements: "audio[loop],source",
+        toolbar: toolbarString,
+        style_formats: styleFormats,
+        file_picker_callback: this.selectFile
+      };
+    },
+    contentStyle() {
+      return `
+        body {
+          color: ${cssVar("--input-text-color")};
+          background-color: ${cssVar("--input-background-color")};
+          margin: 20px;
+          font-family: 'Roboto', sans-serif;
+          -webkit-font-smoothing: antialiased;
+          text-rendering: optimizeLegibility;
+          -moz-osx-font-smoothing: grayscale;
+        }
+        h1 {
+          font-family: 'Merriweather', serif;
+          font-size: 44px;
+          line-height: 52px;
+          font-weight: 300;
+          margin-bottom: 0;
+        }
+        h2 {
+          font-size: 34px;
+          line-height: 38px;
+          font-weight: 600;
+          margin-top: 60px;
+          margin-bottom: 0;
+        }
+        h3 {
+          font-size: 26px;
+          line-height: 31px;
+          font-weight: 600;
+          margin-top: 40px;
+          margin-bottom: 0;
+        }
+        h4 {
+          font-size: 22px;
+          line-height: 28px;
+          font-weight: 600;
+          margin-top: 40px;
+          margin-bottom: 0;
+        }
+        h5 {
+          font-size: 18px;
+          line-height: 26px;
+          font-weight: 600;
+          margin-top: 40px;
+          margin-bottom: 0;
+        }
+        h6 {
+          font-size: 16px;
+          line-height: 24px;
+          font-weight: 600;
+          margin-top: 40px;
+          margin-bottom: 0;
+        }
+        p {
+          font-family: 'Merriweather', serif;
+          font-size: 16px;
+          line-height: 32px;
+          margin-top: 20px;
+          margin-bottom: 20px;
+        }
+        a {
+          color: #546e7a;
+        }
+        ul,ol {
+          font-family: 'Merriweather', serif;
+          font-size: 18px;
+          line-height: 34px;
+          margin: 24px 0;
+        }
+        ul ul,
+        ol ol,
+        ul ol,
+        ol ul {
+          margin: 0;
+        }
+        b,strong {
+          font-weight: 600;
+        }
+        code {
+          font-size: 18px;
+          line-height: 34px;
+          padding: 2px 4px;
+          font-family: 'Roboto Mono', monospace;
+          background-color: #eceff1;
+          border-radius: 3px;
+          overflow-wrap: break-word;
+        }
+        pre {
+          font-size: 18px;
+          line-height: 24px;
+          padding: 20px;
+          font-family: 'Roboto Mono', monospace;
+          background-color: #eceff1;
+          border-radius: 3px;
+          overflow: auto;
+        }
+        blockquote {
+          font-family: 'Merriweather', serif;
+          font-size: 18px;
+          line-height: 34px;
+          border-left: 2px solid #546e7a;
+          padding-left: 10px;
+          margin-left: -10px;
+          font-style: italic;
+        }
+        video,
+        iframe,
+        img {
+          max-width: 100%;
+          border-radius: 3px;
+          height: auto;
+        }
+        hr {
+          border: 0;
+          margin-top: 52px;
+          margin-bottom: 56px;
+          text-align: center;
+        }
+        hr:after {
+          content: "...";
+          font-size: 28px;
+          letter-spacing: 16px;
+          line-height: 0;
+        }
+        table {
+          border-collapse: collapse;
+        }
+        table th,
+        table td {
+          border: 1px solid #cfd8dc;
+          padding: 0.4rem;
+        }
+        figure {
+          display: table;
+          margin: 1rem auto;
+        }
+        figure figcaption {
+          color: #999;
+          display: block;
+          margin-top: 0.25rem;
+          text-align: center;
+        }
+      `;
     }
   },
-  watch: {
-    options() {
-      this.destroy();
-      this.init();
-    },
-    value(newVal) {
-      if (newVal !== this.editor.getContent()) {
-        this.editor.setContent(newVal);
-      }
-    },
-    distractionFree(on) {
-      if (on) {
-        this.$helpers.disableBodyScroll(this.$refs.input);
-      } else {
-        this.$helpers.enableBodyScroll(this.$refs.input);
-      }
-    }
-  },
-  mounted() {
-    this.init();
-  },
-  beforeDestroy() {
-    this.destroy();
+  created() {
+    this.updateValue = _.debounce(this.updateValue, 200);
   },
   methods: {
-    init() {
-      this.editor = new MediumEditor(this.$refs.editor, this.editorOptions);
-
-      if (this.value) {
-        this.editor.setContent(this.value);
+    updateValue() {
+      const editor = this.$refs.editorElement.editor;
+      const newValue = editor.getContent();
+      this.$emit("input", newValue);
+    },
+    getStyleFormats() {
+      if (Array.isArray(this.options.custom_formats) && this.options.custom_formats.length > 0) {
+        return this.options.custom_formats;
       }
 
-      this.editor.origElements.addEventListener("input", () => {
-        const content = this.editor.getContent();
-
-        if (content === "<p><br></p>") {
-          return this.$emit("input", null);
-        }
-
-        this.$emit("input", content);
-      });
+      return null;
     },
-    destroy() {
-      this.editor.destroy();
+    selectFile(callback) {
+      this.newInlineFile = true;
+      this.selectCallback = async () => {
+        const { data: file } = await this.$api.getItem("directus_files", this.selectedFile.id);
+        this.newInlineFile = false;
+
+        // TODO: Make sure it returns the correct keys for non-image type files. See
+        // https://www.tiny.cloud/docs/configure/file-image-upload/#example for an example
+        callback(file.data.full_url, { alt: file.title });
+
+        // Empty the selectedfile so the file isn't selected again when you add an additional file
+        this.selectedFile = null;
+      };
     }
   }
 };
 </script>
 
-<style lang="scss">
-.interface-wysiwyg-container {
-  position: relative;
-  width: 100%;
-  max-width: var(--width-x-large);
-
-  &.fullscreen {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    z-index: 100;
-    max-width: 100%;
-    max-height: 100%;
-    background-color: var(--body-background);
-
-    button.fullscreen-toggle {
-      position: fixed;
-      top: 20px;
-      right: 20px;
-      z-index: 101;
-      background-color: var(--darker-gray);
-      color: var(--white);
-      &:hover {
-        background-color: var(--darkest-gray);
-      }
-    }
-
-    .interface-wysiwyg {
-      color: var(--dark-gray);
-
-      border: none;
-      border-radius: 0;
-      padding: 80px 80px 100px 80px;
-      max-width: 880px;
-      margin: 0 auto;
-      height: 100%;
-      max-height: 100%;
-
-      font-size: 21px;
-      line-height: 33px;
-      font-weight: 400;
-
-      p {
-        margin-top: 30px;
-      }
-
-      blockquote {
-        margin-top: 30px;
-        padding-left: 20px;
-      }
-
-      h1 {
-        margin-top: 60px;
-      }
-
-      h2 {
-        margin-top: 60px;
-      }
-
-      h3 {
-        margin-top: 40px;
-      }
-
-      h4 {
-        margin-top: 30px;
-      }
-
-      h5 {
-        margin-top: 20px;
-      }
-
-      h6 {
-        margin-top: 20px;
-      }
-    }
-  }
+<style lang="scss" scoped>
+.body {
+  padding: 20px;
 }
 
-button.fullscreen-toggle {
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  background-color: var(--white);
-  color: var(--dark-gray);
-  opacity: 0.4;
-  border-radius: 100%;
-  padding: 4px;
-  &:hover {
-    opacity: 1;
-  }
-}
+// The content CSS is not scoped, but is also not needed.
+// The CSS below can be referenced for other core editor
+// styles we might want to include in our override.
 
-.interface-wysiwyg {
-  position: relative;
-  width: 100%;
-  border: var(--input-border-width) solid var(--lighter-gray);
-  border-radius: var(--border-radius);
-  color: var(--gray);
-  padding: 12px 15px;
-  transition: var(--fast) var(--transition);
-  transition-property: color, border-color, padding;
-  min-height: 200px;
-  max-height: 800px;
-  overflow: scroll;
-  font-weight: 400;
-  line-height: 1.7em;
+// @import "~tinymce/skins/ui/oxide/content.css";
+// @import "~tinymce/skins/content/default/content.css";
 
-  & > :first-child {
-    padding-top: 0;
-    margin-top: 0;
-  }
-
-  &::placeholder {
-    color: var(--light-gray);
-  }
-
-  &[contenteditable="true"] {
-    cursor: default;
-    background-color: var(--white);
-    &:hover {
-      transition: none;
-      border-color: var(--light-gray);
-    }
-
-    &:focus {
-      color: var(--darker-gray);
-      border-color: var(--darker-gray);
-      outline: 0;
-    }
-
-    &:focus + i {
-      color: var(--darkest-gray);
-    }
-  }
-
-  &.readonly {
-    background-color: var(--lightest-gray);
-    cursor: not-allowed;
-    &:focus {
-      color: var(--gray);
-    }
-  }
-
-  &:-webkit-autofill {
-    box-shadow: inset 0 0 0 1000px var(--white) !important;
-    color: var(--dark-gray) !important;
-    -webkit-text-fill-color: var(--dark-gray) !important;
-  }
-
-  &:-webkit-autofill,
-  &:-webkit-autofill:hover,
-  &:-webkit-autofill:focus {
-    border: var(--input-border-width) solid var(--lighter-gray);
-    background-color: var(--white);
-    box-shadow: inset 0 0 0 2000px var(--white);
-  }
-
-  b,
-  strong {
-    font-weight: 700;
-  }
-
-  a {
-    color: var(--darkest-gray);
-  }
-
-  p {
-    margin-top: 20px;
-  }
-
-  blockquote {
-    border-left: 4px solid var(--lightest-gray);
-    font-style: italic;
-    margin-top: 20px;
-    padding-left: 20px;
-  }
-
-  pre {
-    max-width: 100%;
-    background-color: var(--body-background);
-    padding: 20px 10px;
-    font-family: "Roboto Mono", mono;
-    overflow: scroll;
-    margin-top: 20px;
-  }
-
-  h1 {
-    font-size: 3em;
-    line-height: 1.2em;
-    font-weight: 600;
-    margin-top: 30px;
-  }
-  h2 {
-    font-size: 2.5em;
-    line-height: 1.2em;
-    font-weight: 600;
-    margin-top: 30px;
-  }
-  h3 {
-    font-size: 2em;
-    line-height: 1.2em;
-    font-weight: 600;
-    margin-top: 30px;
-  }
-  h4 {
-    font-size: 1.87em;
-    line-height: 1.2em;
-    font-weight: 600;
-    margin-top: 20px;
-  }
-  h5 {
-    font-size: 1.5em;
-    line-height: 1.2em;
-    font-weight: 600;
-    margin-top: 20px;
-  }
-  h6 {
-    font-size: 1.2em;
-    line-height: 1.2em;
-    font-weight: 600;
-    margin-top: 20px;
-  }
-}
-
-.medium-toolbar-arrow-under:after {
-  top: 40px;
-  border-color: var(--darker-gray) transparent transparent transparent;
-}
-
-.medium-toolbar-arrow-over:before {
-  top: -8px;
-  border-color: transparent transparent var(--darker-gray) transparent;
-}
-
-.medium-editor-toolbar {
-  background-color: var(--darker-gray);
-  border-radius: var(--border-radius);
-}
-
-.medium-editor-toolbar li {
-  padding: 0;
-}
-
-.medium-editor-toolbar li button {
-  min-width: 40px;
-  height: 40px;
-  line-height: 0;
-  border: none;
-  border-right: 1px solid var(--dark-gray);
-  background-color: transparent;
-  color: var(--white);
-  transition: background-color var(--fast) var(--transition), color var(--fast) var(--transition);
-}
-
-.medium-editor-toolbar li button:hover {
-  background-color: var(--dark-gray);
-  color: var(--white);
-}
-
-.medium-editor-toolbar li .medium-editor-button-active {
-  background-color: var(--dark-gray);
-  color: var(--white);
-}
-
-.medium-editor-toolbar li .medium-editor-button-first {
-  border-radius: var(--border-radius) 0 0 var(--border-radius);
-}
-
-.medium-editor-toolbar li .medium-editor-button-last {
-  border-right: none;
-  border-radius: 0 var(--border-radius) var(--border-radius) 0;
-}
-
-.medium-editor-toolbar-form .medium-editor-toolbar-input {
-  height: 40px;
-  background: var(--darker-gray);
-  border-right: 1px solid var(--gray);
-  color: var(--white);
-  padding-left: 20px;
-}
-
-.medium-editor-toolbar-form .medium-editor-toolbar-input::-webkit-input-placeholder {
-  color: var(--white);
-  color: rgba(255, 255, 255, 0.8);
-}
-
-.medium-editor-toolbar-form .medium-editor-toolbar-input:-moz-placeholder {
-  /* Firefox 18- */
-  color: var(--white);
-}
-
-.medium-editor-toolbar-form .medium-editor-toolbar-input::-moz-placeholder {
-  /* Firefox 19+ */
-  color: var(--white);
-}
-
-.medium-editor-toolbar-form .medium-editor-toolbar-input:-ms-input-placeholder {
-  color: var(--white);
-}
-
-.medium-editor-toolbar-form a {
-  color: var(--white);
-}
-
-.medium-editor-toolbar-anchor-preview {
-  background: var(--gray);
-  color: var(--white);
-  border-radius: var(--border-radius);
-}
-
-.medium-editor-toolbar-anchor-preview a {
-  padding: 0px 6px;
-}
-
-.medium-editor-placeholder:after {
-  color: var(--lighter-gray);
-  font-style: normal;
-  font-weight: 500;
-}
+@import "~tinymce/skins/ui/oxide/skin.css";
+@import "./tinymce-overrides.css";
 </style>

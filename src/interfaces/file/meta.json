@@ -3,6 +3,7 @@
   "version": "1.1.0",
   "types": ["file"],
   "icon": "insert_drive_file",
+  "relation": "file",
   "recommended": {
     "length": 10
   },

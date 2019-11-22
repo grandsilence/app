@@ -62,7 +62,7 @@ export default {
 };
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 input {
   opacity: 0;
   position: absolute;
@@ -72,9 +72,12 @@ label {
   display: flex;
   align-items: center;
   cursor: pointer;
+  color: var(--input-text-color);
+  font-size: var(--input-font-size);
 }
 
 label::before {
+  transition: all var(--fast) var(--transition);
   content: "radio_button_unchecked";
   direction: ltr;
   display: inline-block;
@@ -89,24 +92,21 @@ label::before {
   word-wrap: normal;
   -webkit-font-feature-settings: "liga";
   -webkit-font-smoothing: antialiased;
-  margin-right: 5px;
+  margin-right: 8px;
+  color: var(--input-border-color);
 }
 
-input:hover + label {
-  color: var(--darker-gray);
+input:hover + label::before {
+  color: var(--input-border-color-hover);
 }
 
 input:disabled + label {
-  color: var(--light-gray);
+  color: var(--input-border-color-hover);
   cursor: not-allowed;
 }
 
 input:checked + label::before {
   content: "radio_button_checked";
-  color: var(--darkest-gray);
-}
-
-input:checked + label {
-  color: var(--darkest-gray);
+  color: var(--input-background-color-active);
 }
 </style>

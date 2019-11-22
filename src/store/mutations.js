@@ -10,8 +10,13 @@ import {
   TOGGLE_NAV,
   TOGGLE_INFO,
   LOADING_START,
-  LOADING_FINISHED
+  LOADING_FINISHED,
+  SET_CURRENT_PROJECT,
+  UPDATE_PROJECT,
+  SET_PROJECT_STATUS,
+  INIT_PROJECTS
 } from "./mutation-types";
+import Vue from "vue";
 
 const mutations = {
   [STORE_HYDRATED](state, date) {
@@ -71,6 +76,46 @@ const mutations = {
 
   [LOADING_FINISHED](state, id) {
     state.queue = state.queue.filter(req => req.id !== id);
+  },
+
+  [SET_CURRENT_PROJECT](state, key) {
+    state.currentProjectKey = key;
+  },
+
+  [UPDATE_PROJECT](state, { key, data, error }) {
+    const index = state.projects.findIndex(p => p.key === key);
+
+    if (index !== -1) {
+      Vue.set(state.projects, index, {
+        ...state.projects[index],
+        data: {
+          ...state.projects[index].data,
+          ...(data || {})
+        },
+        error: error || null
+      });
+    } else {
+      state.projects = [
+        ...state.projects,
+        {
+          key,
+          data,
+          error
+        }
+      ];
+    }
+  },
+
+  [SET_PROJECT_STATUS](state, { key, status }) {
+    const index = state.projects.findIndex(p => p.key === key);
+    Vue.set(state.projects, index, {
+      ...state.projects[index],
+      status
+    });
+  },
+
+  [INIT_PROJECTS](state, projects) {
+    state.projects = projects;
   }
 };
 

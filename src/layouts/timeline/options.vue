@@ -1,7 +1,8 @@
 <template>
   <form @submit.prevent>
-    <label for="spacing" class="style-3 required">
+    <label for="spacing" class="type-label">
       {{ $t("layouts-timeline-date") }}
+      <v-icon class="required" name="star" color="input-required-color" sup />
     </label>
     <v-select
       id="spacing"
@@ -11,8 +12,9 @@
       icon="today"
       @input="setOption('date', $event)"
     ></v-select>
-    <label for="spacing" class="style-3 required">
+    <label for="spacing" class="type-label">
       {{ $t("layouts-timeline-title") }}
+      <v-icon class="required" name="star" color="input-required-color" sup />
     </label>
     <v-input
       id="spacing"
@@ -21,8 +23,9 @@
       :options="textOptions"
       @input="setOption('title', $event)"
     ></v-input>
-    <label for="spacing" class="style-3 required">
+    <label for="spacing" class="type-label">
       {{ $t("layouts-timeline-content") }}
+      <v-icon class="required" name="star" color="input-required-color" sup />
     </label>
     <v-select
       id="spacing"
@@ -32,7 +35,7 @@
       icon="title"
       @input="setOption('content', $event)"
     ></v-select>
-    <label for="spacing" class="style-3">
+    <label for="spacing" class="type-label">
       {{ $t("layouts-timeline-color") }}
     </label>
     <v-select
@@ -61,14 +64,14 @@ export default {
     contentOptions() {
       var options = {
         __none__: `(${this.$t("dont_show")})`,
-        ...this.$lodash.mapValues(this.fields, info =>
+        ..._.mapValues(this.fields, info =>
           ["integer", "string", "user"].includes(info.type) ? info.name : null
         )
       };
-      return this.$lodash.pickBy(options, this.$lodash.identity);
+      return _.pickBy(options, _.identity);
     },
     titleValidator() {
-      var fields = this.$lodash.keys(this.fields); //this.getKeys(this.fields)
+      var fields = _.keys(this.fields); //this.getKeys(this.fields)
       fields = fields
         .toString()
         .replace('"', "")
@@ -79,22 +82,22 @@ export default {
     textOptions() {
       var options = {
         __none__: `(${this.$t("dont_show")})`,
-        ...this.$lodash.mapValues(this.fields, info =>
+        ..._.mapValues(this.fields, info =>
           info.type == "string" || info.type == "integer" ? info.name : null
         )
       };
-      return this.$lodash.pickBy(options, this.$lodash.identity);
+      return _.pickBy(options, _.identity);
     },
     dateOptions() {
-      var options = this.$lodash.mapValues(this.fields, info =>
+      var options = _.mapValues(this.fields, info =>
         ["date", "datetime"].includes(info.type) ? info.name : null
       );
-      return this.$lodash.pickBy(options, this.$lodash.identity);
+      return _.pickBy(options, _.identity);
     }
   },
   methods: {
     getKeys(obj) {
-      var keys = this.$lodash.keys(obj);
+      var keys = _.keys(obj);
       var subKeys = [];
       for (var i = 0; i < keys.length; i++) {
         if (typeof obj[keys[i]] === "object") {
@@ -117,20 +120,11 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-label {
-  margin-bottom: 10px;
-  margin-top: 30px;
-}
-
-.required::after {
-  content: "required";
-  margin: 0 5px;
-  padding: 0px 4px 1px;
-  font-size: 10px;
-  font-weight: 600;
-  color: var(--white);
-  background-color: var(--warning);
-  border-radius: var(--border-radius);
-  text-transform: uppercase;
+.type-label {
+  margin-top: var(--form-vertical-gap);
+  margin-bottom: var(--input-label-margin);
+  &:first-of-type {
+    margin-top: 0;
+  }
 }
 </style>

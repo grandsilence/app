@@ -1,5 +1,5 @@
 <template>
-  <div class="interface-code">
+  <div class="interface-code codemirror-custom-styles">
     <codemirror
       ref="codemirrorEl"
       :options="altOptions ? altOptions : cmOptions"
@@ -15,7 +15,7 @@
       <v-icon name="playlist_add" />
     </button>
 
-    <small v-if="language" class="line-count">
+    <small v-if="language" class="line-count type-note">
       {{
         $tc("interfaces-code-loc", lineCount, {
           count: lineCount,
@@ -181,10 +181,12 @@ export default {
   position: relative;
   width: 100%;
   max-width: var(--width-x-large);
-  font-size: 13px;
+  // border: var(--input-border-width) solid var(--input-border-color);
+  // border-radius: var(--border-radius);
+  font-size: var(--input-font-size);
 
   &:focus {
-    border-color: var(--darker-gray);
+    border-color: var(--blue-grey-800);
   }
 }
 
@@ -194,7 +196,6 @@ small {
   bottom: -20px;
   font-style: italic;
   text-align: right;
-  color: var(--light-gray);
 }
 
 button {
@@ -202,14 +203,14 @@ button {
   top: 10px;
   right: 10px;
   user-select: none;
-  color: var(--light-gray);
+  color: var(--blue-grey-300);
   cursor: pointer;
   transition: color var(--fast) var(--transition-out);
   z-index: 10;
 
   &:hover {
     transition: none;
-    color: var(--dark-gray);
+    color: var(--blue-grey-600);
   }
 }
 </style>

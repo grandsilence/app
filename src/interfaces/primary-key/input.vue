@@ -6,6 +6,7 @@
       :type="inputType"
       :readonly="!newItem"
       :value="value"
+      :monospace="options.monospace"
       @input="$emit('input', $event)"
     ></v-input>
     <span v-if="!newItem" class="immutable">
@@ -38,7 +39,7 @@ export default {
 }
 .immutable {
   display: block;
-  color: var(--light-gray);
+  color: var(--note-text-color);
   text-transform: initial;
   margin-right: 20px;
   font-style: italic;

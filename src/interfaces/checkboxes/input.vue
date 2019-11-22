@@ -11,7 +11,7 @@
       <template v-if="choice.custom">
         <button @click="choices[index].checked = !choices[index].checked">
           <v-icon
-            color="darker-gray"
+            color="blue-grey-800"
             :name="choice.checked ? 'check_box' : 'check_box_outline_blank'"
           />
         </button>
@@ -67,8 +67,8 @@ export default {
   methods: {
     initChoices() {
       const optionChoices = _.clone(this.options.choices);
-
-      let choices = this.value
+      const initialValues = this.value ? this.value : [];
+      let choices = initialValues
         .filter(key => key) // filter out empty strings
         .map(key => {
           return {
@@ -89,7 +89,7 @@ export default {
 
       const nonChecked = Object.keys(optionChoices)
         .filter(key => {
-          return this.value.includes(key) === false;
+          return initialValues.includes(key) === false;
         })
         .map(key => {
           return {
@@ -125,6 +125,9 @@ export default {
 .interface-checkboxes {
   display: grid;
   grid-gap: 12px;
+  padding-top: calc(
+    (var(--input-height) - 24px) / 2
+  ); // [input height] - 24px (icon height) / 2 (top padding)
 }
 
 .cols {
@@ -132,6 +135,7 @@ export default {
 }
 
 .drag-handle {
+  color: var(--input-border-color);
   cursor: grab;
 }
 
@@ -140,6 +144,7 @@ export default {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  font-size: var(--input-font-size);
 
   .form-checkbox {
     width: 100%;
@@ -147,7 +152,7 @@ export default {
 
   input {
     border: 0;
-    border-bottom: 1px solid var(--gray);
+    border-bottom: 1px solid var(--blue-grey-400);
     width: 100%;
     margin-left: 4px;
     width: 100%;
@@ -155,15 +160,15 @@ export default {
   }
 
   input:hover {
-    border-color: var(--darker-gray);
+    border-color: var(--blue-grey-800);
   }
 
   input:focus {
-    border-color: var(--darkest-gray);
+    border-color: var(--blue-grey-900);
   }
 
   input::placeholder {
-    color: var(--light-gray);
+    color: var(--blue-grey-300);
   }
 }
 

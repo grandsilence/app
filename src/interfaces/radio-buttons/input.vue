@@ -42,5 +42,8 @@ export default {
   display: grid;
   grid-gap: 20px;
   grid-template-columns: repeat(4, 1fr);
+  padding-top: calc(
+    (var(--input-height) - 24px) / 2
+  ); // [input height] - 24px (icon height) / 2 (top padding)
 }
 </style>

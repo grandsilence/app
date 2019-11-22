@@ -1,8 +1,8 @@
 {
   "name": "$t:user-roles",
   "version": "1.0.0",
-  "types": ["o2m"],
-  "relation": "m2m",
+  "types": ["m2o"],
+  "relation": "m2o",
   "icon": "perm_identity",
   "options": {
     "relational": {
@@ -20,8 +20,9 @@
   "translation": {
     "en-US": {
       "user-roles": "User Role",
+      "choose_role": "Choose a role...",
       "relational": "Relational",
-      "relational_comment": "Save as M2M value to directus_user_roles",
+      "relational_comment": "Save as a relational record",
       "show_public": "Show public role"
     },
     "fr-FR": {

@@ -1,3 +1,5 @@
+// Root
+
 ::selection {
   background: #e1f0fa;
 }
@@ -9,30 +11,92 @@
   font-weight: inherit;
   color: inherit;
   margin: 0;
+  user-select: none;
   box-sizing: border-box;
 }
 
 html {
-  font-size: 14px;
+  font-size: 15px;
   height: 100%;
 }
 
 body {
+  font-family: var(--family-sans-serif);
+  font-weight: 400;
+  color: var(--page-text-color);
+  line-height: 1.3;
+  letter-spacing: 0.01em;
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
   -moz-osx-font-smoothing: grayscale;
-  font-family: var(--family-sans-serif);
-  font-weight: 400;
-  line-height: 1.3;
-  letter-spacing: 0.01em;
-  color: var(--dark-gray);
-  background-color: var(--white);
+  background-color: var(--page-background-color);
   height: 100%;
+
+  &:not(.user-is-tabbing) * {
+    outline: 0;
+  }
 }
 
-body:not(.user-is-tabbing) * {
-  outline: 0;
+.selectable {
+  user-select: text;
 }
+
+// Type Style Classes
+
+// Currently only used for page/modal titles
+.type-title {
+  font-size: var(--type-title-size);
+  color: var(--heading-text-color);
+}
+
+.type-heading-large {
+  font-size: var(--type-heading-large-size);
+  line-height: var(--type-heading-large-line-height);
+  color: var(--heading-text-color);
+  font-weight: 300;
+  letter-spacing: -1px;
+}
+
+.type-heading-medium {
+  font-size: var(--type-heading-medium-size);
+  color: var(--heading-text-color);
+  font-weight: 300;
+}
+
+// Currently only used as modal/error heading
+.type-heading-small {
+  font-size: var(--type-heading-small-size);
+  color: var(--heading-text-color);
+}
+
+.type-label {
+  font-size: var(--type-label-size);
+  color: var(--heading-text-color);
+}
+
+.type-note {
+  font-size: var(--type-note-size);
+  font-style: italic;
+  color: var(--note-text-color);
+}
+
+.type-table-head {
+  font-weight: 500;
+}
+
+.type-body-serif {
+  font-family: var(--family-serif);
+  font-size: var(--type-body-serif-size);
+  line-height: var(--type-body-serif-line-height);
+}
+
+.type-body-sans {
+  font-family: var(--family-sans-serif);
+  font-size: var(--type-body-sans-size);
+  line-height: var(--type-body-sans-line-height);
+}
+
+// Tags
 
 button {
   cursor: pointer;
@@ -51,9 +115,9 @@ fieldset {
   padding: 10px 0 20px;
 
   &.centered {
-    border-top: 1px solid var(--lighter-gray);
+    border-top: 1px solid var(--blue-grey-200);
     legend {
-      color: var(--gray);
+      color: var(--blue-grey-400);
       padding: 10px 20px;
       text-align: center;
     }
@@ -61,51 +125,6 @@ fieldset {
 }
 
 // TODO: Get rid of the old font classes below once the places they're used are cleaned up
-
-.style-0 {
-  color: var(--darker-gray);
-  font-size: 28px;
-  line-height: 1.4;
-  font-weight: 300;
-}
-
-.style-1 {
-  color: var(--darker-gray);
-  font-size: 18px;
-  line-height: 1.4;
-  font-weight: 400;
-}
-
-.style-2 {
-  color: var(--darker-gray);
-  font-size: 0.92em;
-  line-height: 1.66;
-  font-weight: 500;
-}
-
-.style-3,
-legend {
-  color: var(--darker-gray);
-  font-size: 1.2rem;
-  line-height: 1.1;
-  font-weight: 400;
-  text-transform: none;
-}
-
-.style-4 {
-  // color: var(--light-gray);
-  // font-size: 0.77em;
-  // line-height: 1.1;
-  font-weight: 500;
-  // text-transform: uppercase;
-}
-
-.style-btn {
-  color: var(--white);
-  font-size: 16px;
-  line-height: 19px;
-  font-weight: 500;
-}
 
 .x-small {
   max-width: var(--width-x-small);
@@ -129,9 +148,9 @@ legend {
 
 .style-input {
   width: 100%;
-  border: var(--input-border-width) solid var(--lighter-gray);
+  border: var(--input-border-width) solid var(--input-border-color);
   border-radius: var(--border-radius);
-  color: var(--gray);
+  color: var(--blue-grey-400);
   padding: 10px;
   line-height: 1.5;
   transition: var(--fast) var(--transition);
@@ -139,22 +158,22 @@ legend {
   height: var(--input-height);
 
   &::placeholder {
-    color: var(--light-gray);
+    color: var(--blue-grey-300);
   }
 
   &:focus {
-    color: var(--darker-gray);
-    border-color: var(--darker-gray);
+    color: var(--blue-grey-800);
+    border-color: var(--blue-grey-800);
     outline: 0;
   }
 
   &:focus + i {
-    color: var(--darker-gray);
+    color: var(--blue-grey-800);
   }
 
   &[disabled],
   &:read-only {
-    background-color: var(--lightest-gray);
+    background-color: var(--blue-grey-50);
     cursor: not-allowed;
   }
 }
@@ -167,17 +186,4 @@ legend {
 
 input:-webkit-autofill {
   -webkit-box-shadow: 0 0 0 30px white inset;
-}
-
-.directus {
-   &::before {
-    content: '';
-    display: block;
-    position: absolute;
-    width: 100%;
-    height: var(--header-height);
-    left: 0;
-    top: 0;
-    background-color: var(--darkest-gray);
-  }
 }

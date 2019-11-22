@@ -1,8 +1,8 @@
 <template>
-  <div id="timeline" ref="timeline">
+  <div ref="timeline" class="timeline">
     <Day v-for="day in days" :key="day.id" :date="day.date" :events="day.events" />
     <div v-if="lazyLoading" class="lazy-loader">
-      <v-spinner line-fg-color="var(--light-gray)" line-bg-color="var(--lighter-gray)" />
+      <v-spinner line-fg-color="var(--blue-grey-300)" line-bg-color="var(--blue-grey-200)" />
     </div>
   </div>
 </template>
@@ -21,7 +21,7 @@ export default {
       actionColor: {
         create: "success",
         update: "success",
-        authenticate: "dark-gray",
+        authenticate: "blue-grey-600",
         delete: "warning",
         upload: "accent"
       },
@@ -52,7 +52,7 @@ export default {
         if (!this.viewOptions.date) return;
 
         var date = new Date(item[this.viewOptions.date].substr(0, 10) + "T00:00:00");
-        var existingDay = this.$lodash.find(days, { date: date });
+        var existingDay = _.find(days, { date: date });
 
         let color = null;
         if (this.viewOptions.color && item[this.viewOptions.color]) {
@@ -111,3 +111,9 @@ export default {
   }
 };
 </script>
+
+<style lang="scss" scoped>
+.timeline {
+  margin-top: 32px;
+}
+</style>

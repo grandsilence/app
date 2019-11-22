@@ -11,18 +11,12 @@ export function getUsers({ commit }) {
         "title",
         "status",
         "timezone",
-        "roles.*",
+        "role.*",
         "avatar.*",
         "company"
       ]
     })
     .then(res => res.data)
-    .then(users =>
-      users.map(user => ({
-        ...user,
-        roles: user.roles.map(({ role }) => role)
-      }))
-    )
     .then(users => {
       commit(SET_USERS, users);
     });

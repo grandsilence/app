@@ -41,7 +41,7 @@ export default {
   span {
     margin: 2px;
     padding: 2px 4px 3px;
-    background-color: var(--light-gray);
+    background-color: var(--blue-grey-300);
     border-radius: var(--border-radius);
     color: var(--white);
     font-weight: 500;

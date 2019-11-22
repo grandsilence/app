@@ -1,6 +1,6 @@
 <template>
   <div class="day">
-    <div class="date">
+    <div class="date type-heading-small">
       Activity on {{ $t("months." + $parent.monthNames[date.getMonth()]) }} {{ date.getDate() }},
       {{ date.getFullYear() }}
     </div>
@@ -28,7 +28,7 @@ export default {
       default: new Date()
     },
     events: {
-      type: Object,
+      type: Array,
       default: null
     }
   },
@@ -49,11 +49,10 @@ export default {
 
   .date {
     padding: 19px 32px; // 19 visually aligns it with the project switcher
-    font-size: var(--size-2);
-    border-bottom: 2px solid var(--lightest-gray);
+    border-bottom: 2px solid var(--table-row-border-color);
     position: sticky;
     top: var(--header-height);
-    background-color: var(--white);
+    background-color: var(--page-background-color);
     z-index: 2;
   }
 

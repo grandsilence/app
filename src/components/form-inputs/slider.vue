@@ -88,9 +88,9 @@ export default {
 
   .input {
     transition: border-color var(--fast) var(--transition);
-    padding: 12px 0;
-    border-radius: 4px;
-    background-color: var(--white);
+    padding: 12px 0 0;
+    border-radius: 2px;
+    background-color: var(--input-background-color);
 
     flex-grow: 1;
     flex-shrink: 0;
@@ -101,26 +101,28 @@ export default {
 
     &:hover {
       transition: none;
-      border-color: var(--light-gray);
+      border-color: var(--blue-grey-300);
     }
   }
 
   .track-wrapper {
-    height: 4px;
+    height: 2px;
     width: 100%;
-    border-radius: 4px;
+    border-radius: 2px;
     pointer-events: none;
     user-select: none;
     position: relative;
+    background-color: var(--input-border-color);
 
     .track-fill {
       position: absolute;
-      background-color: var(--darkest-gray);
-      border-radius: 4px;
+      background-color: var(--input-text-color);
+      border-radius: 2px;
       width: 100%;
       height: 100%;
       left: 0;
       width: 0;
+      z-index: 2;
     }
   }
 
@@ -134,14 +136,14 @@ export default {
     appearance: none;
     -webkit-appearance: none;
     width: 100%;
-    height: 4px;
+    height: 2px;
 
     &::-webkit-slider-runnable-track {
-      height: 4px;
-      background: var(--lighter-gray);
+      height: 2px;
+      background: var(--input-border-color);
       box-shadow: none;
       border: none;
-      border-radius: 4px;
+      border-radius: 2px;
     }
 
     &::-webkit-slider-thumb {
@@ -152,10 +154,10 @@ export default {
       height: 14px;
       width: 14px;
       border-radius: 50%;
-      background: var(--darkest-gray);
-      margin-top: -5px;
+      background: var(--input-text-color);
+      margin-top: -6px;
       cursor: ew-resize;
-      box-shadow: 0 0 0 2px var(--white);
+      box-shadow: 0 0 0 4px var(--input-background-color);
       z-index: +1;
       position: relative;
     }
@@ -168,10 +170,10 @@ export default {
       height: 14px;
       width: 14px;
       border-radius: 50%;
-      background: var(--darkest-gray);
-      margin-top: -5px;
+      background: var(--input-text-color);
+      margin-top: -6px;
       cursor: ew-resize;
-      box-shadow: 0 0 0 2px var(--white);
+      box-shadow: 0 0 0 2px var(--input-background-color);
       z-index: +1;
       position: relative;
     }
@@ -184,20 +186,21 @@ export default {
     position: relative;
     margin-right: 14px;
     margin-top: 2px;
-    height: 28px;
+    height: 0;
   }
   output {
     transition: opacity var(--fast) var(--transition);
     position: absolute;
     display: inline-block;
     white-space: nowrap;
-    top: 0;
+    top: 4px;
     margin-left: 7px;
     text-align: center;
     transform: translateX(-50%);
-    color: var(--white);
-    background-color: var(--darkest-gray);
+    color: var(--input-text-color);
+    background-color: var(--input-background-color-alt);
     border-radius: var(--border-radius);
+    font-size: var(--input-font-size);
     padding: 4px 8px;
     opacity: 0;
     user-select: none;
@@ -211,7 +214,7 @@ export default {
       height: 10px;
       border-radius: var(--border-radius);
       transform: translateX(-50%) rotate(45deg);
-      background-color: var(--darkest-gray);
+      background-color: var(--input-background-color-alt);
     }
     &.output-shown {
       opacity: 1;

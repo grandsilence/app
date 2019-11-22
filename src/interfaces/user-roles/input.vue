@@ -3,9 +3,9 @@
     :id="name"
     icon="perm_identity"
     :name="name"
-    :placeholder="$t('choose_one')"
+    :placeholder="$t('interfaces-user-roles-choose_role')"
     :options="selectOptions"
-    :value="currentRoleID"
+    :value="value && value.id"
     @input="emitValue"
   ></v-select>
 </template>
@@ -38,19 +38,6 @@ export default {
         });
 
       return options;
-    },
-    currentRole() {
-      const value = this.value && this.value[0] && this.value[0].role;
-
-      if (typeof value !== "object") {
-        const role = this.roles.filter(role => role.id == value);
-        return role && role[0];
-      }
-
-      return value;
-    },
-    currentRoleID() {
-      return this.currentRole && this.currentRole.id;
     }
   },
   created() {
@@ -74,22 +61,7 @@ export default {
         });
     },
     emitValue(value) {
-      const currentJunctionRecordID = this.value && this.value[0] && this.value[0].id;
-
-      if (currentJunctionRecordID) {
-        this.$emit("input", [
-          {
-            id: currentJunctionRecordID,
-            role: value
-          }
-        ]);
-      } else {
-        this.$emit("input", [
-          {
-            role: value
-          }
-        ]);
-      }
+      this.$emit("input", value);
     }
   }
 };

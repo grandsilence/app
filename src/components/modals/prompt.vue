@@ -1,5 +1,5 @@
 <template>
-  <v-modal-base :message="message" @cancel="$emit('cancel')">
+  <v-modal-base :title="title" :message="message" @cancel="$emit('cancel')">
     <div class="v-prompt" @keydown.esc="$emit('cancel')">
       <v-textarea
         v-if="multiline"
@@ -45,9 +45,13 @@ export default {
     VModalBase
   },
   props: {
+    title: {
+      type: String,
+      required: false
+    },
     message: {
       type: String,
-      required: true
+      required: false
     },
     confirmText: {
       type: String,
@@ -122,11 +126,11 @@ export default {
 }
 
 .cancel {
-  color: var(--gray);
+  color: var(--button-tertiary-text-color);
   transition: color var(--fast) var(--transition);
 
   &:hover {
-    color: var(--darker-gray);
+    color: var(--button-tertiary-text-color-hover);
   }
 }
 </style>

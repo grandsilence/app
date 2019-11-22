@@ -43,8 +43,8 @@ export default {
   color: var(--white);
   text-align: center;
   &.light {
-    border: 1px solid var(--light-gray);
-    color: var(--darkest-gray) !important;
+    border: 1px solid var(--blue-grey-300);
+    color: var(--blue-grey-900) !important;
     i {
       line-height: 22px;
     }

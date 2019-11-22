@@ -114,7 +114,7 @@ export default {
 };
 </script>
 
-<style type="scss" scoped>
+<style lang="scss" scoped>
 .hidden {
   opacity: 0.5;
   cursor: default !important;
@@ -128,7 +128,7 @@ export default {
   display: grid;
   grid-template: repeat(6, 1fr) / repeat(7, 1fr);
   grid-gap: 1px;
-  border: 1px solid var(--lightest-gray);
-  background-color: var(--lightest-gray);
+  border: 1px solid var(--blue-grey-50);
+  background-color: var(--blue-grey-50);
 }
 </style>

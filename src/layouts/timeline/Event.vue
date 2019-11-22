@@ -3,7 +3,7 @@
     <div class="line" :class="{ connect: connect }">
       <div
         class="point"
-        :style="{ backgroundColor: 'var(--' + (data.color || 'gray') + ')' }"
+        :style="{ backgroundColor: 'var(--' + (data.color || 'input-border-color') + ')' }"
       ></div>
     </div>
     <div class="container" @click="$router.push(data.to)">
@@ -67,45 +67,42 @@ export default {
 
   .line {
     position: absolute;
-    top: 15px;
-    left: 24px;
+    top: 17px;
+    left: 36px;
     height: 102%;
     width: 2px;
     transform: translate(-50%, 0);
 
     &.connect {
-      background-color: var(--lightest-gray);
+      background-color: var(--sidebar-background-color);
     }
 
     .point {
-      width: 16px;
-      height: 16px;
+      width: 12px;
+      height: 12px;
       border-radius: 50%;
       margin-left: 50%;
       transform: translate(-50%, -50%);
-      border: 3px solid white;
+      border: var(--page-background-color) solid var(--sidebar-background-color);
       z-index: 10;
-      top: 8px;
+      top: 6px;
       position: relative;
     }
   }
 
   .container {
     cursor: pointer;
-    margin: 0 32px 0 40px;
+    margin: 0 32px 0 52px;
     padding: 12px;
     border-radius: var(--border-radius);
-    border-top: 2px solid var(--off-white);
+    border-top: 2px solid var(--table-row-border-color);
 
     &:hover {
       background-color: var(--highlight);
     }
 
     .title {
-      color: var(--darker-gray);
       margin-bottom: 4px;
-      font-weight: 500;
-      // font-size: 15px;
       text-transform: capitalize; // For activity
     }
 
@@ -116,11 +113,11 @@ export default {
       .display {
         margin-right: 4px;
         font-weight: 500;
-        color: var(--gray);
+        color: var(--note-text-color);
       }
 
       .time {
-        color: var(--light-gray);
+        color: var(--note-text-color);
       }
     }
   }

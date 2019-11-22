@@ -1,15 +1,14 @@
 import axios from "axios";
 import store from "./store/";
-import { loadLanguageAsync, availableLanguages } from "./lang/";
+import { loadLanguageAsync } from "./lang/";
 import { STORE_HYDRATED, HYDRATING_FAILED } from "./store/mutation-types";
-import { startPolling } from "./polling";
 import startIdleTracking from "./idle";
 import { version } from "../package.json";
 
 export default function hydrateStore() {
   return (
     Promise.all([
-      store.dispatch("latency"),
+      store.dispatch("getProjects"),
       store.dispatch("getCurrentUser"),
       store.dispatch("getCollections"),
       store.dispatch("getSettings"),
@@ -23,18 +22,23 @@ export default function hydrateStore() {
       // that's why it's being called after the others are done
       .then(() => store.dispatch("getPermissions"))
       .then(() => {
-        if (Object.keys(availableLanguages).includes(store.state.currentUser.locale)) {
-          loadLanguageAsync(store.state.currentUser.locale);
+        const defaultLocale = store.getters.currentProject?.data?.default_locale;
+        const userLocale = store.state.currentUser.locale;
+
+        if (userLocale) {
+          loadLanguageAsync(userLocale);
+        } else {
+          loadLanguageAsync(defaultLocale);
         }
       })
       .then(() => {
-        startPolling();
         startIdleTracking(store);
       })
       .then(() => {
         const isAdmin = store.state.currentUser.admin;
+        const telemetryAllowed = store.getters.currentProject?.data?.telemetry !== false;
 
-        if (isAdmin && navigator.onLine) {
+        if (telemetryAllowed && isAdmin && navigator.onLine) {
           axios
             .post("https://telemetry.directus.io/count", {
               type: "app",

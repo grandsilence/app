@@ -7,8 +7,8 @@
       class="back"
       :icon="icon"
       :to="iconLink"
-      :color="iconColor ? iconColor + '-light' : 'lightest-gray'"
-      :icon-color="iconColor ? iconColor : 'gray'"
+      :icon-color="settings ? 'warning' : 'button-tertiary-text-color'"
+      :background-color="settings ? 'warning-light' : 'button-tertiary-background-color'"
     />
     <div class="title" :class="{ 'has-breadcrumb': navBreadcrumb }">
       <ol v-if="navBreadcrumb" class="breadcrumb">
@@ -18,28 +18,11 @@
       </ol>
 
       <div class="flex">
-        <h1>{{ title || currentPage.name }}</h1>
+        <h1 class="type-title">{{ title || currentPage.name }}</h1>
         <slot name="title" />
       </div>
     </div>
     <slot />
-    <v-header-button
-      v-if="infoToggle && !itemDetail"
-      :label="$t('info')"
-      icon="info"
-      no-background
-      icon-color="lighter-gray"
-      @click="toggleInfo"
-    />
-    <v-header-button
-      v-if="infoToggle && itemDetail"
-      :label="$t('info')"
-      icon="info"
-      no-background
-      class="info-mobile"
-      icon-color="lighter-gray"
-      @click="toggleInfo"
-    />
     <slot name="buttons" />
   </header>
 </template>
@@ -66,7 +49,6 @@ export default {
       type: Boolean,
       default: false
     },
-
     icon: {
       type: String,
       default: "arrow_back"
@@ -75,9 +57,9 @@ export default {
       type: String,
       default: null
     },
-    iconColor: {
-      type: String,
-      default: undefined
+    settings: {
+      type: Boolean,
+      default: false
     }
   },
   data() {
@@ -163,18 +145,28 @@ body.info-wide-active .v-header {
 
 <style scoped lang="scss">
 .v-header {
-  background-color: var(--white);
+  transition: all var(--fast) var(--transition);
+  background-color: var(--page-background-color);
   position: fixed;
   width: 100%;
   right: 0;
   top: 0;
-  height: 4.286rem;
-  color: var(--black);
+  height: 76px;
+  padding-top: 32px;
+  padding-left: 32px;
+  padding-right: 96px;
   display: flex;
   align-items: center;
   z-index: 20;
-  padding-left: 32px;
-  padding-right: 32px;
+  border-color: var(--page-background-color);
+
+  &.scrolled {
+    height: 64px;
+    padding-top: 12px;
+    padding-bottom: 12px;
+    // border-bottom: 2px solid var(--sidebar-background-color);
+    box-shadow: 0px 1px 4px 0px rgba(0, 0, 0, 0.2);
+  }
 
   @media (min-width: 800px) {
     padding-left: calc(var(--nav-sidebar-width) + 32px);
@@ -202,14 +194,10 @@ body.info-wide-active .v-header {
     }
   }
 
-  h1 {
-    color: var(--darker-gray);
-    font-size: 22px;
-  }
-
   .breadcrumb {
     list-style: none;
     padding: 0;
+    margin-bottom: 2px;
 
     li {
       display: inline-block;
@@ -217,24 +205,24 @@ body.info-wide-active .v-header {
 
     a {
       text-decoration: none;
-      color: var(--light-gray);
+      color: var(--breadcrumb-text-color);
       transition: color var(--fast) var(--transition);
     }
 
     a:hover {
-      color: var(--dark-gray);
+      color: var(--page-text-color);
     }
   }
 
   .breadcrumb-item + .breadcrumb-item::before {
     content: "chevron_right";
-    color: var(--lighter-gray);
+    color: var(--breadcrumb-glue-color);
     font-family: "Material Icons";
     font-weight: normal;
     font-style: normal;
     font-size: 18px;
     display: inline-block;
-    margin: 0 8px;
+    margin: 0 4px;
     line-height: 1;
     text-transform: none;
     letter-spacing: normal;
@@ -255,11 +243,6 @@ body.info-wide-active .v-header {
   }
 }
 
-.scrolled {
-  border-bottom: 2px solid var(--lightest-gray);
-  height: calc(4.286rem + 2px);
-}
-
 .info-mobile {
   @media (min-width: 1235px) {
     visibility: hidden;
@@ -269,6 +252,6 @@ body.info-wide-active .v-header {
 
 <style>
 body {
-  padding-top: var(--header-height);
+  padding-top: var(--header-height-expanded);
 }
 </style>

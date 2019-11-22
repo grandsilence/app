@@ -165,7 +165,7 @@
       :class="{ light: tooLight(color.hex()) }"
       :style="`background-color: ${color ? color.hex() : 'transparent'}`"
     >
-      <v-icon name="check" size="18" />
+      <v-icon name="check" size="24" />
     </div>
     <template v-if="readonly === false">
       <button
@@ -175,7 +175,7 @@
         :class="{ active: value == String(color), light: tooLight(value.hex()) }"
         @click="setRawValue(value)"
       >
-        <v-icon name="check" size="18" />
+        <v-icon name="check" size="24" />
       </button>
     </template>
   </div>
@@ -307,7 +307,7 @@ export default {
   vertical-align: middle;
   .slider-label {
     display: inline-block;
-    color: var(--light-gray);
+    color: var(--blue-grey-300);
     width: 14px;
     vertical-align: text-bottom;
   }
@@ -319,57 +319,44 @@ export default {
 
 .swatch {
   transition: var(--fast) var(--transition);
-  display: inline-block;
-  width: 24px;
-  height: 24px;
+  width: calc(var(--input-height) - 16px);
+  height: calc(var(--input-height) - 16px);
   border-radius: 100%;
-  vertical-align: middle;
-  margin-right: 4px;
+  margin-right: 8px;
   color: var(--white);
-  text-align: center;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   &.light {
-    border: 1px solid var(--light-gray);
-    color: var(--darkest-gray) !important;
-    i {
-      line-height: 22px;
-    }
-  }
-  i {
-    line-height: 24px;
+    border: 1px solid var(--blue-grey-300);
+    color: var(--blue-grey-900) !important;
   }
 }
 
 button {
   transition: var(--fast) var(--transition);
   position: relative;
-  display: inline-block;
-  width: 24px;
-  height: 24px;
+  width: calc(var(--input-height) - 16px);
+  height: calc(var(--input-height) - 16px);
   border-radius: 100%;
-  margin-right: 4px;
-  margin-bottom: 4px;
+  margin-right: 8px;
+  margin-bottom: 8px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   &:last-of-type {
     margin-right: 0;
   }
   &.light {
-    border: 1px solid var(--light-gray);
-    i {
-      line-height: 22px;
-    }
+    border: 1px solid var(--blue-grey-300);
   }
   &.active,
   &:hover {
     transition: none;
     color: var(--white) !important;
     &.light {
-      color: var(--darkest-gray) !important;
+      color: var(--blue-grey-900) !important;
     }
-  }
-  i {
-    line-height: 24px;
-  }
-  i {
-    line-height: 24px;
   }
 }
 </style>

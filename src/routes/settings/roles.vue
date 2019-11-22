@@ -1,11 +1,12 @@
 <template>
   <div class="settings-roles">
-    <v-header :breadcrumb="breadcrumb" icon-link="/settings" icon-color="warning">
+    <v-header :breadcrumb="breadcrumb" :icon-link="`/${this.currentProjectKey}/settings`" settings>
       <template slot="buttons">
         <v-header-button
           key="add"
           icon="add"
-          color="action"
+          background-color="button-primary-background-color"
+          icon-color="button-primary-text-color"
           :label="$t('new')"
           @click="addNew = true"
         />
@@ -25,11 +26,15 @@
         @confirm="add"
       />
     </portal>
+    <v-info-sidebar wide>
+      <span class="type-note">No settings</span>
+    </v-info-sidebar>
   </div>
 </template>
 
 <script>
 import api from "../../api";
+import { mapState } from "vuex";
 
 export default {
   name: "SettingsRoles",
@@ -48,22 +53,23 @@ export default {
     };
   },
   computed: {
+    ...mapState(["currentProjectKey"]),
     breadcrumb() {
       return [
         {
           name: this.$t("settings"),
-          path: "/settings"
+          path: `/${this.currentProjectKey}/settings`
         },
         {
           name: this.$t("roles"),
-          path: "/settings/roles"
+          path: `/${this.currentProjectKey}/settings/roles`
         }
       ];
     },
     items() {
       return this.roles.map(role => ({
         ...role,
-        __link__: `/settings/roles/${role.id}`
+        __link__: `/${this.currentProjectKey}/settings/roles/${role.id}`
       }));
     },
     fields() {
@@ -112,7 +118,7 @@ export default {
         .then(res => res.data)
         .then(role => {
           this.$store.dispatch("loadingFinished", id);
-          this.$router.push(`/settings/roles/${role.id}`);
+          this.$router.push(`/${this.currentProjectKey}/settings/roles/${role.id}`);
         })
         .catch(error => {
           this.adding = false;
@@ -129,6 +135,6 @@ export default {
 
 <style lang="scss" scoped>
 .settings-roles {
-  padding: 0 32px var(--page-padding-bottom);
+  padding: var(--page-padding) var(--page-padding) var(--page-padding-bottom);
 }
 </style>

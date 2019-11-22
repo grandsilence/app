@@ -41,6 +41,16 @@
       "interface": "text-input",
       "length": 200
     },
+    "size": {
+      "name": "$t:size",
+      "comment": "$t:size_comment",
+      "interface": "numeric",
+      "options": {
+        "min": 3,
+        "max": 20
+      },
+      "default": 6
+    },
     "wrapWithDelimiter": {
       "name": "$t:wrap",
       "comment": "$t:wrap_comment",
@@ -67,6 +77,8 @@
       "choices_comment": "Enter JSON key value pairs with the saved value and displayed text",
       "placeholder": "Placeholder",
       "placeholder_comment": "Enter placeholder text",
+      "size": "Size",
+      "size_comment": "Number of options visible before scrolling",
       "option": "Option",
       "wrap": "Wrap with Delimiter",
       "wrap_comment": "Wrap the values with a pair of delimiters to allow strict searching for a single value",

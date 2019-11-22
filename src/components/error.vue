@@ -1,8 +1,10 @@
 <template>
   <transition name="error">
     <div class="v-error">
-      <v-icon class="icon" :name="icon" size="48" :color="color" />
-      <h2 class="style-1">{{ title }}</h2>
+      <div class="circle" :style="{ borderColor: 'var(--' + color + ')' }">
+        <v-icon class="icon" :class="icon" :name="icon" size="48" :color="color" />
+      </div>
+      <h2 class="type-heading-small" :style="{ color: 'var(--' + color + ')' }">{{ title }}</h2>
       <p>{{ body }}</p>
     </div>
   </transition>
@@ -14,9 +16,9 @@ export default {
   props: {
     color: {
       type: String,
-      default: "darker-gray",
+      default: "page-text-color",
       validator(val) {
-        return ["darker-gray", "accent", "success", "warning", "danger"].includes(val);
+        return ["page-text-color", "accent", "success", "warning", "danger"].includes(val);
       }
     },
     icon: {
@@ -43,20 +45,30 @@ export default {
   flex-direction: column;
   margin: 100px 0;
 
-  .icon {
-    border: 2px solid var(--lightest-gray);
+  .circle {
+    border: 2px solid var(--blue-grey-50);
     border-radius: 50%;
     padding: 20px;
-    margin-bottom: 10px;
+    width: 88px;
+    height: 88px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    .icon {
+      // optical alignment for weighted icons
+      &.warning {
+        margin-top: -4px;
+      }
+    }
   }
 
   h2 {
-    margin-bottom: 5px;
+    margin-top: 12px;
+    margin-bottom: 8px;
   }
 
   p {
-    line-height: 1.4;
-    color: var(--light-gray);
+    color: var(--note-text-color);
     max-width: 200px;
     text-align: center;
   }

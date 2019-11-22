@@ -75,7 +75,7 @@ export default {
       let _starType = this.starType(n);
       if (_starType != "empty") {
         if (this.hovered) {
-          _style.color = `var(--light-gray)`;
+          _style.color = `var(--input-text-color)`;
         } else {
           _style.color = `var(--${this.options.active_color})`;
         }
@@ -124,24 +124,25 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   &:after {
     font-family: "Material Icons";
+    font-feature-settings: "liga";
     font-size: 36px;
     line-height: 1;
   }
 }
 .rating-empty {
-  color: var(--lightest-gray);
+  color: var(--input-background-color-alt);
   &:after {
     content: "star";
   }
 }
 .rating-half {
-  color: var(--darker-gray);
+  color: var(--amber);
   &:after {
     content: "star_half";
   }
 }
 .rating-full {
-  color: var(--darker-gray);
+  color: var(--amber);
   &:after {
     content: "star";
   }

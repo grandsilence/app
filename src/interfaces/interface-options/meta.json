@@ -7,8 +7,8 @@
     "interfaceField": {
       "name": "$t:interface-field",
       "interface": "text-input",
-      "comment": "$t:placeholder_comment",
-      "default": "$t:placeholder_default",
+      "comment": "$t:placeholder-comment",
+      "default": "$t:placeholder-default",
       "length": 200
     }
   },
@@ -16,7 +16,8 @@
     "en-US": {
       "interface-options": "Interface Options",
       "interface-field": "Interface Field",
-      "interface-field-comment": "The field that holds the name of the interface"
+      "placeholder-comment": "The field that holds the name of the interface",
+      "placeholder-default": "Enter a field name..."
     }
   }
 }

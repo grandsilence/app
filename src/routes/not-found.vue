@@ -6,6 +6,9 @@
       :body="$t('page_not_found_body')"
       icon="not_interested"
     />
+    <v-info-sidebar wide>
+      <span class="type-note">No settings</span>
+    </v-info-sidebar>
   </div>
 </template>
 

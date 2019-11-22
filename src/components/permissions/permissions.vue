@@ -1,6 +1,6 @@
 <template>
   <div v-if="loading" class="v-permissions interface loading">
-    <v-spinner line-fg-color="var(--light-gray)" line-bg-color="var(--lighter-gray)" />
+    <v-spinner line-fg-color="var(--blue-grey-300)" line-bg-color="var(--blue-grey-200)" />
   </div>
   <div v-else class="interface">
     <div class="v-permissions">
@@ -23,9 +23,8 @@
 
         <template v-if="showDirectus">
           <v-permissions-row
-            v-for="(permission, name, i) in directusRows"
+            v-for="(permission, name) in directusRows"
             :key="name"
-            :class="{ border: i === 0 }"
             :permission="permission"
             :permission-name="name"
             :statuses="(statuses[name] || {}).mapping"
@@ -153,9 +152,9 @@ export default {
   margin-bottom: 40px;
 }
 .v-permissions {
-  background-color: var(--white);
+  background-color: var(--page-background-color);
   border-radius: var(--border-radius);
-  border: var(--input-border-width) solid var(--lighter-gray);
+  border: var(--input-border-width) solid var(--input-border-color);
   max-width: 632px;
   .no-collections-message {
     margin-top: 20px;
@@ -168,39 +167,41 @@ export default {
     padding: 10px;
     height: 40px;
     &.sub {
+      position: relative;
       &::before {
         content: "call_missed_outgoing";
         font-family: "Material Icons";
         position: absolute;
+        top: 8px;
         transform: rotate(45deg);
         font-size: 18px;
-        color: var(--lighter-gray);
+        color: var(--input-icon-color);
+        font-feature-settings: "liga";
       }
       & .cell:first-child {
         padding-left: 2rem;
       }
     }
     &:not(.sub) {
-      border-top: 1px solid var(--lightest-gray);
+      border-top: var(--input-border-width) solid var(--table-row-border-color);
     }
   }
   ::v-deep .cell {
-    flex-basis: 44px;
+    flex-basis: 36px;
     &:first-child {
-      flex-grow: 2;
+      flex-basis: 220px;
+      max-width: 220px;
+      overflow: hidden;
     }
     &:nth-last-child(3) {
-      flex-basis: 50px;
+      flex-basis: 52px;
     }
     &:nth-last-child(2) {
-      flex-basis: 90px;
+      flex-basis: 92px;
     }
     &:last-child {
       flex-basis: 100px;
     }
-  }
-  .border {
-    border-top: 1px solid var(--lightest-gray);
   }
   &.loading {
     padding: 300px 0;

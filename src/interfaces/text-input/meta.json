@@ -43,19 +43,11 @@
       "interface": "toggle",
       "default": false
     },
-    "width": {
-      "name": "$t:width",
-      "comment": "$t:width_comment",
-      "interface": "dropdown",
-      "default": "auto",
-      "options": {
-        "choices": {
-          "auto": "$t:auto",
-          "small": "$t:small",
-          "medium": "$t:medium",
-          "large": "$t:large"
-        }
-      }
+    "monospace": {
+      "name": "$t:monospace",
+      "comment": "$t:monospace_comment",
+      "interface": "toggle",
+      "default": false
     }
   },
   "translation": {
@@ -66,15 +58,15 @@
       "trim": "Trim",
       "trim_comment": "Trim surrounding whitespace from the value before saving",
       "char_count": "Show Character Count",
-      "char_count_comment": "Show the remaining characters available next to the input",
+      "char_count_comment": "Show the remaining characters available",
       "icon_left": "Icon Left",
       "icon_left_comment": "Choose an optional icon to display on the left of the input",
       "icon_right": "Icon Right",
       "icon_right_comment": "Choose an optional icon to display on the right of the input",
       "format": "Pretty Output",
       "format_comment": "Convert the value to title case",
-      "width": "Size",
-      "width_comment": "Set what width to use for the input",
+      "monospace": "Monospace",
+      "monospace_comment": "Use a monospace font",
       "auto": "Automatic",
       "small": "Small",
       "medium": "Medium",
@@ -94,8 +86,6 @@
       "icon_right_comment": "Choose an optional icon to display on the right of the input",
       "format": "Embellir la sortie",
       "format_comment": "Convertir la sortie en majuscules",
-      "width": "Taille",
-      "width_comment": "Saisir la longueur de texte à utiliser pour cette entrée",
       "auto": "Automatique",
       "small": "Petit",
       "medium": "Moyen",

@@ -1,8 +1,14 @@
 import Vue from "vue";
 import { forEach } from "lodash";
-import { SET_RELATIONS, ADD_RELATION, UPDATE_RELATION } from "../../mutation-types";
+import { RESET, SET_RELATIONS, ADD_RELATION, UPDATE_RELATION } from "../../mutation-types";
 
 export default {
+  [RESET](state) {
+    // Default state is an empty object, this will delete all properties
+    Object.keys(state).forEach(key => {
+      Vue.delete(state, key);
+    });
+  },
   [SET_RELATIONS](state, relations) {
     forEach(relations, (relation, i) => {
       Vue.set(state, i, relation);

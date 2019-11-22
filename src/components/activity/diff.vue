@@ -27,11 +27,11 @@ export default {
 <style lang="scss" scoped>
 .change {
   width: 100%;
-  margin-top: 14px;
+  margin-top: 16px;
 
   p {
     margin-bottom: 4px;
-    color: var(--light-gray);
+    // color: var(--blue-grey-300);
   }
 
   .diff {
@@ -49,8 +49,10 @@ export default {
   .before {
     position: relative;
     color: var(--danger);
-    background-color: var(--white);
-    border-bottom: 2px solid var(--lightest-gray);
+    background-color: var(--page-background-color);
+    border-bottom: 2px solid var(--sidebar-background-color);
+    max-height: 300px;
+    overflow: auto;
     &:after {
       content: "close";
       position: absolute;
@@ -69,7 +71,9 @@ export default {
   .after {
     position: relative;
     color: var(--success);
-    background-color: var(--white);
+    background-color: var(--page-background-color);
+    max-height: 300px;
+    overflow: auto;
     &:after {
       content: "check";
       position: absolute;
@@ -86,8 +90,8 @@ export default {
   }
 
   .empty {
-    color: var(--lighter-gray);
-    background-color: var(--white);
+    color: var(--note-text-color);
+    background-color: var(--page-background-color);
     &:after {
       content: "block";
       position: absolute;
@@ -96,7 +100,7 @@ export default {
       transform: translateY(-50%);
       font-family: "Material Icons";
       font-feature-settings: "liga";
-      color: var(--lighter-gray);
+      color: var(--note-text-color);
       display: inline-block;
       vertical-align: middle;
       margin: 0 5px;

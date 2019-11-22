@@ -59,6 +59,7 @@ export default {
   flex-wrap: wrap;
   flex-direction: column-reverse;
   width: 100%;
+  color: var(--input-text-color);
   &.float {
     flex-wrap: nowrap;
     flex-direction: row;
@@ -75,30 +76,30 @@ export default {
   .toolbar {
     display: flex;
     border-radius: var(--border-radius) var(--border-radius) 0 0;
-    border: var(--input-border-width) solid var(--lighter-gray);
+    border: var(--input-border-width) solid var(--input-border-color);
     border-bottom: none;
-    background-color: var(--off-white);
+    background-color: var(--input-background-color-alt);
     width: 100%;
+    font-size: var(--input-font-size);
     span {
       transition: color var(--fast) var(--transition);
       cursor: pointer;
       padding: 10px 16px 10px 12px;
       line-height: 20px;
       &:hover {
-        color: var(--darkest-gray);
+        //
       }
       &.active {
         font-weight: 500;
         border-radius: var(--border-radius) var(--border-radius) 0 0;
-        border: var(--input-border-width) solid var(--lighter-gray);
+        border: var(--input-border-width) solid var(--input-border-color);
         border-bottom: none;
-        color: var(--darkest-gray);
-        background-color: var(--white);
+        background-color: var(--input-background-color);
         margin: -2px;
         z-index: 1;
       }
       i {
-        margin-right: 0px;
+        margin-right: 4px;
         margin-top: -2px;
       }
     }
@@ -116,16 +117,16 @@ export default {
   .textarea {
     font-family: "Roboto Mono", monospace;
     &:hover ~ .toolbar span.active {
-      border-color: var(--gray);
+      border-color: var(--input-border-color-hover);
     }
     &:focus ~ .toolbar span.active {
-      border-color: var(--darkest-gray);
+      border-color: var(--input-border-color-focus);
     }
   }
   .preview {
-    background-color: var(--white);
+    background-color: var(--input-background-color);
     padding: 10px;
-    border: var(--input-border-width) solid var(--lighter-gray);
+    border: var(--input-border-width) solid var(--input-border-color);
   }
 }
 </style>
@@ -199,7 +200,7 @@ export default {
     }
     h6 {
       font-size: 14px;
-      color: var(--gray);
+      color: var(--blue-grey-400);
     }
 
     p,
@@ -272,9 +273,9 @@ export default {
     }
 
     blockquote {
-      border-left: 4px solid var(--lightest-gray);
+      border-left: 4px solid var(--blue-grey-50);
       padding: 0 15px;
-      color: var(--gray);
+      color: var(--blue-grey-400);
     }
     blockquote > :first-child {
       margin-top: 0;
@@ -289,23 +290,23 @@ export default {
       border-collapse: collapse;
     }
     table tr {
-      border-top: 1px solid var(--lightest-gray);
+      border-top: 1px solid var(--blue-grey-50);
       background-color: white;
       margin: 0;
       padding: 0;
     }
     table tr:nth-child(2n) {
-      background-color: var(--body-background);
+      background-color: var(--page-background-color);
     }
     table tr th {
       font-weight: bold;
-      border: 1px solid var(--lightest-gray);
+      border: 1px solid var(--blue-grey-50);
       text-align: left;
       margin: 0;
       padding: 6px 13px;
     }
     table tr td {
-      border: 1px solid var(--lightest-gray);
+      border: 1px solid var(--blue-grey-50);
       text-align: left;
       margin: 0;
       padding: 6px 13px;
@@ -329,8 +330,8 @@ export default {
       margin: 0 2px;
       padding: 0 5px;
       white-space: nowrap;
-      border: 1px solid var(--lightest-gray);
-      background-color: var(--body-background);
+      border: 1px solid var(--blue-grey-50);
+      background-color: var(--page-background-color);
       border-radius: var(--border-radius);
     }
     pre code {
@@ -341,8 +342,8 @@ export default {
       background: transparent;
     }
     .highlight pre {
-      background-color: var(--body-background);
-      border: 1px solid var(--lightest-gray);
+      background-color: var(--page-background-color);
+      border: 1px solid var(--blue-grey-50);
       font-size: 13px;
       line-height: 19px;
       overflow: auto;
@@ -351,8 +352,8 @@ export default {
     }
     pre {
       font-family: "Roboto Mono", mono;
-      background-color: var(--body-background);
-      border: 1px solid var(--lightest-gray);
+      background-color: var(--page-background-color);
+      border: 1px solid var(--blue-grey-50);
       font-size: 13px;
       line-height: 19px;
       overflow: auto;
@@ -367,7 +368,7 @@ export default {
 
     hr {
       border: none;
-      border-top: 1px solid var(--lightest-gray);
+      border-top: 1px solid var(--blue-grey-50);
       margin: 20px auto;
     }
 
@@ -377,7 +378,7 @@ export default {
     }
 
     a {
-      color: var(--darkest-gray);
+      //
     }
   }
 }

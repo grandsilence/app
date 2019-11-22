@@ -1,27 +1,25 @@
 <template>
   <form @submit.prevent>
-    <fieldset>
-      <legend class="style-3">{{ $t("layouts-tabular-fields") }}</legend>
-      <draggable v-model="sortList" handle=".handle" @end="sort">
-        <div
-          v-for="field in sortList"
-          :key="'tabular-layout-options-field-' + field.field"
-          class="draggable"
-        >
-          <v-checkbox
-            :id="'tabular-layout-options-field-' + field.field"
-            :key="field.field"
-            class="checkbox"
-            :label="field.name"
-            :value="field.field"
-            :checked="fieldsInUse.includes(field.field)"
-            @change="toggleField(field.field)"
-          ></v-checkbox>
-          <v-icon class="handle" name="drag_handle" />
-        </div>
-      </draggable>
-    </fieldset>
-    <label for="spacing" class="style-3">{{ $t("spacing") }}</label>
+    <label class="type-label">{{ $t("layouts-tabular-fields") }}</label>
+    <draggable v-model="sortList" direction="vertical" @end="sort">
+      <div
+        v-for="field in sortList"
+        :key="'tabular-layout-options-field-' + field.field"
+        class="draggable"
+      >
+        <v-checkbox
+          :id="'tabular-layout-options-field-' + field.field"
+          :key="field.field"
+          class="checkbox"
+          :label="field.name"
+          :value="field.field"
+          :checked="fieldsInUse.includes(field.field)"
+          @change="toggleField(field.field)"
+        ></v-checkbox>
+        <v-icon class="handle" name="drag_handle" />
+      </div>
+    </draggable>
+    <label for="spacing" class="type-label">{{ $t("spacing") }}</label>
     <v-select
       id="spacing"
       :value="viewOptions.spacing || 'comfortable'"
@@ -51,8 +49,9 @@ export default {
     fieldsInUse() {
       if (!this.viewQuery || !this.viewQuery.fields)
         return Object.values(this.fields)
-          .filter(field => field.primary_key === false)
-          .slice(0, 5)
+          .filter(field => field.primary_key === false || field.primary_key === "0")
+          .filter(field => field.hidden_browse !== true)
+          .slice(0, 4)
           .map(field => field.field);
 
       if (this.viewQuery.fields === "") return [];
@@ -118,9 +117,12 @@ fieldset {
   padding: 8px 0 0 0;
 }
 
-label {
-  margin-bottom: 10px;
-  margin-top: 30px;
+.type-label {
+  margin-top: var(--form-vertical-gap);
+  margin-bottom: var(--input-label-margin);
+  &:first-of-type {
+    margin-top: 0;
+  }
 }
 
 .draggable {
@@ -130,6 +132,12 @@ label {
   cursor: ns-resize;
   padding: 2px 0;
 
+  &:hover {
+    i {
+      color: var(--input-border-color-hover);
+    }
+  }
+
   .checkbox {
     max-width: 125px;
     label {
@@ -138,7 +146,8 @@ label {
   }
 
   i {
-    color: var(--lighter-gray);
+    transition: all var(--fast) var(--transition);
+    color: var(--input-border-color);
   }
 }
 </style>

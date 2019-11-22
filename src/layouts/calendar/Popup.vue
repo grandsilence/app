@@ -56,9 +56,24 @@
 </template>
 
 <script>
+import { mapState } from "vuex";
+
 export default {
   components: {},
-  props: ["open", "parentdate", "parentevents"],
+  props: {
+    open: {
+      type: Boolean,
+      default: false
+    },
+    parentdate: {
+      type: Date,
+      required: true
+    },
+    parentevents: {
+      type: Array,
+      required: true
+    }
+  },
   data() {
     return {
       // The differend animations for the sidebar.
@@ -67,6 +82,7 @@ export default {
     };
   },
   computed: {
+    ...mapState(["currentProjectKey"]),
     /*
      *   Array of days to display in the sidebar.
      */
@@ -112,7 +128,7 @@ export default {
     },
 
     goToItem(id) {
-      this.$router.push(`/collections/${this.$parent.collection}/${id}`);
+      this.$router.push(`/${this.currentProjectKey}/collections/${this.$parent.collection}/${id}`);
     },
 
     changeDay(distance) {
@@ -254,7 +270,7 @@ export default {
   align-items: center;
   grid-column: 1 / 2;
   grid-row: 1 / 2;
-  background-color: var(--lightest-gray);
+  background-color: var(--blue-grey-50);
   font-size: 1.5em;
   font-weight: 400;
   text-transform: capitalize;
@@ -263,7 +279,7 @@ export default {
 #sidebar {
   grid-column: 1 / 2;
   grid-row: 2 / 3;
-  background-color: var(--lightest-gray);
+  background-color: var(--blue-grey-50);
   height: 100%;
   overflow: hidden;
 }
@@ -320,12 +336,12 @@ export default {
   width: 100%;
   height: calc(67.5vh / 5);
   padding: 0 30%;
-  color: var(--light-gray);
+  color: var(--blue-grey-300);
   cursor: pointer;
 }
 
 .dates:nth-child(5) {
-  color: var(--dark-gray);
+  color: var(--blue-grey-600);
 }
 
 .dates::after {
@@ -333,7 +349,7 @@ export default {
   position: absolute;
   width: 60%;
   height: 2px;
-  background-color: var(--lighter-gray);
+  background-color: var(--blue-grey-200);
   border-radius: 2px;
   bottom: 0;
   left: 50%;
@@ -366,7 +382,7 @@ export default {
   line-height: 20px;
   border-radius: 50%;
   color: var(--white);
-  background-color: var(--darkest-gray);
+  background-color: var(--blue-grey-900);
 }
 
 #events {
@@ -380,7 +396,7 @@ export default {
 
 #events-none {
   text-align: center;
-  color: var(--lighter-gray);
+  color: var(--blue-grey-200);
   font-size: 1.5em;
 }
 
@@ -415,7 +431,7 @@ export default {
   height: 50px;
   box-shadow: 1px 1px 4px 0px gray;
   border-radius: 50%;
-  background-color: var(--darkest-gray);
+  background-color: var(--blue-grey-900);
   text-decoration: none;
   color: var(--white);
   cursor: pointer;

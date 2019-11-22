@@ -60,40 +60,46 @@ input {
     content: "";
     display: block;
     height: 20px;
-    width: 36px;
+    width: 40px;
     background-color: transparent;
     border-radius: 12px;
     cursor: pointer;
-    border: 2px solid var(--darker-gray);
+    border: var(--input-border-width) solid var(--input-border-color);
+    transition: all var(--fast) var(--transition);
+  }
+
+  &:hover::after {
+    border-color: var(--input-border-color-hover);
   }
 
   &.active::after {
-    background-color: var(--darker-gray);
+    border: 2px solid var(--input-background-color-active);
+    background-color: var(--input-background-color-active);
   }
 }
 
 .switch-thumb {
   position: absolute;
-  top: 8px;
-  left: 8px;
+  top: 7px;
+  left: 7px;
   display: block;
-  width: 14px;
-  height: 14px;
-  border-radius: 7px;
-  background-color: var(--darker-gray);
+  width: 16px;
+  height: 16px;
+  border-radius: 8px;
+  background-color: var(--input-border-color);
   transition: transform var(--fast) var(--transition);
 
   &.active {
-    background-color: var(--white);
-    transform: translateX(16px);
+    background-color: var(--input-text-color-active);
+    transform: translateX(20px);
   }
 }
 
 input:disabled ~ .switch {
-  background-color: var(--lightest-gray);
+  background-color: var(--input-background-color-disabled);
 
   &::after {
-    background-color: var(--lighter-gray);
+    background-color: var(--input-background-color-disabled);
   }
 }
 </style>

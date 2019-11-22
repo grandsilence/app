@@ -1,5 +1,5 @@
 <template>
-  <div :class="`${options.style}-style`">
+  <div :class="[`${options.style}-style`, { margin: options.margin }]">
     <h2 v-if="options.title">{{ options.title }}</h2>
     <hr v-if="options.hr" />
     <p v-if="options.description">{{ options.description }}</p>
@@ -17,19 +17,20 @@ export default {
 <style lang="scss" scoped>
 .small-style {
   position: relative;
-  margin-top: 60px;
-  padding-top: 8px;
-  padding-bottom: 20px;
+  padding-top: 12px;
+  &.margin {
+    margin-top: 48px;
+  }
   h2 {
     position: absolute;
     top: 0px;
     left: 50%;
     transform: translateX(-50%);
 
-    color: var(--darker-gray);
+    color: var(--heading-text-color);
     font-size: 16px;
     line-height: 18px;
-    background-color: var(--body-background);
+    background-color: var(--page-background-color);
     padding: 0 12px;
   }
   p {
@@ -37,59 +38,64 @@ export default {
     top: 28px;
     left: 50%;
     transform: translateX(-50%);
-    color: var(--light-gray);
-    max-width: 460px;
+    color: var(--note-text-color);
+    font-size: var(--input-font-size);
+    max-width: 560px;
   }
   hr {
     border: 0;
     background: none;
-    border-bottom: 2px solid var(--lightest-gray);
+    border-bottom: 2px solid var(--input-border-color);
   }
 }
 
 .medium-style {
-  margin-top: 60px;
-  padding-top: 6px;
-  padding-bottom: 20px;
+  padding-top: 12px;
+  &.margin {
+    margin-top: 48px;
+  }
   h2 {
-    color: var(--darker-gray);
+    color: var(--heading-text-color);
     font-size: 22px;
     line-height: 28px;
     font-weight: 400;
-    margin-bottom: 10px;
+    margin-bottom: 12px;
   }
   p {
-    color: var(--light-gray);
-    max-width: 460px;
-    margin-top: 6px;
+    color: var(--note-text-color);
+    max-width: 560px;
+    margin-top: 12px;
+    font-size: var(--input-font-size);
   }
   hr {
     border: 0;
     background: none;
-    border-bottom: 2px solid var(--lightest-gray);
+    border-bottom: 2px solid var(--input-border-color);
   }
 }
 
 .large-style {
-  margin-top: 60px;
-  padding-top: 6px;
-  padding-bottom: 20px;
+  padding-top: 12px;
+  &.margin {
+    margin-top: 48px;
+  }
   h2 {
-    color: var(--darker-gray);
+    color: var(--heading-text-color);
     font-size: 28px;
     line-height: 32px;
     font-weight: 300;
-    margin-bottom: 10px;
+    margin-bottom: 12px;
   }
   p {
-    color: var(--light-gray);
-    max-width: 460px;
-    margin-top: 14px;
+    color: var(--note-text-color);
+    font-size: var(--input-font-size);
+    max-width: 560px;
+    margin-top: 16px;
   }
   hr {
     border: 0;
     background: none;
-    border-bottom: 2px solid var(--lightest-gray);
+    border-bottom: 2px solid var(--input-border-color);
   }
 }
 </style>

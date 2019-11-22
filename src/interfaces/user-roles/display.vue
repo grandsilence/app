@@ -10,7 +10,7 @@ export default {
   mixins: [mixin],
   computed: {
     displayValue() {
-      return this.value && this.value[0] && this.value[0].role && this.value[0].role.name;
+      return this.value && this.value.name;
     }
   }
 };

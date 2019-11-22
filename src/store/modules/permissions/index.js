@@ -1,8 +1,10 @@
 import * as actions from "./actions";
 import mutations from "./mutations";
 
+export const initialState = {};
+
 export default {
   actions,
   mutations,
-  state: {}
+  state: _.clone(initialState)
 };

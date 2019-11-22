@@ -50,7 +50,7 @@
   "translation": {
     "en-US": {
       "radio": "Radio Buttons",
-      "choices": "choices",
+      "choices": "Choices",
       "choices_comment": "Enter JSON key value pairs with the saved value and text displayed.",
       "option": "Option",
       "format": "Browse Format",
@@ -58,7 +58,7 @@
     },
 	"fr-FR": {
       "radio": "Bouton radio",
-      "choices": "choix",
+      "choices": "Choix",
       "choices_comment": "Saisir des pairs de clefs et valeurs en JSON avec la valeur enregistrée et le texte affiché",
       "option": "Option",
       "format": "Format du parcours",

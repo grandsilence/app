@@ -1,17 +1,28 @@
 <template>
   <div class="v-permissions-row" :class="{ 'system-row': system }">
     <div v-if="!statuses" class="row">
-      <div class="cell">
-        <span v-tooltip="permissionName" :class="{ system }">
+      <div class="cell collection-title">
+        <span v-tooltip="permissionName" :class="{ system }" class="name">
           {{ $helpers.formatTitle(system ? permissionName.substring(9) : permissionName) }}
         </span>
         <span class="set-all">
-          <button type="button" @click.prevent="setAll(true)">
-            {{ $t("all") }}
+          <button class="on" type="button" @click.prevent="setAll(true)">
+            <v-icon
+              v-tooltip="$t('turn_all_on')"
+              class="icon"
+              name="done"
+              size="18"
+              color="success"
+            />
           </button>
-          /
-          <button type="button" @click.prevent="setAll(false)">
-            {{ $t("none") }}
+          <button class="off" type="button" @click.prevent="setAll(false)">
+            <v-icon
+              v-tooltip="$t('turn_all_off')"
+              class="icon"
+              name="block"
+              size="18"
+              color="danger"
+            />
           </button>
         </span>
       </div>
@@ -70,17 +81,28 @@
       <div class="cell"><span class="mixed">--</span></div>
     </div>
     <div v-else class="row">
-      <div class="cell">
-        <span v-tooltip="permissionName" :class="{ system }">
+      <div class="cell collection-title">
+        <span v-tooltip="permissionName" :class="{ system }" class="name">
           {{ $helpers.formatTitle(system ? permissionName.substring(9) : permissionName) }}
         </span>
         <span class="set-all">
-          <button type="button" @click.prevent="setAll(true)">
-            {{ $t("all") }}
+          <button class="on" type="button" @click.prevent="setAll(true)">
+            <v-icon
+              v-tooltip="$t('turn_all_on')"
+              class="icon"
+              name="done"
+              size="18"
+              color="success"
+            />
           </button>
-          /
-          <button type="button" @click.prevent="setAll(false)">
-            {{ $t("none") }}
+          <button class="off" type="button" @click.prevent="setAll(false)">
+            <v-icon
+              v-tooltip="$t('turn_all_off')"
+              class="icon"
+              name="block"
+              size="18"
+              color="danger"
+            />
           </button>
         </span>
       </div>
@@ -257,8 +279,7 @@
       >
         <form class="modal-content" @submit.prevent>
           <fieldset>
-            <legend class="style-3">{{ $t("readable_fields") }}</legend>
-            <p class="style-4">{{ $t("readable_fields_copy") }}</p>
+            <legend class="type-label">{{ $t("readable_fields") }}</legend>
             <v-checkbox
               v-for="(field, name) in fieldsWithoutPK"
               :id="`${permissionName}-read-${name}`"
@@ -270,8 +291,7 @@
             />
           </fieldset>
           <fieldset>
-            <legend class="style-3">{{ $t("writable_fields") }}</legend>
-            <p class="style-4">{{ $t("writable_fields_copy") }}</p>
+            <legend class="type-label">{{ $t("writable_fields") }}</legend>
             <v-checkbox
               v-for="(field, name) in fields"
               :id="`${permissionName}-write-${name}`"
@@ -294,8 +314,7 @@
       >
         <form class="modal-content" @submit.prevent>
           <fieldset>
-            <legend class="style-3">{{ $t("statuses") }}</legend>
-            <p class="style-4">{{ $t("select_statuses_copy") }}</p>
+            <legend class="type-label">{{ $t("allowed_status_options") }}</legend>
             <v-checkbox
               v-for="(status, name) in statuses"
               :id="`status-${name}`"
@@ -413,7 +432,10 @@ export default {
       );
     },
     permissionOptions() {
-      return this.userCreatedField ? ["none", "mine", "role", "full"] : ["none", "full"];
+      // To provide all options for core table as well as those collections which contains usercreated field
+      return this.userCreatedField || this.permissionName.startsWith("directus_")
+        ? ["none", "mine", "role", "full"]
+        : ["none", "full"];
     }
   },
   methods: {
@@ -515,7 +537,11 @@ export default {
       const permissionField = write ? "write_field_blacklist" : "read_field_blacklist";
 
       if (selectedFields.includes(field)) {
-        return this.emitValue(permissionField, selectedFields.filter(f => f !== field), status);
+        return this.emitValue(
+          permissionField,
+          selectedFields.filter(f => f !== field),
+          status
+        );
       }
 
       return this.emitValue(permissionField, [...selectedFields, field], status);
@@ -545,32 +571,36 @@ export default {
   position: relative;
 }
 
+fieldset {
+  padding: 0;
+}
+
 .collapse {
   position: absolute;
   top: 10px;
   right: 3px;
 
   i {
-    color: var(--lighter-gray);
+    color: var(--input-icon-color);
     transition: color var(--fast) var(--transition);
   }
 
   &:hover i {
-    color: var(--darkest-gray);
+    color: var(--input-text-color);
   }
 }
 
 .modal-content {
-  padding: 20px;
+  padding: var(--form-vertical-gap) 20px;
 
   fieldset:not(:last-of-type) {
-    margin-bottom: 20px;
+    margin-bottom: var(--form-vertical-gap);
   }
 
-  legend {
+  legend.type-label {
     margin: 0;
     padding: 0;
-    margin-bottom: 5px;
+    margin-bottom: var(--input-label-margin);
   }
 
   p {
@@ -579,7 +609,7 @@ export default {
 }
 
 .mixed {
-  color: var(--lighter-gray);
+  color: var(--empty-value);
 }
 
 .limited {
@@ -587,19 +617,33 @@ export default {
 }
 
 .block {
-  color: var(--lightest-gray);
+  color: var(--input-border-color);
 }
 
-.set-all {
-  opacity: 0;
-  font-size: 12px;
-  font-weight: 600;
-  margin-left: 5px;
-  color: var(--light-gray);
-  transition: opacity var(--fast) var(--transition);
+.collection-title {
+  position: relative;
+  margin-right: 4px;
+  .name {
+    display: block;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    width: 100%;
+  }
+  .set-all {
+    position: absolute;
+    top: -4px;
+    right: 4px;
+    opacity: 0;
+    padding: 4px 4px 4px 16px;
+    background-color: var(--page-background-color);
+    background: linear-gradient(90deg, transparent 0%, var(--page-background-color) 25%);
+    transition: opacity var(--fast) var(--transition);
 
-  button {
-    transition: color var(--fast) var(--transition);
+    button {
+      transition: color var(--fast) var(--transition);
+      margin-left: 4px;
+    }
   }
 }
 
@@ -621,7 +665,6 @@ export default {
 }
 
 .system-row {
-  color: var(--light-gray);
-  background-color: var(--off-white);
+  color: var(--input-placeholder-color);
 }
 </style>

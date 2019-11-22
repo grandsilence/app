@@ -1,11 +1,16 @@
 <template>
   <div class="interfaces">
-    <v-header :breadcrumb="links" :icon-link="`/settings`" icon-color="warning" />
+    <v-header :breadcrumb="links" :icon-link="`/${currentProjectKey}/settings`" settings />
     <v-table :columns="columns" :items="items" link="__link" primary-key-field="id" />
+    <v-info-sidebar wide>
+      <span class="type-note">No settings</span>
+    </v-info-sidebar>
   </div>
 </template>
 
 <script>
+import { mapState } from "vuex";
+
 export default {
   metaInfo() {
     return {
@@ -13,22 +18,23 @@ export default {
     };
   },
   computed: {
+    ...mapState(["currentProjectKey"]),
     links() {
       return [
         {
           name: this.$t("settings"),
-          path: "/settings"
+          path: `/${this.currentProjectKey}/settings`
         },
         {
           name: this.$t("interfaces"),
-          path: "/settings/interfaces"
+          path: `/${this.currentProjectKey}/settings/interfaces`
         }
       ];
     },
     items() {
       return Object.keys(this.$store.state.extensions.interfaces).map(id => ({
         ...this.$store.state.extensions.interfaces[id],
-        __link: `/settings/interfaces/${id}`
+        __link: `/${this.currentProjectKey}/settings/interfaces/${id}`
       }));
     },
     columns() {

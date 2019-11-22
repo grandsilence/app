@@ -1,16 +1,17 @@
 <template>
   <div v-if="links.length > 0" class="nav-menu">
+    <h3 v-if="title" class="style-4">{{ title }}</h3>
     <nav>
       <ul>
         <li v-for="{ path, name, target, icon, color } in links" :key="path">
           <template v-if="path.startsWith('http')">
             <a :href="path" :class="color || null" :target="target">
-              <v-icon class="icon" :name="icon || 'box'" color="darker-gray" />
+              <v-icon class="icon" :name="icon || 'box'" color="sidebar-text-color" />
               {{ name }}
             </a>
           </template>
           <router-link v-else-if="path" :to="path" :class="color || null">
-            <v-icon class="icon" :name="icon || 'box'" color="darker-gray" />
+            <v-icon class="icon" :name="icon || 'box'" color="sidebar-text-color" />
             {{ name }}
           </router-link>
         </li>
@@ -42,7 +43,8 @@ h3 {
 }
 
 .icon {
-  margin-right: 15px;
+  margin-right: 12px;
+  vertical-align: -7px;
 }
 
 a {
@@ -55,22 +57,14 @@ a {
 }
 
 a:hover,
-.content .router-link-active,
-.user-menu .router-link-exact-active {
-  background-color: #dde3e6; // rgba(var(--lighter-gray), 0.5);
+.nav-menu .router-link-active,
+.nav-menu .router-link-exact-active {
+  background-color: var(--sidebar-background-color-alt);
   border-radius: var(--border-radius);
 
   .icon {
     color: currentColor;
     fill: currentColor;
-  }
-}
-
-.content .router-link-active,
-.user-menu .router-link-exact-active {
-  &::before {
-    transform: scaleX(1);
-    transition: var(--medium) var(--transition-in);
   }
 }
 
@@ -81,7 +75,7 @@ ul {
 
 nav > ul > li > * {
   padding: 8px 4px 8px 10px;
-  margin: 2px 0;
+  margin: 4px 0;
 }
 
 nav {
@@ -91,30 +85,10 @@ nav {
 
 .success {
   color: var(--success);
-
-  a:hover,
-  .content .router-link-active,
-  .user-menu .router-link-exact-active {
-    color: var(--success-dark);
-
-    &::before {
-      background-color: var(--success);
-    }
-  }
 }
 
 .warning {
   color: var(--warning);
-
-  &:hover,
-  .content &.router-link-active,
-  .user-menu &.router-link-exact-active {
-    color: var(--warning-dark);
-
-    &::before {
-      background-color: var(--warning);
-    }
-  }
 }
 
 .danger {
